@@ -56,3 +56,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     </html>
   );
 }
+
+{/* Sticky Mobile CTA Bar */}
+<div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-4 py-3 flex justify-between items-center md:hidden z-50">
+  <span className="text-sm font-medium text-[#1C2D4A]">Ready to recover your time?</span>
+  <a href="/contact" className="bg-[#FFD700] text-[#1C2D4A] px-3 py-1.5 rounded font-semibold hover:bg-[#f5c400] transition">
+    Book Call
+  </a>
+</div>
