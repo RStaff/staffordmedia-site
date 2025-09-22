@@ -17,6 +17,19 @@ export default function HomePage() {
           </a>
         </div>
       </section>
+
+      {/* Visual Proof Section */}
+      <section className="max-w-3xl mx-auto text-center mt-16 space-y-6">
+        <h2 className="text-xl font-bold text-[#5B2A8C]">Trusted by results-driven teams</h2>
+        <div className="flex justify-center gap-6 flex-wrap">
+          <div className="w-24 h-12 bg-gray-300 rounded" />
+          <div className="w-24 h-12 bg-gray-300 rounded" />
+          <div className="w-24 h-12 bg-gray-300 rounded" />
+        </div>
+        <blockquote className="border-l-4 border-[#FFD700] pl-4 text-sm text-gray-600 italic">
+          “Abando.ai recovered $105K in 14 days — without touching our dev stack.”
+        </blockquote>
+      </section>
     </main>
   );
 }
