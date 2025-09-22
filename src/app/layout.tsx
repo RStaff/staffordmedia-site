@@ -15,10 +15,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <header className="sticky top-0 z-50 bg-[#1C2D4A] text-white px-6 py-4 flex justify-between items-center shadow">
-          <div className="flex items-center gap-2">
-            <Image src="/logo.png" alt="Stafford Media Consulting logo" width={160} height={60} priority />
-            <span className="text-xs font-semibold relative -top-1">™</span>
+        <header className="sticky top-0 z-50 bg-[#1C2D4A] text-white px-6 py-2 flex justify-between items-center shadow">
+          <div className="flex items-center gap-3">
+            <Image src="/logo-icon.png" alt="SMC logo icon" width={40} height={40} priority />
+            <span className="text-sm font-semibold tracking-wide text-white">
+              Stafford Media Consulting<span className="text-xs align-super ml-1">™</span>
+            </span>
           </div>
           <a href="/contact" className="bg-[#FFD700] text-[#1C2D4A] px-4 py-2 rounded font-semibold hover:bg-[#f5c400] transition">
             Book a Strategy Call
