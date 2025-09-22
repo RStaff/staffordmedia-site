@@ -26,9 +26,13 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <header className="p-4">
-          <div className="flex items-center gap-1">
-            <img src="/logo.svg" alt="Stafford Media Consulting logo" width="120" height="40" />
-            <span className="text-xs font-semibold relative -top-1">™</span>
+          <div className="flex flex-col items-start">
+            <div className="flex items-center gap-2">
+              <img src="/logo.png" alt="Stafford Media Consulting logo" width={160} height={60} />
+              <span className="text-xs font-semibold relative -top-1">™</span>
+            </div>
+            <h1 className="text-xl font-bold mt-2">Stafford Media Consulting</h1>
+            <p className="text-sm text-gray-600">AI Consulting & Intelligent Automation</p>
           </div>
         </header>
         {children}
@@ -36,4 +40,3 @@ export default function RootLayout({
     </html>
   );
 }
-// redeploy trigger
