@@ -23,7 +23,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+<header class="p-4">
+  <div class="flex items-center gap-1">
+    <img src="/logo.svg" alt="Stafford Media Consulting logo" width="120" height="40" />
+    <span class="text-xs font-semibold relative -top-1">™</span>
+  </div>
+</header>    <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
