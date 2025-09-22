@@ -43,3 +43,27 @@ export default function Home() {
     </main>
   );
 }
+
+      <section className="mt-24 bg-smc-gray py-12">
+        <div className="text-center max-w-3xl mx-auto">
+          <h2 className="text-2xl font-bold text-smc-purple">Trusted by results-driven teams</h2>
+          <p className="text-sm text-gray-600 mt-2">
+            Stafford Media Consulting has helped founders, operators, and product teams recover time and scale intelligently.
+          </p>
+        </div>
+
+        <div className="mt-8 flex flex-wrap justify-center gap-6 px-4">
+          <div className="bg-white shadow rounded px-6 py-4 border border-smc-teal">
+            <span className="text-smc-blue font-semibold">EcomPilot</span>
+            <p className="text-sm text-gray-500 mt-1">Recovered $18K in abandoned carts</p>
+          </div>
+          <div className="bg-white shadow rounded px-6 py-4 border border-smc-gold">
+            <span className="text-smc-purple font-semibold">OpsForge</span>
+            <p className="text-sm text-gray-500 mt-1">Automated 12+ workflows in 3 weeks</p>
+          </div>
+          <div className="bg-white shadow rounded px-6 py-4 border border-smc-blue">
+            <span className="text-smc-teal font-semibold">CartRevive</span>
+            <p className="text-sm text-gray-500 mt-1">Boosted recovery rate by 42%</p>
+          </div>
+        </div>
+      </section>
