@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import Image from "next/image";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -27,7 +28,13 @@ export default function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <header className="pt-2 px-4">
           <div className="flex items-center gap-2">
-            <img src="/logo.png" alt="Stafford Media Consulting logo" width={160} height={60} />
+            <Image
+              src="/logo.png"
+              alt="Stafford Media Consulting logo"
+              width={160}
+              height={60}
+              priority
+            />
             <span className="text-xs font-semibold relative -top-1">™</span>
           </div>
         </header>
