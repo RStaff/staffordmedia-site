@@ -9,11 +9,11 @@ export default function Home() {
           AI Consulting & Intelligent Automation
         </p>
         <p className="text-sm text-gray-500 mt-4">
-          Founded by Ross Stafford, we specialize in AI solutions — from concept to cost recovery.
+          Founded by Ross Stafford, creator of <strong>Abando.ai</strong> — the AI copilot for cart recovery.
         </p>
         <div className="mt-6 flex justify-center gap-4 flex-wrap">
-          <a href="/ahaana" className="bg-blue-600 text-white px-5 py-2.5 rounded shadow hover:bg-blue-700 transition">
-            See Ahaana in Action →
+          <a href="/abando" className="bg-blue-600 text-white px-5 py-2.5 rounded shadow hover:bg-blue-700 transition">
+            See Abando.ai in Action →
           </a>
           <a href="/contact" className="border border-blue-600 text-blue-600 px-5 py-2.5 rounded hover:bg-blue-50 transition">
             Book a Strategy Call
