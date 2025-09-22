@@ -15,7 +15,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <header className="sticky top-0 z-50 bg-[#1C2D4A] text-white px-6 py-2 flex items-center justify-between shadow">
+        <header className="sticky top-0 z-50 bg-[#1C2D4A] text-white px-6 py-2 flex items-center justify-between shadow relative">
           <div className="flex-shrink-0">
             <Image src="/logo-icon.png" alt="Stafford Media Consulting logo icon" width={40} height={40} priority />
           </div>
