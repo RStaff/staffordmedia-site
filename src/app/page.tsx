@@ -9,7 +9,7 @@ export default function Home() {
           AI Consulting & Intelligent Automation
         </p>
         <p className="text-sm text-gray-500 mt-4">
-          Founded by Ross Stafford, creator of <strong>Abando.ai</strong> — the AI copilot for cart recovery.
+          Built for results-driven founders who want to scale impact, recover time, and own their tech stack.
         </p>
         <div className="mt-6 flex justify-center gap-4 flex-wrap">
           <a href="/abando" className="bg-blue-600 text-white px-5 py-2.5 rounded shadow hover:bg-blue-700 transition">
@@ -20,9 +20,6 @@ export default function Home() {
           </a>
         </div>
       </section>
-    </main>
-  );
-}
 
       <section className="mt-20 max-w-3xl mx-auto text-center">
         <h2 className="text-2xl font-bold text-gray-900">Meet Abando.ai</h2>
@@ -43,3 +40,6 @@ export default function Home() {
           </a>
         </div>
       </section>
+    </main>
+  );
+}
