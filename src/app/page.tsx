@@ -20,7 +20,7 @@ export default function Home() {
             AI Consulting & Intelligent Automation
           </h1>
           <p className="text-base text-gray-700 max-w-2xl mx-auto">
-            For founders who want to scale impact, recover time, and own their tech stack.
+            From bootstrapped startups to enterprise teams, we build CLI-native, conversion-first systems that scale impact, recover time, and put you in control.
           </p>
           <div className="mt-8 flex justify-center gap-4">
             <Link
