@@ -3,8 +3,8 @@ import React from "react";
 export interface HeroProps {
   headline: string;
   subhead: string;
-  primaryCta: { label: string; href: string; };
-  secondaryCta: { label: string; href: string; };
+  primaryCta: { label: string; href: string };
+  secondaryCta: { label: string; href: string };
 }
 
 export default function Hero({
@@ -15,8 +15,12 @@ export default function Hero({
 }: HeroProps) {
   return (
     <section className="hero-stub">
-      {/* Hero stub - rendering headline for now */}
       <h1>{headline}</h1>
+      <p>{subhead}</p>
+      <div className="cta-group">
+        <a href={primaryCta.href}>{primaryCta.label}</a>
+        <a href={secondaryCta.href}>{secondaryCta.label}</a>
+      </div>
     </section>
   );
 }

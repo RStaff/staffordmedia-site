@@ -6,13 +6,18 @@ export interface ProofBlockProps {
   items: string[];
 }
 
-export default function ProofBlock({ icon, title, items }: ProofBlockProps) {
+export default function ProofBlock({
+  icon,
+  title,
+  items
+}: ProofBlockProps) {
   return (
-    <section className="proofblock">
+    <section className="proofblock-stub">
+      <span className="icon">{icon}</span>
       <h2>{title}</h2>
       <ul>
-        {items.map((item, idx) => (
-          <li key={idx}>{item}</li>
+        {items.map((item, i) => (
+          <li key={i}>{item}</li>
         ))}
       </ul>
     </section>

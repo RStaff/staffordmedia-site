@@ -22,6 +22,7 @@ export default function FreeTrial({
         ))}
       </ul>
       <p>{disclaimer}</p>
+      <a href={cta.href}>{cta.label}</a>
     </section>
   );
 }
