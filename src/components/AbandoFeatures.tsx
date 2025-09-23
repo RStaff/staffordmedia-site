@@ -2,32 +2,32 @@ import { CheckCircleIcon, BoltIcon, Cog6ToothIcon } from "@heroicons/react/24/so
 
 const features = [
   {
-    name: "Automation-first",
-    description: "Zero manual edits. CLI-native scaffolds only.",
+    name: "Zero manual edits",
+    description: "Every deploy is CLI-native. No placeholders, no patching.",
     icon: CheckCircleIcon,
   },
   {
-    name: "Conversion-driven",
-    description: "Every deploy signals premium positioning.",
+    name: "Conversion-first layout",
+    description: "Each pixel signals premium positioning and trust.",
     icon: BoltIcon,
   },
   {
-    name: "Modular architecture",
-    description: "Scalable, frictionless, and brand-aligned.",
+    name: "Modular and scalable",
+    description: "Frictionless architecture built for results and ownership.",
     icon: Cog6ToothIcon,
   },
 ];
 
 export default function AbandoFeatures() {
   return (
-    <section className="grid grid-cols-1 md:grid-cols-3 gap-6 py-12 px-6">
+    <>
       {features.map((feature) => (
-        <div key={feature.name} className="flex flex-col items-start gap-3">
-          <feature.icon className="h-6 w-6 text-yellow-400" />
-          <h3 className="text-lg font-semibold text-white">{feature.name}</h3>
-          <p className="text-sm text-gray-300">{feature.description}</p>
+        <div key={feature.name} className="flex flex-col items-start gap-4">
+          <feature.icon className="h-8 w-8 text-[#FFD700]" />
+          <h3 className="text-lg font-bold text-[#1C2D4A]">{feature.name}</h3>
+          <p className="text-sm text-gray-700">{feature.description}</p>
         </div>
       ))}
-    </section>
+    </>
   );
 }
