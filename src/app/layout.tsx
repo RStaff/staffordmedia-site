@@ -1,63 +1,58 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import React from "react";
+import Head from "next/head";
+import Link from "next/link";
 import Image from "next/image";
-import "./globals.css";
-
-const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
-const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
-
-export const metadata: Metadata = {
-  title: "Stafford Media Consulting",
-  description: "AI consulting, automation strategy, and product development by Ross Stafford.",
-  metadataBase: new URL("https://staffordmedia-site.onrender.com"),
-  icons: {
-    icon: "/favicon.ico",
-  },
-  openGraph: {
-    title: "Stafford Media Consulting",
-    description: "AI consulting and automation strategy for results-driven founders.",
-    url: "https://staffordmedia-site.onrender.com",
-    siteName: "Stafford Media Consulting",
-    images: [
-      {
-        url: "/og-banner.png",
-        width: 1200,
-        height: 630,
-        alt: "Stafford Media Consulting banner",
-      },
-    ],
-    type: "website",
-  },
-};
+import ErrorBoundary from "@/components/ErrorBoundary";
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <header className="sticky top-0 z-50 bg-[#1C2D4A] text-white px-6 py-3 flex items-center justify-between shadow">
-          {/* Logo far left */}
-          <div className="flex-shrink-0">
-            <Image src="/smc-new-logo.png" alt="SMC New Logo" width={48} height={48} priority />
-          </div>
-
-          {/* Brand name centered with TM */}
-          <div className="absolute left-1/2 transform -translate-x-1/2 flex items-center gap-1">
-            <span className="text-xl font-bold tracking-tight text-white whitespace-nowrap">
-              Stafford Media Consulting
-            </span>
-            <span className="text-xs text-white align-super">™</span>
-          </div>
-
-          {/* CTA far right */}
-          <a href="/contact" className="bg-[#FFD700] text-[#1C2D4A] px-4 py-2 rounded font-semibold hover:bg-[#f5c400] transition">
-            Book a Strategy Call
-          </a>
-        </header>
-        {children}
-        <footer className="bg-[#1C2D4A] text-white text-center py-6 mt-24">
-          <p className="text-sm">© 2025 Stafford Media Consulting. Built for results.</p>
-        </footer>
-      </body>
-    </html>
+    <>
+      <Head>
+        <title>Stafford Media Consulting™</title>
+        <meta charSet="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta
+          name="description"
+          content="AI Consulting & Intelligent Automation for results-driven founders."
+        />
+        <meta property="og:title" content="Stafford Media Consulting™" />
+        <meta property="og:description" content="Scale impact, recover time, own your tech stack." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://staffordmedia-site.onrender.com" />
+        <meta property="og:image" content="https://staffordmedia-site.onrender.com/smc-grid-logo.svg" />
+      </Head>
+      <html lang="en">
+        <body>
+          <ErrorBoundary>
+            <header className="bg-[#1C2D4A] text-white py-4 px-6 flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Image
+                  src="/smc-grid-logo.svg"
+                  alt="Stafford Media Consulting Logo"
+                  width={48}
+                  height={48}
+                  priority
+                />
+                <span className="text-lg font-semibold">
+                  Stafford Media Consulting™
+                </span>
+              </div>
+              <nav className="flex items-center gap-6">
+                <Link href="/" className="hover:underline">Home</Link>
+                <Link href="/about" className="hover:underline">About</Link>
+                <Link href="/abanobi" className="hover:underline">Abanobi</Link>
+                <Link
+                  href="/contact"
+                  className="bg-[#FFD700] text-[#1C2D4A] px-5 py-2 rounded font-semibold hover:bg-[#f5c400] transition"
+                >
+                  Book a Strategy Call
+                </Link>
+              </nav>
+            </header>
+            {children}
+          </ErrorBoundary>
+        </body>
+      </html>
+    </>
   );
 }
