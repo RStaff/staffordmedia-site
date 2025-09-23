@@ -9,6 +9,7 @@ const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"]
 export const metadata: Metadata = {
   title: "Stafford Media Consulting",
   description: "AI consulting, automation strategy, and product development by Ross Stafford.",
+  metadataBase: new URL("https://staffordmedia-site.onrender.com"),
   icons: {
     icon: "/favicon.ico",
   },
@@ -36,7 +37,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <header className="sticky top-0 z-50 bg-[#1C2D4A] text-white px-6 py-3 flex items-center justify-between shadow">
           {/* Logo far left */}
           <div className="flex-shrink-0">
-            <Image src="/logo-grid.png" alt="Stafford Media Consulting logo" width={48} height={48} priority />
+            <Image src="/logo-grid.svg" alt="Stafford Media Consulting logo" width={48} height={48} priority />
           </div>
 
           {/* Brand name centered with TM */}
