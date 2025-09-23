@@ -1,5 +1,6 @@
 "use client";
 import React, { Component, ReactNode } from "react";
+import Link from "next/link";
 
 type Props = { children: ReactNode };
 type State = { hasError: boolean };
@@ -25,12 +26,12 @@ export default class ErrorBoundary extends Component<Props, State> {
           <p className="text-gray-700 mb-6">
             We’re on it. Please try again or contact support.
           </p>
-          <a
+          <Link
             href="/"
             className="bg-[#FFD700] text-[#1C2D4A] px-4 py-2 rounded font-semibold"
           >
             Return Home
-          </a>
+          </Link>
         </div>
       );
     }
