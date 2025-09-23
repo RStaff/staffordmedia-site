@@ -1,5 +1,20 @@
 import React from "react";
 
-export default function ProofBlock() {
-  return <section className="proofblock-stub">ProofBlock component placeholder</section>;
+export interface ProofBlockProps {
+  icon: string;
+  title: string;
+  items: string[];
+}
+
+export default function ProofBlock({ icon, title, items }: ProofBlockProps) {
+  return (
+    <section className="proofblock">
+      <h2>{title}</h2>
+      <ul>
+        {items.map((item, idx) => (
+          <li key={idx}>{item}</li>
+        ))}
+      </ul>
+    </section>
+  );
 }
