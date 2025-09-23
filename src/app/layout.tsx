@@ -37,7 +37,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <header className="sticky top-0 z-50 bg-[#1C2D4A] text-white px-6 py-3 flex items-center justify-between shadow">
           {/* Logo far left */}
           <div className="flex-shrink-0">
-            <Image src="/smc-new-logo.svg" alt="SMC New Logo" width={48} height={48} priority />
+            <Image src="/smc-new-logo.png" alt="SMC New Logo" width={48} height={48} priority />
           </div>
 
           {/* Brand name centered with TM */}
