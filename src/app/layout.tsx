@@ -39,11 +39,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <Image src="/logo-grid.png" alt="Stafford Media Consulting logo" width={48} height={48} priority />
           </div>
 
-          {/* Brand name centered */}
-          <div className="absolute left-1/2 transform -translate-x-1/2">
+          {/* Brand name centered with TM */}
+          <div className="absolute left-1/2 transform -translate-x-1/2 flex items-center gap-1">
             <span className="text-xl font-bold tracking-tight text-white whitespace-nowrap">
               Stafford Media Consulting
             </span>
+            <span className="text-xs text-white align-super">™</span>
           </div>
 
           {/* CTA far right */}
