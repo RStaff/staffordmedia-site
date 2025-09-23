@@ -101,3 +101,15 @@ export default function Home() {
     </>
   );
 }
+import MediaLogos from "@/components/MediaLogos";
+
+export default function HomePage() {
+  return (
+    <>
+      <MediaLogos />
+      <Hero />
+      <ProofBlock />
+      <FreeTrial />
+    </>
+  );
+}
