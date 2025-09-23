@@ -1,0 +1,4 @@
+# ignore our three placeholder stubs
+src/components/Hero.tsx
+src/components/ProofBlock.tsx
+src/components/FreeTrial.tsx
