@@ -26,7 +26,7 @@ export default function About() {
           <div>
             <h1 className="text-3xl font-bold mb-4">Ross Stafford</h1>
             <p className="text-base text-gray-700 leading-relaxed">
-              I build automation-first ecosystems for founders who demand results.
+              I build automation-first ecosystems for organizations of all sizes—from nimble startups to Fortune 500s—that demand results.
               Every deploy is CLI-native, modular, and frictionless—no placeholders,
               no manual edits. As the founder of Stafford Media Consulting™, I
               architect scalable tech solutions that convert. Whether it’s
