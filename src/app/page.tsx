@@ -17,7 +17,7 @@ export default function HomePage() {
       />
       <section id="demo">
         <Image
-          src="/media/abanobi-demo-thumbnail.png"
+          src="/logo-grid.png"
           alt="Abando.ai Demo"
           width={640}
           height={360}

@@ -16,7 +16,7 @@ export default function About() {
       <main className="bg-white text-[#1C2D4A] px-6 py-20 max-w-4xl mx-auto">
         <div className="flex flex-col md:flex-row items-center gap-8">
           <Image
-            src="/ross-profile.jpg"
+            src="/smc-new-logo.png"
             alt="Ross Stafford"
             width={240}
             height={240}
