@@ -2,33 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
-html,body { background:#0A0F2A; color:#E6EAF2; height:100%; }
-a { text-decoration:none; }
+html,body{height:100%;}
+body{background:#0A0F2A;color:#E6EAF2;font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;min-height:100vh;}
+a{text-decoration:none;}
 
-/* Buttons */
-.btn-primary { @apply inline-flex items-center px-6 py-3 rounded-lg font-semibold; background: #FFE169; color: #0A0F2A; }
-.btn-primary:hover { filter:brightness(0.95); }
-
-.btn-secondary { @apply inline-flex items-center px-6 py-3 rounded-lg font-semibold border; border-width:1.5px; border-color: rgba(255,255,255,0.9); color: #fff; background: transparent; }
-.btn-secondary:hover { background: rgba(255,255,255,0.04); }
-
-/* Container */
-.mx-auto { margin-left:auto; margin-right:auto; }
-.max-w-6xl { max-width:72rem; }
-.px-6 { padding-left:1.5rem; padding-right:1.5rem; }
-.py-8 { padding-top:2rem; padding-bottom:2rem; }
-.mt-12 { margin-top:3rem; }
-.mt-14 { margin-top:3.5rem; }
-.mt-6 { margin-top:1.5rem; }
-.mt-8 { margin-top:2rem; }
-
-/* Hero min height */
-.min-h-hero { min-height: 80vh; }
-
-/* Typography helpers */
-.text-white\/80 { color: rgba(255,255,255,0.8); }
-.font-extrabold { font-weight:800; }
-.leading-tight { line-height:1.05; }
-@media (min-width:1024px) {
-  .lg\\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-}
+.btn-primary{@apply inline-flex items-center px-6 py-3 rounded-lg font-semibold; background:#FFE169;color:#0A0F2A;}
+.btn-primary:hover{filter:brightness(0.95);}
+.btn-secondary{@apply inline-flex items-center px-6 py-3 rounded-lg font-semibold border; border-color:rgba(255,255,255,.9);color:#fff;background:transparent;}
+.btn-secondary:hover{background:rgba(255,255,255,.05);}

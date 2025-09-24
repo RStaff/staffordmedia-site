@@ -5,18 +5,15 @@ export default function Home() {
     <div className="mx-auto max-w-6xl px-6 py-8">
       <header className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <img src="/smc-logo.svg" alt="Stafford Media Consulting" className="h-8 w-auto"/>
-          <span className="sr-only">Stafford Media Consulting</span>
+          <img src="/smc-logo.svg" alt="Stafford Media Consulting" className="h-8 w-auto" />
         </div>
         <nav className="flex gap-6 text-white/90">
-          <a href="/">Home</a>
-          <a href="/about">About</a>
-          <a href="/abando">Abando</a>
+          <a href="/">Home</a><a href="/about">About</a><a href="/abando">Abando</a>
           <a href="/book" className="btn-secondary">Book a Strategy Call</a>
         </nav>
       </header>
 
-      <section className="mt-12 grid gap-10 lg:grid-cols-2 items-center min-h-hero">
+      <section className="mt-12 grid gap-10 lg:grid-cols-2 items-center min-h-[80vh]">
         <div>
           <h1 className="text-5xl md:text-6xl font-extrabold leading-tight text-white">
             Unlock 4× ROI in 4 days—<br/>no redesigns, no downtime.
@@ -35,7 +32,7 @@ export default function Home() {
         </div>
 
         <div className="justify-self-center">
-          <img src="/hero-graphic.png" alt="Abando.ai" className="w-[520px] max-w-full"/>
+          <img src="/hero-graphic.png" alt="Abando.ai" className="w-[520px] max-w-full" />
         </div>
       </section>
 
