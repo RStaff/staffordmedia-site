@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="Abando.ai cart logo">
+  <defs>
+    <linearGradient id="cartBlue" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1B83F6"/>
+      <stop offset="1" stop-color="#0A66C2"/>
+    </linearGradient>
+  </defs>
+  <path d="M18 28h20c2.6 0 4.8 1.8 5.4 4.3l9.1 36.5c.8 3.2 3.6 5.5 6.9 5.5H96a4 4 0 0 1 0 8H59.4c-6.4 0-12-4.4-13.4-10.7L36.9 40H18a4 4 0 1 1 0-8Z" fill="url(#cartBlue)"/>
+  <circle cx="52" cy="98" r="10" fill="url(#cartBlue)"/>
+  <circle cx="86" cy="98" r="10" fill="url(#cartBlue)"/>
+  <g transform="translate(58 16)">
+    <circle cx="22" cy="34" r="24" fill="#14A084" opacity=".16"/>
+    <path d="M22 10a24 24 0 1 1 0 48 24 24 0 0 1 0-48Zm0 8a16 16 0 1 0 0 32 16 16 0 0 0 0-32Z" fill="#14A084"/>
+    <circle cx="22" cy="34" r="7" fill="#14A084"/>
+    <circle cx="36" cy="12" r="8" fill="#14A084"/>
+  </g>
+</svg>
