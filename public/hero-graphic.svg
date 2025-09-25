@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="520" viewBox="0 0 720 520">
+  <defs>
+    <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#3AA6E9"/>
+      <stop offset="1" stop-color="#0F7CBD"/>
+    </linearGradient>
+    <linearGradient id="g2" x1="1" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1AC5A3"/>
+      <stop offset="1" stop-color="#0EA381"/>
+    </linearGradient>
+    <filter id="blur"><feGaussianBlur stdDeviation="20"/></filter>
+  </defs>
+
+  <!-- soft blob glow -->
+  <ellipse cx="510" cy="120" rx="110" ry="70" fill="#3AA6E9" opacity=".15" filter="url(#blur)"/>
+  <ellipse cx="410" cy="360" rx="140" ry="80" fill="#1AC5A3" opacity=".14" filter="url(#blur)"/>
+
+  <!-- cart body -->
+  <g transform="translate(120,120)">
+    <rect x="0" y="50" width="290" height="140" rx="18" fill="url(#g1)" />
+    <path d="M-10 20h70l24 170c1.2 8.7 8.7 15.2 17.5 15.2H270c10 0 18 8 18 18s-8 18-18 18H97
+             c-22 0-40-15.8-43.6-37.5L33 56H-10c-8.8 0-16-7.2-16-16S-18.8 20-10 20Z" fill="url(#g1)"/>
+    <!-- wheels -->
+    <circle cx="90" cy="230" r="22" fill="#3AA6E9"/>
+    <circle cx="210" cy="230" r="22" fill="#3AA6E9"/>
+
+    <!-- AI target -->
+    <g transform="translate(210,-10)">
+      <circle cx="70" cy="90" r="78" fill="#1AC5A3" opacity=".15"/>
+      <circle cx="70" cy="90" r="62" fill="none" stroke="#19C5A3" stroke-width="10"/>
+      <circle cx="70" cy="90" r="28" fill="#19C5A3"/>
+      <circle cx="118" cy="40" r="16" fill="#19C5A3"/>
+      <circle cx="148" cy="18" r="8" fill="#19C5A3"/>
+    </g>
+  </g>
+</svg>

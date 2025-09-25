@@ -1,46 +1,61 @@
-import React from 'react';
+"use client";
+import Link from "next/link";
+import AbandoTitle from "@/components/AbandoTitle";
 
-export default function Home() {
+export default function Page() {
   return (
-    <div className="mx-auto max-w-6xl px-6 py-8">
-      <header className="flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <img src="/smc-logo.svg" alt="Stafford Media Consulting" className="h-8 w-auto" />
-        </div>
-        <nav className="flex gap-6 text-white/90">
-          <a href="/">Home</a><a href="/about">About</a><a href="/abando">Abando</a>
-          <a href="/book" className="btn-secondary">Book a Strategy Call</a>
-        </nav>
-      </header>
-
-      <section className="mt-12 grid gap-10 lg:grid-cols-2 items-center min-h-[80vh]">
-        <div>
-          <h1 className="text-5xl md:text-6xl font-extrabold leading-tight text-white">
-            Unlock 4× ROI in 4 days—<br/>no redesigns, no downtime.
+    <main className="min-h-hero py-12 lg:py-16">
+      <div className="container-max grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
+        {/* Left column */}
+        <div data-testid="intro" className="order-1 lg:col-start-1">
+          <AbandoTitle />
+          <h1 className="text-white font-extrabold leading-tight tracking-tight text-4xl sm:text-5xl lg:text-6xl mt-4">
+            Unlock 4× ROI in 4 days—<br />no redesigns, no downtime.
           </h1>
-          <p className="mt-4 text-lg text-white/80">Try Abando.ai free: cancel anytime.</p>
+          <p className="text-white/80 mt-6">
+            Try Abando.ai free: cancel anytime.
+          </p>
 
-          <div className="mt-6 flex items-center gap-3">
-            <div className="h-5 w-5 rounded-sm bg-[#FFE169]" />
-            <span className="text-xl font-semibold text-white">Abando.ai</span>
-          </div>
-
-          <div className="mt-8 flex gap-4">
-            <a href="/start" className="btn-primary">Start Free Trial</a>
-            <a href="/demo" className="btn-secondary">See Abando.ai In Action</a>
+          <div className="flex flex-wrap gap-4 mt-6">
+            <Link
+              href="/start"
+              className="inline-flex items-center px-6 py-3 rounded-lg font-semibold"
+              style={{ background: "#FFE169", color: "#0A0F2A" }}
+            >
+              Start Free Trial
+            </Link>
+            <Link
+              href="/demo"
+              className="inline-flex items-center px-6 py-3 rounded-lg font-semibold border border-white/90 text-white hover:bg-white/5"
+            >
+              See Abando.ai In Action
+            </Link>
           </div>
         </div>
 
-        <div className="justify-self-center">
-          <img src="/hero-graphic.png" alt="Abando.ai" className="w-[520px] max-w-full" />
-        </div>
-      </section>
+        {/* Right column (cards) */}
+        <div data-testid="cards" className="order-2 lg:col-start-2 flex flex-col gap-6">
+          <div className="bg-white/5 rounded-2xl p-6 text-white/90">
+            <h3 className="font-semibold text-white mb-3">Who it’s for</h3>
+            <ul className="list-disc pl-5 space-y-2">
+              <li>Ecommerce teams on Shopify, WooCommerce, BigCommerce, or custom carts.</li>
+              <li>Marketers who want higher conversion without redesigns or long projects.</li>
+              <li>Founders who need measurable ROI fast (days, not months).</li>
+            </ul>
+          </div>
 
-      <section className="mt-14 flex flex-wrap items-center gap-10 opacity-80">
-        <img src="/forbes.svg" alt="Featured in Forbes" className="h-8"/>
-        <img src="/techcrunch.svg" alt="Featured in TechCrunch" className="h-8"/>
-        <img src="/thetimes.svg" alt="Featured in The Times" className="h-8"/>
-      </section>
-    </div>
+          <div className="bg-white/5 rounded-2xl p-6 text-white/90">
+            <h3 className="font-semibold text-white mb-3">What it does</h3>
+            <ul className="list-disc pl-5 space-y-2">
+              <li>AI copilot that speaks in your brand’s voice — not a template.</li>
+              <li>Engages via email, SMS, WhatsApp, push — wherever customers are.</li>
+              <li>Handles objections in real time (price, shipping, trust).</li>
+              <li>Installs with no redesigns, no downtime.</li>
+              <li>Delivers measurable ROI in <strong>4 days — not weeks</strong>.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </main>
   );
 }

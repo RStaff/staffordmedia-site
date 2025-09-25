@@ -1,0 +1,79 @@
+import React from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
+
+export default function Home() {
+  return (
+    <section className="min-h-hero flex items-center py-16">
+      <div className="mx-auto max-w-6xl px-6 grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+        {/* Left column */}
+        <div className="space-y-6 lg:pr-8">
+          <h1 className="text-5xl md:text-6xl font-extrabold leading-tight text-white">
+            Unlock 4× ROI in 4 days—<br/>no redesigns, no downtime.
+          </h1>
+
+          <p className="text-white/80">Try Abando.ai free: cancel anytime.</p>
+
+          <div className="flex items-center gap-3 mt-2">
+            <Image src="/abando-logo.svg" alt="Abando.ai Logo" width={28} height={28}/>
+            <span className="text-white font-semibold">
+              Abando.ai<span className="align-super text-xs">™</span>
+            </span>
+          </div>
+
+          <p className="text-white/80 text-sm mb-2">
+            The AI copilot that recovers carts in your brand’s voice — across email, SMS, WhatsApp & more.
+          </p>
+
+          <div className="flex flex-wrap gap-4 mt-4">
+            <Link
+              href="/start"
+              className="inline-flex items-center px-6 py-3 rounded-lg font-semibold"
+              style={{ background: '#FFE169', color: '#0A0F2A' }}
+            >
+              Start Free Trial
+            </Link>
+            <Link
+              href="/demo"
+              className="inline-flex items-center px-6 py-3 rounded-lg font-semibold border border-white/90 text-white hover:bg-white/5"
+            >
+              See Abando.ai In Action
+            </Link>
+          </div>
+        </div>
+
+        {/* Right column placeholder graphic */}
+        <div className="justify-self-center">
+          <div className="w-full max-w-md bg-white/5 rounded-2xl p-10 text-center text-white/70">
+            Hero graphic placeholder
+          </div>
+        </div>
+      </div>
+
+      {/* Divider */}
+      <div className="mx-auto max-w-6xl px-6 w-full mt-10 border-t border-white/10" />
+
+      {/* Cards */}
+      <div className="mx-auto max-w-6xl px-6 grid gap-8 md:grid-cols-2 mt-6">
+        <div className="bg-white/5 rounded-2xl p-6">
+          <h3 className="font-semibold text-white mb-3">Who it’s for</h3>
+          <ul className="list-disc list-inside text-white/80 space-y-2 text-sm">
+            <li>Ecommerce teams on Shopify, WooCommerce, BigCommerce, or custom carts.</li>
+            <li>Marketers who want higher conversion without redesigns or long projects.</li>
+            <li>Founders who need measurable ROI fast (days, not months).</li>
+          </ul>
+        </div>
+        <div className="bg-white/5 rounded-2xl p-6">
+          <h3 className="font-semibold text-white mb-3">What it does</h3>
+          <ul className="list-disc list-inside text-white/80 space-y-2 text-sm">
+            <li>AI copilot that speaks in your brand’s voice — not a template.</li>
+            <li>Engages via email, SMS, WhatsApp, push — wherever customers are.</li>
+            <li>Handles objections in real time (price, shipping, trust).</li>
+            <li>Installs with no redesigns, no downtime.</li>
+            <li>Delivers measurable ROI in <strong>4 days — not weeks</strong>.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  );
+}
