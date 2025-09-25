@@ -37,15 +37,40 @@ a { text-decoration: none; }
 .container-max{max-width:1100px;margin:0 auto;padding-left:1.5rem;padding-right:1.5rem;}
 
 /* --- Hero art polish --- */
-@media (max-width: 1024px){ }
-@media (max-width: 640px){ } /* keep copy dominant on phones */
+.heroArtWrap{
+  max-width: 540px;
+  margin-left: auto;
+  background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 1.25rem;
+  padding: 1.5rem;
+  box-shadow: 0 20px 60px rgba(0,0,0,.35);
+}
+.heroArt{ width: 100%; height: auto; display:block; filter: drop-shadow(0 8px 32px rgba(56,189,248,.15)); }
+@media (max-width: 1024px){ .heroArtWrap{ max-width: 440px; margin-inline:auto; } }
+@media (max-width: 640px){ .heroArtWrap{ display:none; } } /* keep copy dominant on phones */
 
 /* Hero ::after art */
 .min-h-hero{ position: relative; }
 @media (min-width: 1024px){
+  .min-h-hero::after{
+    content:"";
+    position:absolute;
+    right:clamp(1rem,6vw,6rem);
+    top:50%;
+    transform:translateY(-40%);
+    width:clamp(280px,32vw,560px);
+    aspect-ratio: 4 / 3;
+    background:url("/hero-abando.svg") no-repeat center / contain;
+    opacity:.95;
+    filter: drop-shadow(0 24px 80px rgba(30,211,168,.18))
+            drop-shadow(0 10px 30px rgba(0,0,0,.35));
+    pointer-events:none;
   }
+}
 @media (max-width: 640px){
-  }
+  .min-h-hero::after{ display:none; }
+}
 
 /* __HERO_FIX__ */
 img[src$="/abando-icon.svg"],
@@ -117,8 +142,3 @@ img[src*="/_next/image"][src*="url=%2Fabando-icon"],
 img[src*="/_next/image"][src*="url=%2Fhero-graphic"],
 .hero-badge,.floating-badge,.badge-floating,.hero-floating,
 .hero-overlay,.overlay,.overlay-card,.overlay-badge { display:none !important; visibility:hidden !important; opacity:0 !important; pointer-events:none !important; }
-
-/* __HERO_REMOVED__ */
-@media (min-width:1024px){
-  .min-h-hero{ min-height: 540px; } /* keep vertical rhythm now that hero is gone */
-}

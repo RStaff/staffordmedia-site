@@ -1,0 +1,42 @@
+import Link from "next/link";
+
+export const metadata = { title: "DTC skincare — +28% recovered carts in 4 days" };
+
+export default function Study() {
+  return (
+    <div className="container-max py-12 space-y-6">
+      <Link href="/case-studies" className="text-white/70 underline">← Back to Case Studies</Link>
+      <h1 className="text-4xl font-extrabold text-white">DTC skincare — +28% recovered carts in 4 days</h1>
+      <div className="grid gap-6 md:grid-cols-2">
+        <section className="rounded-2xl p-6 bg-white/5 ring-1 ring-white/10">
+          <h2 className="text-lg font-bold text-white mb-2">Context</h2>
+          <p className="text-white/80">
+            Shopify storefront with high mobile traffic. Frequent price & shipping objections caused drop-offs.
+          </p>
+        </section>
+        <section className="rounded-2xl p-6 bg-white/5 ring-1 ring-white/10">
+          <h2 className="text-lg font-bold text-white mb-2">What we shipped</h2>
+          <ul className="list-disc pl-5 text-white/80 space-y-1">
+            <li>Brand-voice tuned Abando.ai (no templates)</li>
+            <li>Realtime objection handling (price, shipping, trust)</li>
+            <li>Email/SMS/WhatsApp orchestration for follow-ups</li>
+          </ul>
+        </section>
+        <section className="rounded-2xl p-6 bg-white/5 ring-1 ring-white/10 md:col-span-2">
+          <h2 className="text-lg font-bold text-white mb-2">Results (Day 4)</h2>
+          <ul className="list-disc pl-5 text-white/80 space-y-1">
+            <li><strong>+28%</strong> recovered carts</li>
+            <li><strong>−19%</strong> time-to-checkout</li>
+            <li><strong>0</strong> downtime, <strong>0</strong> redesigns</li>
+          </ul>
+        </section>
+      </div>
+      <div className="pt-2">
+        <Link href="/contact" className="inline-flex items-center px-6 py-3 rounded-lg font-semibold"
+              style={{background:'#FFE169', color:'#0A0F2A'}}>
+          Book a Strategy Call
+        </Link>
+      </div>
+    </div>
+  );
+}

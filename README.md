@@ -1,3 +1,5 @@
+[![CI](https://github.com/RStaff/staffordmediaconsulting/actions/workflows/ci.yml/badge.svg)](https://github.com/RStaff/staffordmediaconsulting/actions/workflows/ci.yml) [![Smoke](https://github.com/RStaff/staffordmediaconsulting/actions/workflows/smoke-cron.yml/badge.svg)](https://github.com/RStaff/staffordmediaconsulting/actions/workflows/smoke-cron.yml) [![Render](https://img.shields.io/badge/Render-Live-blue?logo=render)](https://staffordmediaconsulting.onrender.com)
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started

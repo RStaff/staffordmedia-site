@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="600" viewBox="0 0 960 600">
+  <defs>
+    <linearGradient id="panel" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#20263C"/><stop offset="1" stop-color="#161B2E"/>
+    </linearGradient>
+    <filter id="softGlow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="32" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <rect x="280" y="120" rx="28" ry="28" width="400" height="300" fill="url(#panel)" stroke="rgba(255,255,255,.08)"/>
+  <rect x="280" y="120" rx="28" ry="28" width="400" height="300" fill="none" filter="url(#softGlow)"/>
+  <g transform="translate(340,210)">
+    <rect x="0" y="0" width="220" height="92" rx="12" fill="#2CA6DB"/>
+    <rect x="0" y="84" width="130" height="16" rx="8" fill="#2CA6DB"/>
+    <circle cx="40" cy="118" r="12" fill="#2CA6DB"/>
+    <circle cx="120" cy="118" r="12" fill="#2CA6DB"/>
+  </g>
+  <g transform="translate(520,210)" fill="#1ED3A8">
+    <circle cx="58" cy="56" r="56" opacity=".12"/>
+    <circle cx="58" cy="56" r="40" fill="none" stroke="#1ED3A8" stroke-width="10"/>
+    <circle cx="58" cy="56" r="18"/>
+    <circle cx="98" cy="24" r="6"/>
+  </g>
+</svg>
