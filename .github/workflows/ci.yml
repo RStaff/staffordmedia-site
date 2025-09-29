@@ -32,7 +32,7 @@ jobs:
         run: npx playwright install --with-deps
 
       - name: 🏗️ Build (production)
-        run: npm run build:prod
+        run: npm run build --if-present || npm run build:prod --if-present || npx next build
 
       - name: ✅ E2E tests
         env:
