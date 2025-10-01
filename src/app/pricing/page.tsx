@@ -22,9 +22,12 @@ export default function Page(){
           </ul>
         </div>
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 
 >>>>>>> e42bc11 (site(src): add /pricing + robots/sitemap in Render-built app)
+=======
+>>>>>>> ced3031 (site(src): add /pricing + robots/sitemap in Render-built app)
         <div className="rounded-2xl bg-slate-900/50 ring-1 ring-white/10 p-8">
           <h3 className="text-xl font-semibold">Growth</h3>
           <div className="text-4xl font-bold mt-2">$59<span className="text-base text-white/70">/mo</span></div>
@@ -35,9 +38,12 @@ export default function Page(){
           </ul>
         </div>
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 
 >>>>>>> e42bc11 (site(src): add /pricing + robots/sitemap in Render-built app)
+=======
+>>>>>>> ced3031 (site(src): add /pricing + robots/sitemap in Render-built app)
         <div className="rounded-2xl bg-slate-900/50 ring-1 ring-white/10 p-8">
           <h3 className="text-xl font-semibold">Pro</h3>
           <div className="text-4xl font-bold mt-2">$149<span className="text-base text-white/70">/mo</span></div>
