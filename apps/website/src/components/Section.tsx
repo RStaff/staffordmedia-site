@@ -1,5 +1,6 @@
 import React from "react";
 
+<<<<<<< HEAD
 type Props = React.PropsWithChildren<{
   className?: string;
   eyebrow?: string;
@@ -22,4 +23,10 @@ export default function Section({ className, children, eyebrow, title }: Props) 
       {children}
     </section>
   );
+=======
+type Props = React.PropsWithChildren<{ className?: string }>;
+
+export default function Section({ className, children }: Props) {
+  return <section className={className}>{children}</section>;
+>>>>>>> 7454199 (chore(website): add minimal Section component to satisfy @ alias)
 }
