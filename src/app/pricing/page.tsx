@@ -21,7 +21,6 @@ export default function Page(){
             <li>Email support</li>
           </ul>
         </div>
-
         <div className="rounded-2xl bg-slate-900/50 ring-1 ring-white/10 p-8">
           <h3 className="text-xl font-semibold">Growth</h3>
           <div className="text-4xl font-bold mt-2">$59<span className="text-base text-white/70">/mo</span></div>
@@ -31,7 +30,6 @@ export default function Page(){
             <li>Priority email support</li>
           </ul>
         </div>
-
         <div className="rounded-2xl bg-slate-900/50 ring-1 ring-white/10 p-8">
           <h3 className="text-xl font-semibold">Pro</h3>
           <div className="text-4xl font-bold mt-2">$149<span className="text-base text-white/70">/mo</span></div>
