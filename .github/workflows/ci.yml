@@ -30,10 +30,10 @@ jobs:
       working-directory: apps/website
 
       - name: 🎭 Install Playwright (browsers & libs)
-        run: npx playwright install --with-deps
+        run: npx --prefix apps/website playwright install --with-deps
 
       - name: 🏗️ Build (production)
-        run: npm run build
+        run: npm --prefix apps/website run build
       working-directory: apps/website --if-present || npm run build:prod --if-present || npx next build
 
       - name: ✅ E2E tests
