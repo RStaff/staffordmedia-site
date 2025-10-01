@@ -1,0 +1,64 @@
+=== WEBSITE PREVIEW VS PROD TRUTH CHECK ===
+PWD: /Users/rossstafford/projects/StaffordMediaConsulting/apps/website
+
+=== 1) CHECK PREVIEW DEPLOYMENT CONTENT ===
+
+PREVIEW CHECK: https://website-h2asevaf4-ross-projects-1d9d3b7c.vercel.app/shopifixer
+HTTP: 401
+
+PREVIEW CHECK: https://website-h2asevaf4-ross-projects-1d9d3b7c.vercel.app/audit-result?store=elkeyecoffee.com
+HTTP: 401
+
+PREVIEW CHECK: https://website-h2asevaf4-ross-projects-1d9d3b7c.vercel.app/audit-result?store=luckettstore.com
+HTTP: 401
+
+PREVIEW CHECK: https://website-h2asevaf4-ross-projects-1d9d3b7c.vercel.app/audit-result?store=dripaccessory.com
+HTTP: 401
+
+=== 2) CHECK CURRENT PROD DOMAIN CONTENT ===
+
+PROD CHECK: https://staffordmedia.ai/shopifixer
+HTTP: 404
+This page could not be found
+This page could not be found
+This page could not be found
+This page could not be found
+
+PROD CHECK: https://staffordmedia.ai/audit-result?store=elkeyecoffee.com
+HTTP: 404
+This page could not be found
+This page could not be found
+This page could not be found
+This page could not be found
+
+PROD CHECK: https://staffordmedia.ai/audit-result?store=luckettstore.com
+HTTP: 404
+This page could not be found
+This page could not be found
+This page could not be found
+This page could not be found
+
+PROD CHECK: https://staffordmedia.ai/audit-result?store=dripaccessory.com
+HTTP: 404
+This page could not be found
+This page could not be found
+This page could not be found
+This page could not be found
+
+=== 3) CHECK VERCEL DOMAIN/ALIAS STATUS ===
+https://website-h2asevaf4-ross-projects-1d9d3b7c.vercel.app
+https://website-lpc4ggrvh-ross-projects-1d9d3b7c.vercel.app
+https://website-ha6myeb34-ross-projects-1d9d3b7c.vercel.app
+https://website-kaobl35w9-ross-projects-1d9d3b7c.vercel.app
+https://website-hi2bft0ig-ross-projects-1d9d3b7c.vercel.app
+https://website-hreg4y5ep-ross-projects-1d9d3b7c.vercel.app
+https://website-1q5d1lt53-ross-projects-1d9d3b7c.vercel.app
+
+
+=== 4) DRIP BLOCKER REMINDER ===
+total 10744
+-rw-r--r--@ 1 rossstafford  staff   3.0M Apr 14 19:16 elkeyecoffee-com.png
+-rw-r--r--@ 1 rossstafford  staff   2.2M Apr 14 19:16 luckettstore-com.png
+DRIP SCREENSHOT: MISSING
+
+=== DONE ===

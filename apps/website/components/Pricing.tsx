@@ -1,6 +1,10 @@
 import React from "react";
+<<<<<<< HEAD
 
 import { PRICE_BASIC, PRICE_GROWTH, PRICE_PRO, TRIAL_URL } from "../lib/config";
+=======
+import { PRICE_BASIC, PRICE_GROWTH, PRICE_PRO, TRIAL_URL } from "@/lib/config";
+>>>>>>> f751bc5 (feat(site): About + Services + Pricing pages (drop-in))
 
 function Tier({ name, price, features }:{ name:string; price:string; features:string[] }) {
   return (
