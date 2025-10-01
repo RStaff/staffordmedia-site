@@ -33,18 +33,23 @@
         "src/*",
         "./*"
       ]
+<<<<<<< HEAD
 >>>>>>> dcc2fa6 (fix(root+website): make @ alias resolve from root & apps; add fallback Section)
     }
+=======
+    },
+    "moduleResolution": "Bundler"
+>>>>>>> c952e30 (fix(ts): enforce Bundler moduleResolution + robust @ paths; ensure Section fallback (root+app))
   },
   "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
     "app",
     "components",
     "lib",
-    "src",
     "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
-    ".next/types/**/*.ts"
+    "src"
   ]
 >>>>>>> b1c211a (fix(ci): add local tsconfig with @ alias for apps/website)
 }

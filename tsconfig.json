@@ -15,13 +15,21 @@
     "skipLibCheck": true,
 >>>>>>> dcc2fa6 (fix(root+website): make @ alias resolve from root & apps; add fallback Section)
     "strict": true,
+<<<<<<< HEAD
     "skipLibCheck": true,
+=======
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "Bundler",
+>>>>>>> c952e30 (fix(ts): enforce Bundler moduleResolution + robust @ paths; ensure Section fallback (root+app))
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "baseUrl": ".",
     "paths": {
       "@/*": [
+<<<<<<< HEAD
 <<<<<<< HEAD
         "src/*",
         "*"
@@ -30,6 +38,8 @@
   }
 =======
         "./src/*",
+=======
+>>>>>>> c952e30 (fix(ts): enforce Bundler moduleResolution + robust @ paths; ensure Section fallback (root+app))
         "src/*",
         "apps/website/src/*",
         "apps/*/src/*"
@@ -38,10 +48,12 @@
     "baseUrl": "."
   },
   "include": [
-    "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    ".next/types/**/*.ts"
+    ".next/types/**/*.ts",
+    "apps/website/app",
+    "apps/website/src",
+    "next-env.d.ts"
   ],
   "exclude": [
     "node_modules"

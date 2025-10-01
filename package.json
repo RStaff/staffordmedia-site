@@ -32,6 +32,7 @@
     "autoprefixer": "^10.4.21",
     "eslint": "^9",
     "eslint-config-next": "15.5.3",
+    "eslint-plugin-next": "^0.0.0",
     "portfinder": "^1.0.38",
     "postcss": "^8.5.6",
     "tailwindcss": "^4.1.13",
@@ -39,5 +40,6 @@
   },
   "engines": {
     "node": ">=20 <=22"
-  }
+  },
+  "type": "module"
 }
