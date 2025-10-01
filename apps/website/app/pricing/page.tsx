@@ -25,6 +25,8 @@ function Tier({ name, price, features }:{ name:string; price:string; features:st
 }
 
 export default function Page(){
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
   return (
     <main className="bg-[#0B1220] min-h-screen text-white">
       <div className="w-full max-w-6xl mx-auto px-4 py-12 md:py-16">
