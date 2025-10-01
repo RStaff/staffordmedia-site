@@ -1,3 +1,4 @@
+export const SITE_URL  = process.env.NEXT_PUBLIC_SITE_URL  || "https://staffordmedia.ai";
 export const TRIAL_URL = process.env.NEXT_PUBLIC_TRIAL_URL || "/signup";
 export const DEMO_URL  = process.env.NEXT_PUBLIC_DEMO_URL  || "/demo";
 export const BOOK_URL  = process.env.NEXT_PUBLIC_BOOK_URL  || "/book";
