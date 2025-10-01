@@ -1,5 +1,6 @@
 import "./globals.css";
 import type { Metadata } from "next";
+<<<<<<< HEAD
 import Script from "next/script";
 import Analytics from "./analytics/Analytics"
 
@@ -37,6 +38,21 @@ export default function RootLayout({
         <Navbar />
         <main>{children}</main>
         <Footer />
+=======
+import Nav from "@/components/Nav";
+
+export const metadata: Metadata = {
+  title: "StaffordMedia.ai",
+  description: "Pragmatic AI for marketing: convert more, faster, with less lift.",
+};
+
+export default function RootLayout({ children }:{ children: React.ReactNode }) {
+  return (
+    <html lang="en">
+      <body className="bg-[#0B1220] text-white">
+        <Nav />
+        {children}
+>>>>>>> dd26c5a (feat(site): refined About/Services, inline Pricing (fix 404), app robots/sitemap, SITE_URL)
       </body>
     </html>
   );
