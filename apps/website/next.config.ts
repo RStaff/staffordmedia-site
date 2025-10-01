@@ -5,6 +5,7 @@ const nextConfig: NextConfig = {
 };
 
 export default nextConfig;
+<<<<<<< HEAD
 
 
 /** Canonical host: force www->apex */
@@ -21,3 +22,5 @@ const headers = async () => ([
   ]},
 ]);
 module.exports.headers = headers;
+=======
+>>>>>>> 6f1c366 (ci(build): run Next from apps/website; make app own next.config + @ alias)

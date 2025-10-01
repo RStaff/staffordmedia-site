@@ -2,7 +2,9 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "baseUrl": ".",
+    "moduleResolution": "Bundler",
     "paths": {
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -40,16 +42,20 @@
     },
     "moduleResolution": "Bundler"
 >>>>>>> c952e30 (fix(ts): enforce Bundler moduleResolution + robust @ paths; ensure Section fallback (root+app))
+=======
+      "@/*": ["src/*"]
+    }
+>>>>>>> 6f1c366 (ci(build): run Next from apps/website; make app own next.config + @ alias)
   },
   "include": [
-    "**/*.ts",
-    "**/*.tsx",
-    ".next/types/**/*.ts",
     "app",
     "components",
     "lib",
+    "src",
     "next-env.d.ts",
-    "src"
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts"
   ]
 >>>>>>> b1c211a (fix(ci): add local tsconfig with @ alias for apps/website)
 }
