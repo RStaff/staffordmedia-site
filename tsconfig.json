@@ -1,8 +1,19 @@
 {
   "compilerOptions": {
+<<<<<<< HEAD
     "target": "ES2022",
     "module": "ESNext",
     "moduleResolution": "Bundler",
+=======
+    "target": "ES2017",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowJs": true,
+    "skipLibCheck": true,
+>>>>>>> dcc2fa6 (fix(root+website): make @ alias resolve from root & apps; add fallback Section)
     "strict": true,
     "skipLibCheck": true,
     "resolveJsonModule": true,
@@ -11,9 +22,29 @@
     "baseUrl": ".",
     "paths": {
       "@/*": [
+<<<<<<< HEAD
         "src/*",
         "*"
       ]
     }
   }
+=======
+        "./src/*",
+        "src/*",
+        "apps/website/src/*",
+        "apps/*/src/*"
+      ]
+    },
+    "baseUrl": "."
+  },
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+>>>>>>> dcc2fa6 (fix(root+website): make @ alias resolve from root & apps; add fallback Section)
 }

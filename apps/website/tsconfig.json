@@ -5,6 +5,7 @@
     "paths": {
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       "@/*": ["./*", "./src/*"]
     },
     "types": ["vitest/globals", "node", "@testing-library/jest-dom"],
@@ -27,6 +28,12 @@
 =======
       "@/*": ["src/*", "./*"]
 >>>>>>> 1625c42 (fix(ci): map @ alias to src/* in apps/website)
+=======
+      "@/*": [
+        "src/*",
+        "./*"
+      ]
+>>>>>>> dcc2fa6 (fix(root+website): make @ alias resolve from root & apps; add fallback Section)
     }
   },
   "include": [
