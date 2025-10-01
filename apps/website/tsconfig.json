@@ -36,7 +36,8 @@
     "src",
     "next-env.d.ts",
     "**/*.ts",
-    "**/*.tsx"
+    "**/*.tsx",
+    ".next/types/**/*.ts"
   ]
 >>>>>>> b1c211a (fix(ci): add local tsconfig with @ alias for apps/website)
 }
