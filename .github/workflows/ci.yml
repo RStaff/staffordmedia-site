@@ -19,16 +19,10 @@ jobs:
           node-version: "22.x"
           cache: npm
 
-      - name: Show versions
-        run: |
-          node -v
-          npm -v
-          jq -r '.workspaces // []' package.json || true
-
       - name: Guard: single root lockfile
         run: |
           if git ls-files 'apps/**/package-lock.json' | grep -q .; then
-            echo "::error::Found nested package-lock.json files under apps/. Only the root lockfile is allowed."
+            echo "::error::Found nested package-lock.json under apps/. Only the root lockfile is allowed."
             exit 1
           fi
 
@@ -39,22 +33,3 @@ jobs:
 
       - name: Build website (production)
         run: npm run -w website build
-
-      # Optional: install browsers only if you run E2E
-      - name: Install Playwright (optional)
-        if: ${{ false }}
-        run: npm run -w website playwright:install
-
-      # Optional: E2E tests
-      - name: E2E tests (optional)
-        if: ${{ false }}
-        run: npm run -w website test:e2e
-
-      # Optional: keep .next as artifact for debugging
-      - name: Upload build artifact (optional)
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: website-.next
-          path: apps/website/.next
-          if-no-files-found: ignore
