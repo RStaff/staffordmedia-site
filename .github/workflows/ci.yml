@@ -10,9 +10,11 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: 🔧 Setup Node (22.x guaranteed)
-        uses: actions/setup-node@v4
+        uses: actions/setup-node
         with:
-          node-version: "22"
+          node-version: "22.x"
+          cache: npm
+          cache: npm
           cache: npm
 
       - name: 📦 Install deps (workspaces)
