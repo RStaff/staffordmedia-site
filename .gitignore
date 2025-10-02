@@ -40,6 +40,7 @@ staffordmediaconsulting.onrender.com
 node_modules/
 .next/
 apps/**/package-lock.json
+<<<<<<< HEAD
 # dev helpers
 scripts/*.sh
 *.bak*
@@ -51,3 +52,5 @@ apps/website/.eslintcache
 =======
 node_modules/
 >>>>>>> d51f9d3 (fix(pricing): valid JSX + top-level Next flags; untrack node_modules)
+=======
+>>>>>>> 309155c (build: single root lockfile; ignore nested locks; pin outputFileTracingRoot)
