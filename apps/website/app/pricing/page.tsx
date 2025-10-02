@@ -1,10 +1,14 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> d51f9d3 (fix(pricing): valid JSX + top-level Next flags; untrack node_modules)
 import Section from "@/components/Section";
 
 /** App Router build flags must be at module top-level (not inside the component) */
 export const dynamic = "force-dynamic";
+<<<<<<< HEAD
 export const revalidate = 0;
 
 export default function Page() {
@@ -68,6 +72,19 @@ export default function Page(){
         </div>
       </div>
 >>>>>>> dd26c5a (feat(site): refined About/Services, inline Pricing (fix 404), app robots/sitemap, SITE_URL)
+=======
+export const revalidate = 0;
+
+export default function Page() {
+  return (
+    <main>
+      <Section eyebrow="Pricing" title="Simple, usage-based plans">
+        <p>
+          Pay for value, not promises. Abando installs with no redesigns or downtime,
+          and you can cancel anytime.
+        </p>
+      </Section>
+>>>>>>> d51f9d3 (fix(pricing): valid JSX + top-level Next flags; untrack node_modules)
     </main>
   );
 }

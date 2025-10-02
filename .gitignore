@@ -36,6 +36,7 @@ test-results/
 *.zip
 staffordmediaconsulting.onrender.com
 <<<<<<< HEAD
+<<<<<<< HEAD
 node_modules/
 .next/
 apps/**/package-lock.json
@@ -47,3 +48,6 @@ apps/website/.eslintcache
 !_smc_clean/
 =======
 >>>>>>> 8d7c081 (chore(repo): ignore test artifacts)
+=======
+node_modules/
+>>>>>>> d51f9d3 (fix(pricing): valid JSX + top-level Next flags; untrack node_modules)
