@@ -38,3 +38,7 @@ staffordmediaconsulting.onrender.com
 node_modules/
 .next/
 apps/**/package-lock.json
+
+# dev helpers
+scripts/*.sh
+*.bak*
