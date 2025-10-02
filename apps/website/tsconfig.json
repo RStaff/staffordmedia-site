@@ -8,6 +8,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       "@/*": ["./*", "./src/*"]
     },
     "types": ["vitest/globals", "node", "@testing-library/jest-dom"],
@@ -46,6 +47,16 @@
       "@/*": ["src/*"]
     }
 >>>>>>> 6f1c366 (ci(build): run Next from apps/website; make app own next.config + @ alias)
+=======
+      "@/*": [
+        "src/*",                // local app src
+        "./*",                  // local app root (if some files live alongside src)
+        "../../apps/website/src/*"  // explicit absolute-to-root fallback for CI
+      ]
+    },
+    // keep JSX/strict/etc from parent; we only pin alias + resolver here
+    "types": []
+>>>>>>> 0867077 (tsconfig(website): own @ alias (local-first + explicit fallback); ensure Section exists)
   },
   "include": [
     "app",
@@ -53,9 +64,9 @@
     "lib",
     "src",
     "next-env.d.ts",
+    ".next/types/**/*.ts",
     "**/*.ts",
-    "**/*.tsx",
-    ".next/types/**/*.ts"
+    "**/*.tsx"
   ]
 >>>>>>> b1c211a (fix(ci): add local tsconfig with @ alias for apps/website)
 }
