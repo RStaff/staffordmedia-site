@@ -20,8 +20,10 @@ jobs:
           if [ ! -f package-lock.json ]; then
             npm install --workspaces
           fi
-          npm ci --workspaces
-
+if [ ! -f package-lock.json ]; then
+            npm install --workspaces
+          fi
+          npm ci
       - name: 🎭 Install Playwright (browsers & libs)
         run: npm run -w website playwright:install
 
