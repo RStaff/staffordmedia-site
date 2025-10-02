@@ -1,7 +1,11 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 @import "tailwindcss";
 =======
 >>>>>>> b4fc3c2 (fix(website): restore Next app conventions (app/globals.css), resolvable '@/components/Nav', and top-level route exports)
+=======
+@import "tailwindcss";
+>>>>>>> 61e9267 (build: Tailwind v4 PostCSS migration (use @tailwindcss/postcss; canonical .cjs configs))
 /* Next/Tailwind global stylesheet */
 @tailwind base;
 @tailwind components;
