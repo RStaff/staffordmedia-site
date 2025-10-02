@@ -8,7 +8,8 @@
     "build": "next build",
     "start": "next start -p $PORT",
     "lint": "eslint .",
-    "test:e2e": "playwright test --reporter=html --trace=on --output=test-results"
+    "test:e2e": "playwright test --reporter=html --trace=on --output=test-results",
+    "playwright:install": "playwright install --with-deps || true"
   },
   "dependencies": {
     "@heroicons/react": "^2.2.0",
