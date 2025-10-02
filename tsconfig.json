@@ -24,6 +24,7 @@
     "moduleResolution": "Bundler",
 >>>>>>> c952e30 (fix(ts): enforce Bundler moduleResolution + robust @ paths; ensure Section fallback (root+app))
     "resolveJsonModule": true,
+<<<<<<< HEAD
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "baseUrl": ".",
@@ -45,6 +46,16 @@
         "apps/*/src/*"
       ]
     },
+=======
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+>>>>>>> b90ac2b (build: app-local @ alias; remove root @; place lib/config under apps/website/src)
     "baseUrl": "."
   },
   "include": [
