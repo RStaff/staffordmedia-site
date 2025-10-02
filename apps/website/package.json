@@ -36,8 +36,11 @@
     "@next/eslint-plugin-next": "^15.5.4",
     "@playwright/test": "^1.55.1",
     "@tailwindcss/postcss": "^4.1.14",
+<<<<<<< HEAD
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.0",
+=======
+>>>>>>> c10e578 (chore: tidy helpers, ignore .bak files)
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
@@ -57,9 +60,13 @@
     "portfinder": "^1.0.38",
     "postcss": "^8.5.6",
     "tailwindcss": "^4.1.14",
+<<<<<<< HEAD
     "typescript": "^5",
     "typescript-eslint": "^8.45.0",
     "vitest": "^3.2.4"
+=======
+    "typescript": "^5"
+>>>>>>> c10e578 (chore: tidy helpers, ignore .bak files)
   },
   "engines": {
     "node": ">=20 <=22"
