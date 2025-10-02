@@ -43,3 +43,4 @@ playwright-report/
 test-results/
 *.zip
 staffordmediaconsulting.onrender.com
+node_modules/
