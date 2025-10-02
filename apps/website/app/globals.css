@@ -1,0 +1,6 @@
+/* Next/Tailwind global stylesheet */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Add any site-wide resets or variables here */

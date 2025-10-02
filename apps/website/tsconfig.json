@@ -4,14 +4,8 @@
     "baseUrl": ".",
     "moduleResolution": "Bundler",
     "paths": {
-      "@/*": [
-        "src/*",                // local app src
-        "./*",                  // local app root (if some files live alongside src)
-        "../../apps/website/src/*"  // explicit absolute-to-root fallback for CI
-      ]
-    },
-    // keep JSX/strict/etc from parent; we only pin alias + resolver here
-    "types": []
+      "@/*": ["src/*", "./*"]
+    }
   },
   "include": [
     "app",

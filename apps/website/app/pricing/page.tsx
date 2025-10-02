@@ -25,11 +25,7 @@ function Tier({ name, price, features }:{ name:string; price:string; features:st
 }
 
 export default function Page(){
-// @ts-expect-error-next-line
-export const dynamic = 'force-dynamic';
-// @ts-expect-error-next-line
-export const revalidate = 0;
-  return (
+// @ts-expect-error-next-line// @ts-expect-error-next-linereturn (
     <main className="bg-[#0B1220] min-h-screen text-white">
       <div className="w-full max-w-6xl mx-auto px-4 py-12 md:py-16">
         <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-white mb-8">Choose your plan</h1>
