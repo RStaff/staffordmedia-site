@@ -1,10 +1,14 @@
+<<<<<<< HEAD
 @import "tailwindcss";
+=======
+>>>>>>> b4fc3c2 (fix(website): restore Next app conventions (app/globals.css), resolvable '@/components/Nav', and top-level route exports)
 /* Next/Tailwind global stylesheet */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 /* Add any site-wide resets or variables here */
+<<<<<<< HEAD
 
 /* --- Stafford Media tokens --- */
 :root {
@@ -121,3 +125,5 @@ body {
 .text-accent  { color: var(--accent); }
 .bg-brand     { background: var(--brand); }
 .bg-accent    { background: var(--accent); }
+=======
+>>>>>>> b4fc3c2 (fix(website): restore Next app conventions (app/globals.css), resolvable '@/components/Nav', and top-level route exports)

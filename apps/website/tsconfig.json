@@ -9,6 +9,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       "@/*": ["./*", "./src/*"]
     },
     "types": ["vitest/globals", "node", "@testing-library/jest-dom"],
@@ -57,6 +58,10 @@
     // keep JSX/strict/etc from parent; we only pin alias + resolver here
     "types": []
 >>>>>>> 0867077 (tsconfig(website): own @ alias (local-first + explicit fallback); ensure Section exists)
+=======
+      "@/*": ["src/*", "./*"]
+    }
+>>>>>>> b4fc3c2 (fix(website): restore Next app conventions (app/globals.css), resolvable '@/components/Nav', and top-level route exports)
   },
   "include": [
     "app",

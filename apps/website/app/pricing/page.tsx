@@ -45,11 +45,7 @@ function Tier({ name, price, features }:{ name:string; price:string; features:st
 }
 
 export default function Page(){
-// @ts-expect-error-next-line
-export const dynamic = 'force-dynamic';
-// @ts-expect-error-next-line
-export const revalidate = 0;
-  return (
+// @ts-expect-error-next-line// @ts-expect-error-next-linereturn (
     <main className="bg-[#0B1220] min-h-screen text-white">
 <<<<<<< HEAD
       <Pricing />
