@@ -7,6 +7,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start -p $PORT",
+<<<<<<< HEAD
     "lint": "eslint app components src --ext .ts,.tsx --max-warnings=0 --cache --cache-location .eslintcache",
     "test:e2e": "playwright test --reporter=html --trace=on --output=test-results",
     "playwright:install": "playwright install --with-deps || true",
@@ -18,6 +19,11 @@
     "test": "vitest run --config vitest.config.ts",
     "guard:headers": "bash scripts/guard-headers.sh",
     "lint:fix": "eslint app components src --ext .ts,.tsx --fix --cache --cache-location .eslintcache"
+=======
+    "lint": "eslint .",
+    "test:e2e": "playwright test --reporter=html --trace=on --output=test-results",
+    "playwright:install": "playwright install --with-deps || true"
+>>>>>>> 9a745fa (ci: workspace install; Node 22.x; website-only build/test; deterministic lockfile)
   },
   "dependencies": {
     "@heroicons/react": "^2.2.0",

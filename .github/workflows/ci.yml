@@ -1,62 +1,32 @@
 name: CI
-
 on:
-  push:
-    branches: [ main, develop, feature/** ]
   pull_request:
-    branches: [ main ]
-
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+    branches: [ "*" ]
 
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
-
     steps:
-      - name: 🧾 Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
       - name: 🔧 Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: "22.x"
           cache: npm
 
-      - name: 📦 Install deps
-        run: npm ci
+      - name: 📦 Install deps (workspaces)
+        run: |
+          if [ ! -f package-lock.json ]; then
+            npm install --workspaces
+          fi
+          npm ci --workspaces
 
       - name: 🎭 Install Playwright (browsers & libs)
-        run: npx --prefix apps/website playwright install --with-deps
+        run: npm run -w website playwright:install
 
       - name: 🏗️ Build (production)
-        run: npm --prefix apps/website run build
-      working-directory: apps/website --if-present || npm run build:prod --if-present || npx next build
+        run: npm run -w website build
 
       - name: ✅ E2E tests
-        env:
-          NODE_ENV: test
-        run: npx playwright test --reporter=list
-
-      - name: ⬆️ Upload Playwright report
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: playwright-report
-          path: playwright-report/
-          if-no-files-found: ignore
-          retention-days: 7
-
-      - name: ⬆️ Upload Playwright traces
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: playwright-traces
-          path: test-results/
-          if-no-files-found: ignore
-          retention-days: 7
-
-  - name: 📦 Install website deps
-    run: npm ci --prefix apps/website
+        run: npm run -w website test:e2e

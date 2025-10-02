@@ -41,5 +41,8 @@
   "engines": {
     "node": ">=20 <=22"
   },
-  "type": "module"
+  "type": "module",
+  "workspaces": [
+    "apps/*"
+  ]
 }
