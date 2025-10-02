@@ -1,5 +1,6 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import Section from "@/components/Section";
 
 /** App Router build flags must be at module top-level (not inside the component) */
@@ -17,6 +18,10 @@ export default function Page() {
       </Section>
 =======
 =======
+=======
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+>>>>>>> a74e90e (chore(ci+ts): parent-as-root workspace; app-owned Next+@ alias; top-level page flags; deterministic CI)
 import { PRICE_BASIC, PRICE_GROWTH, PRICE_PRO, TRIAL_URL } from "@/lib/config";
 
 >>>>>>> dd26c5a (feat(site): refined About/Services, inline Pricing (fix 404), app robots/sitemap, SITE_URL)
