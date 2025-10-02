@@ -11,6 +11,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       "@/*": ["./*", "./src/*"]
     },
     "types": ["vitest/globals", "node", "@testing-library/jest-dom"],
@@ -65,6 +66,11 @@
 >>>>>>> b4fc3c2 (fix(website): restore Next app conventions (app/globals.css), resolvable '@/components/Nav', and top-level route exports)
 =======
       "@/*": ["src/*"]
+=======
+      "@/*": [
+        "src/*"
+      ]
+>>>>>>> 5dde282 (build: enforce single workspace install; CJS build configs; canonical globals.css; stable @ alias)
     },
     "types": []
 >>>>>>> a74e90e (chore(ci+ts): parent-as-root workspace; app-owned Next+@ alias; top-level page flags; deterministic CI)
