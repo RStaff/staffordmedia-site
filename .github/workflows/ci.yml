@@ -1,35 +1,32 @@
 name: CI
 on:
   pull_request:
-    branches: ["*"]
+    branches: [ "*" ]
 
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
     steps:
-      - name: 🧾 Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: 🔧 Setup Node
+      - name: 🔧 Setup Node (22.x guaranteed)
         uses: actions/setup-node@v4
         with:
-          node-version: "22.x"
+          node-version: "22"
           cache: npm
 
-      - name: 📦 Install deps (workspace root)
+      - name: 📦 Install deps (workspaces)
         run: |
           if [ ! -f package-lock.json ]; then
             npm install --workspaces
           fi
           npm ci --workspaces
 
-      - name: 🎭 Install Playwright (optional)
+      - name: 🎭 Install Playwright (browsers & libs)
         run: npm run -w website playwright:install
-        continue-on-error: true
 
-      - name: 🏗️ Build (production, website workspace only)
+      - name: 🏗️ Build (production)
         run: npm run -w website build
 
-      - name: ✅ E2E tests (optional)
+      - name: ✅ E2E tests
         run: npm run -w website test:e2e
-        continue-on-error: true
