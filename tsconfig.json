@@ -22,13 +22,6 @@
         "name": "next"
       }
     ],
-    "paths": {
-      "@/*": [
-        "src/*",
-        "apps/website/src/*",
-        "apps/*/src/*"
-      ]
-    },
     "baseUrl": "."
   },
   "include": [
