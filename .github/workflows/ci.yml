@@ -32,7 +32,7 @@ jobs:
             apps/website/package.json
             package-lock.json
 
-      - name: Guard: no nested lockfiles under apps/
+      - name: "Guard: no nested lockfiles under apps/"
         run: |
           if git ls-files 'apps/**/package-lock.json' | grep -q .; then
             echo "::error::Found nested package-lock.json under apps/. Remove them (root lockfile only)."
