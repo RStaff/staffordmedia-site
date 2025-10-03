@@ -1,36 +1,65 @@
 name: CI
 
 on:
-  push:
-    branches: [ "**" ]
-  pull_request:
-    branches: [ "**" ]
+  push:            { branches: ["**"] }
+  pull_request:    { branches: ["**"] }
   workflow_dispatch:
+
+# some orgs require explicit perms; this is minimal & safe
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
     timeout-minutes: 20
+
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup Node (22.x)
         uses: actions/setup-node@v4
         with:
           node-version: "22.x"
           cache: npm
+          cache-dependency-path: |
+            apps/website/package.json
+            package-lock.json
 
-      - name: Guard: single root lockfile
+      - name: Guard: no nested lockfiles under apps/
         run: |
           if git ls-files 'apps/**/package-lock.json' | grep -q .; then
-            echo "::error::Found nested package-lock.json under apps/. Only the root lockfile is allowed."
+            echo "::error::Found nested package-lock.json under apps/. Remove them (root lockfile only)."
             exit 1
           fi
 
-      - name: Install deps (workspace root)
+      - name: Show versions
         run: |
-          if [ ! -f package-lock.json ]; then npm install --workspaces; fi
-          npm ci --workspaces
+          node -v
+          npm -v
+
+      # 🔽 app-local install (matches your successful local path)
+      - name: Install deps at app
+        working-directory: apps/website
+        run: |
+          npm ci || npm install
 
       - name: Build website (production)
-        run: npm run -w website build
+        working-directory: apps/website
+        env:
+          NODE_OPTIONS: --max_old_space_size=4096
+        run: npm run build
+
+      - name: Upload build artifact (.next)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: website-.next
+          path: apps/website/.next
+          if-no-files-found: ignore
