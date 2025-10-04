@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <!-- Top left grey square -->
+  <rect x="10" y="10" width="60" height="60" fill="#B0B5BD"/>
+  <!-- Top right purple square -->
+  <rect x="80" y="10" width="60" height="60" fill="#9C27B0"/>
+  <!-- Bottom left navy rectangle -->
+  <rect x="10" y="80" width="60" height="30" fill="#0B2C5F"/>
+  <!-- Bottom left gold rectangle -->
+  <rect x="10" y="120" width="60" height="20" fill="#F5C542"/>
+  <!-- Bottom right grey rectangle -->
+  <rect x="80" y="80" width="60" height="60" fill="#B0B5BD"/>
+</svg>

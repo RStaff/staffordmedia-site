@@ -1,0 +1,8 @@
+
+> website@0.1.0 build
+> next build
+
+[33m[1m⚠[22m[39m No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache
+   [1m[38;2;173;127;168m▲ Next.js 15.5.3[39m[22m
+
+ [37m[1m [22m[39m Creating an optimized production build ...
