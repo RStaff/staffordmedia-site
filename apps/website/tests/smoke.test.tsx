@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { render, screen } from '@testing-library/react';
 import Hero from '../app/components/Hero';
 
@@ -16,4 +17,14 @@ test('renders primary headline and key UI', () => {
   // Primary CTAs by accessible name
   expect(screen.getByRole('link', { name: /get started/i })).toBeInTheDocument();
   expect(screen.getByRole('link', { name: /see how it works/i })).toBeInTheDocument();
+=======
+import { describe, it, expect } from "vitest";
+import React from "react";
+import { render, screen } from "@testing-library/react";
+import Hero from "../app/components/Hero";
+
+test("renders headline", () => {
+  render(<Hero variant="roi" />);
+  expect(screen.getByText(/ROI/i)).toBeInTheDocument();
+>>>>>>> 7a98f0c (chore(ci): finalize guardrails + husky modernization)
 });

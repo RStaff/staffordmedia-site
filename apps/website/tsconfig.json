@@ -12,6 +12,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       "@/*": ["./*", "./src/*"]
     },
     "types": ["vitest/globals", "node", "@testing-library/jest-dom"],
@@ -74,6 +75,15 @@
     },
     "types": []
 >>>>>>> a74e90e (chore(ci+ts): parent-as-root workspace; app-owned Next+@ alias; top-level page flags; deterministic CI)
+=======
+      "@/*": ["src/*"]
+    },
+    "types": ["vitest", "@testing-library/jest-dom", "node"],
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true,
+    "jsx": "preserve"
+>>>>>>> 7a98f0c (chore(ci): finalize guardrails + husky modernization)
   },
   "include": [
     "app",
@@ -84,6 +94,11 @@
     ".next/types/**/*.ts",
     "**/*.ts",
     "**/*.tsx"
+<<<<<<< HEAD
   ]
 >>>>>>> b1c211a (fix(ci): add local tsconfig with @ alias for apps/website)
+=======
+  ],
+  "exclude": [".next", "node_modules", "**/*.spec.*", "**/*.test.*"]
+>>>>>>> 7a98f0c (chore(ci): finalize guardrails + husky modernization)
 }

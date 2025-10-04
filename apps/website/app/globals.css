@@ -13,6 +13,9 @@
 
 /* Add any site-wide resets or variables here */
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 7a98f0c (chore(ci): finalize guardrails + husky modernization)
 
 /* --- Stafford Media tokens --- */
 :root {
@@ -105,6 +108,7 @@ body {
     linear-gradient(90deg, #0000000d 1px, transparent 1px);
   background-size: 16px 16px;
 }
+<<<<<<< HEAD
 
 /* smc/abando brand layer */
 :root {
@@ -131,3 +135,5 @@ body {
 .bg-accent    { background: var(--accent); }
 =======
 >>>>>>> b4fc3c2 (fix(website): restore Next app conventions (app/globals.css), resolvable '@/components/Nav', and top-level route exports)
+=======
+>>>>>>> 7a98f0c (chore(ci): finalize guardrails + husky modernization)

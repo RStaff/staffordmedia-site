@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
+<<<<<<< HEAD
 # Run lint-staged from repo root; commands inside pass --config explicitly
 npx --yes lint-staged --concurrent false
 # Full website gate
+=======
+command -v npx >/dev/null 2>&1 && npx --yes lint-staged || true
+>>>>>>> 7a98f0c (chore(ci): finalize guardrails + husky modernization)
 npm run -w website check

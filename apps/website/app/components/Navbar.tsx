@@ -1,7 +1,10 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+<<<<<<< HEAD
 
+=======
+>>>>>>> 7a98f0c (chore(ci): finalize guardrails + husky modernization)
 import { SMCMark } from "./Brand";
 
 const nav = [
@@ -36,8 +39,12 @@ export default function Navbar() {
               {n.label}
             </Link>
           ))}
+<<<<<<< HEAD
           <a className="text-sm text-zinc-600 hover:underline" href="https://getabando.com" target="_blank" rel="noreferrer">Abando</a>
 </nav>
+=======
+        </nav>
+>>>>>>> 7a98f0c (chore(ci): finalize guardrails + husky modernization)
         <div className="hidden sm:flex items-center gap-2">
           <Link
             href="/how-it-works"
