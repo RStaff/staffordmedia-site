@@ -1,4 +1,5 @@
 import React from "react";
+
 import { PRICE_BASIC, PRICE_GROWTH, PRICE_PRO, TRIAL_URL } from "@/lib/config";
 
 function Tier({ name, price, features }:{ name:string; price:string; features:string[] }) {

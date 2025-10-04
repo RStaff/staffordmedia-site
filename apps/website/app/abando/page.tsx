@@ -1,4 +1,5 @@
 import Link from "next/link";
+
 import { AbandoMark } from "../components/Brand";
 
 export default function AbandoPage() {

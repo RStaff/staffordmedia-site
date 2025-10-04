@@ -1,4 +1,5 @@
 import Link from "next/link";
+
 import { AbandoMark } from "./Brand";
 
 type Variant = "roi" | "recover";
