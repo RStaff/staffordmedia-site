@@ -1,8 +1,12 @@
 import Link from "next/link";
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
 >>>>>>> 7a98f0c (chore(ci): finalize guardrails + husky modernization)
+=======
+
+>>>>>>> b2ea271 (chore(ci): finalize doctor verification and guardrail health)
 import { AbandoMark } from "./Brand";
 
 type Variant = "roi" | "recover";

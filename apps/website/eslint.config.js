@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 import tseslint from "typescript-eslint";
 import next from "@next/eslint-plugin-next";
 import prettier from "eslint-config-prettier";
@@ -34,51 +35,35 @@ export const __next_eslint_plugin = true;
 =======
 import tseslint from "@typescript-eslint/eslint-plugin";
 import tsparser from "@typescript-eslint/parser";
+=======
+import tseslint from "typescript-eslint";
+>>>>>>> b2ea271 (chore(ci): finalize doctor verification and guardrail health)
 import next from "@next/eslint-plugin-next";
 import prettier from "eslint-config-prettier";
-import testingLibrary from "eslint-plugin-testing-library";
-import jestDom from "eslint-plugin-jest-dom";
+import pluginImport from "eslint-plugin-import";
 
 export default [
-  // Keeps Prettier from clashing with style rules
-  prettier,
+  // Ignore generated/deps
+  { ignores: ["node_modules/**", ".next/**", "dist/**"] },
 
+  // Typescript-eslint recommended
+  ...tseslint.configs.recommended,
+
+  // Next + import rules
   {
-    files: ["**/*.{ts,tsx}"],
-    ignores: [".next/**", "node_modules/**", "dist/**"],
-    languageOptions: {
-      parser: tsparser,
-      ecmaVersion: "latest",
-      sourceType: "module",
-      parserOptions: { ecmaFeatures: { jsx: true } },
-    },
-    plugins: {
-      "@typescript-eslint": tseslint,
-      "@next/next": next,
-      "testing-library": testingLibrary,
-      "jest-dom": jestDom,
-    },
+    plugins: { "@next/next": next, import: pluginImport },
     rules: {
-      // Next.js App Router baseline
+      // Next core-web-vitals rules
       ...next.configs["core-web-vitals"].rules,
-      "@next/next/no-html-link-for-pages": "off",
 
-      // TS hygiene
-      "@typescript-eslint/no-unused-vars": [
-        "error",
-        { argsIgnorePattern: "^_", varsIgnorePattern: "^_" },
-      ],
-
-      // 🧪 Testing guardrails
-      "testing-library/prefer-screen-queries": "error",
-      "testing-library/no-node-access": "warn",
-      "testing-library/no-container": "warn",
-      "testing-library/no-wait-for-snapshot": "error",
-      "jest-dom/prefer-to-have-attribute": "warn",
-      "jest-dom/prefer-checked": "warn",
-      "jest-dom/prefer-enabled-disabled": "warn",
+      // Gentle import ordering; we will auto-fix it before strict lint
+      "import/order": ["warn", { alphabetize: { order: "asc", caseInsensitive: true }, "newlines-between": "always" }],
+    },
+    languageOptions: {
+      parserOptions: { ecmaVersion: "latest", sourceType: "module" },
     },
   },
+<<<<<<< HEAD
 ];
 <<<<<<< HEAD
 >>>>>>> 7a98f0c (chore(ci): finalize guardrails + husky modernization)
@@ -86,3 +71,9 @@ export default [
 
 // /* next-eslint-detector */ export const __next_eslint_plugin = true;
 >>>>>>> 2265959 (fix(eslint): add Next detector export to satisfy Next.js plugin check)
+=======
+
+  // Disable stylistic conflicts
+  prettier,
+];
+>>>>>>> b2ea271 (chore(ci): finalize doctor verification and guardrail health)

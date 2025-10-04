@@ -3,7 +3,10 @@ import type { Metadata } from "next";
 <<<<<<< HEAD
 <<<<<<< HEAD
 import Script from "next/script";
+<<<<<<< HEAD
 import Analytics from "./analytics/Analytics"
+=======
+>>>>>>> b2ea271 (chore(ci): finalize doctor verification and guardrail health)
 
 import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";

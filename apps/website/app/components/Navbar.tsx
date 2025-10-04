@@ -2,9 +2,13 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
 >>>>>>> 7a98f0c (chore(ci): finalize guardrails + husky modernization)
+=======
+
+>>>>>>> b2ea271 (chore(ci): finalize doctor verification and guardrail health)
 import { SMCMark } from "./Brand";
 
 const nav = [

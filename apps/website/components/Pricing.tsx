@@ -1,8 +1,12 @@
 import React from "react";
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 import { PRICE_BASIC, PRICE_GROWTH, PRICE_PRO, TRIAL_URL } from "../lib/config";
 =======
+=======
+
+>>>>>>> b2ea271 (chore(ci): finalize doctor verification and guardrail health)
 import { PRICE_BASIC, PRICE_GROWTH, PRICE_PRO, TRIAL_URL } from "@/lib/config";
 >>>>>>> f751bc5 (feat(site): About + Services + Pricing pages (drop-in))
 
