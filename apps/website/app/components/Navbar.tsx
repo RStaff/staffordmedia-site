@@ -44,11 +44,16 @@ export default function Navbar() {
             </Link>
           ))}
 <<<<<<< HEAD
+<<<<<<< HEAD
           <a className="text-sm text-zinc-600 hover:underline" href="https://getabando.com" target="_blank" rel="noreferrer">Abando</a>
 </nav>
 =======
         </nav>
 >>>>>>> 7a98f0c (chore(ci): finalize guardrails + husky modernization)
+=======
+          <a className="text-sm text-zinc-600 hover:underline" href="https://getabando.com" target="_blank" rel="noreferrer">Abando</a>
+</nav>
+>>>>>>> b48eb19 (chore: ESLint stable + test/build green; prepare launch)
         <div className="hidden sm:flex items-center gap-2">
           <Link
             href="/how-it-works"
