@@ -4,27 +4,29 @@ import prettier from "eslint-config-prettier";
 import pluginImport from "eslint-plugin-import";
 
 export default [
-  // Ignore generated/deps
   { ignores: ["node_modules/**", ".next/**", "dist/**"] },
 
-  // Typescript-eslint recommended
+  // TS recommended base
   ...tseslint.configs.recommended,
 
-  // Next + import rules
+  // App rules (plugin declaration + rule live in SAME object)
   {
-    plugins: { "@next/next": next, import: pluginImport },
+    plugins: {
+      "@next/next": next,
+      import: pluginImport,
+    },
     rules: {
-      // Next core-web-vitals rules
       ...next.configs["core-web-vitals"].rules,
-
-      // Gentle import ordering; we will auto-fix it before strict lint
-      "import/order": ["warn", { alphabetize: { order: "asc", caseInsensitive: true }, "newlines-between": "always" }],
+      "import/order": ["warn", { alphabetize: { order: "asc" } }],
     },
     languageOptions: {
       parserOptions: { ecmaVersion: "latest", sourceType: "module" },
     },
   },
 
-  // Disable stylistic conflicts
+  // Disable stylistic conflicts with Prettier
   prettier,
 ];
+
+// Helps old Next detectors that expect a marker
+export const __next_eslint_plugin = true;

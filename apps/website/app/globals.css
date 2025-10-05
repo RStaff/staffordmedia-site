@@ -97,3 +97,27 @@ body {
     linear-gradient(90deg, #0000000d 1px, transparent 1px);
   background-size: 16px 16px;
 }
+
+/* smc/abando brand layer */
+:root {
+  --brand: #1E73F2;  /* SMC blue */
+  --accent: #13A47B; /* Abando green */
+}
+.btn-brand {
+  @apply rounded-xl px-5 py-3 text-sm font-medium text-white;
+  background: var(--brand);
+}
+.btn-brand:hover { filter: brightness(0.95); }
+.btn-outline {
+  @apply rounded-xl border px-5 py-3 text-sm font-medium;
+}
+.badge-abando {
+  @apply inline-flex items-center gap-2 text-xs rounded-md border px-2 py-1;
+  border-color: color-mix(in oklab, var(--accent) 50%, #d4d4d8);
+  color: #0a0a0a;
+}
+.border-brand { border-color: color-mix(in oklab, var(--brand) 70%, #e5e7eb); }
+.text-brand   { color: var(--brand); }
+.text-accent  { color: var(--accent); }
+.bg-brand     { background: var(--brand); }
+.bg-accent    { background: var(--accent); }
