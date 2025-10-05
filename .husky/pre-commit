@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+set -euo pipefail
+command -v npx >/dev/null 2>&1 && npx --yes lint-staged || true
+npm run -w website check
