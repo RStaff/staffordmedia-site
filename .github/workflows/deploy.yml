@@ -1,0 +1,53 @@
+name: Deploy
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node (22.x)
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+          cache: npm
+
+      - name: Install (husky-safe)
+        run: |
+          HUSKY=0 npm ci || HUSKY=0 npm install
+
+      - name: Build site
+        run: |
+          npm --workspace apps/website run build || npm run build
+
+      - name: Install Vercel CLI
+        run: npm i -g vercel
+
+      - name: Check Vercel secrets presence
+        id: guard
+        run: |
+          missing=""
+          [[ -z "${VERCEL_TOKEN:-}" ]] && missing+=" VERCEL_TOKEN"
+          [[ -z "${VERCEL_ORG_ID:-}" ]] && missing+=" VERCEL_ORG_ID"
+          [[ -z "${VERCEL_PROJECT_ID:-}" ]] && missing+=" VERCEL_PROJECT_ID"
+          if [[ -n "$missing" ]]; then
+            echo "Missing secrets:$missing"
+            echo "have_secrets=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "have_secrets=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Deploy to Vercel (prebuilt)
+        if: steps.guard.outputs.have_secrets == 'true'
+        run: |
+          vercel pull --yes --token "$VERCEL_TOKEN"
+          vercel build --token "$VERCEL_TOKEN"
+          vercel deploy --prebuilt --prod --token "$VERCEL_TOKEN"
