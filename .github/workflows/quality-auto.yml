@@ -2,9 +2,9 @@ name: Quality (auto)
 
 on:
   workflow_dispatch:
-  push:
+  pull_request:
     branches:
-      - launch/website   # allow immediate run on this branch
+      - main
 
 jobs:
   check:
