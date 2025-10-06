@@ -3,7 +3,13 @@
   "compilerOptions": {
     "baseUrl": ".",
     "moduleResolution": "Bundler",
+    "jsx": "preserve",
+    "noEmit": true,
+    "incremental": true,
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "types": ["node", "vitest/globals", "@testing-library/jest-dom"],
     "paths": {
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -84,15 +90,23 @@
     "noImplicitOverride": true,
     "jsx": "preserve"
 >>>>>>> 7a98f0c (chore(ci): finalize guardrails + husky modernization)
+=======
+      "@/*": ["app/*", "components/*", "src/*", "*"]
+    },
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "allowJs": true,
+    "isolatedModules": true
+>>>>>>> 0e681c9 (fix(website): align tsconfig for Next (Bundler, jsx preserve, vitest types) + robust @ alias; add Section + lib/config)
   },
   "include": [
-    "app",
-    "components",
-    "lib",
-    "src",
     "next-env.d.ts",
     ".next/types/**/*.ts",
     "**/*.ts",
+<<<<<<< HEAD
     "**/*.tsx"
 <<<<<<< HEAD
   ]
@@ -101,4 +115,13 @@
   ],
   "exclude": [".next", "node_modules", "**/*.spec.*", "**/*.test.*"]
 >>>>>>> 7a98f0c (chore(ci): finalize guardrails + husky modernization)
+=======
+    "**/*.tsx",
+    "app",
+    "components",
+    "src",
+    "tests"
+  ],
+  "exclude": ["node_modules", ".next", "dist"]
+>>>>>>> 0e681c9 (fix(website): align tsconfig for Next (Bundler, jsx preserve, vitest types) + robust @ alias; add Section + lib/config)
 }

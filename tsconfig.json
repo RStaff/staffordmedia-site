@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
 <<<<<<< HEAD
+<<<<<<< HEAD
     "target": "ES2022",
     "module": "ESNext",
     "moduleResolution": "Bundler",
@@ -70,4 +71,15 @@
     "node_modules"
   ]
 >>>>>>> dcc2fa6 (fix(root+website): make @ alias resolve from root & apps; add fallback Section)
+=======
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "strict": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true
+  }
+>>>>>>> 0e681c9 (fix(website): align tsconfig for Next (Bundler, jsx preserve, vitest types) + robust @ alias; add Section + lib/config)
 }

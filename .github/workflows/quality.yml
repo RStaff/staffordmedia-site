@@ -62,4 +62,11 @@ jobs:
         run: npm run -w website test || true
       - name: Build
         run: npm run -w website build
+<<<<<<< HEAD
 >>>>>>> 7a98f0c (chore(ci): finalize guardrails + husky modernization)
+=======
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}-${{ github.sha }}
+  cancel-in-progress: true
+>>>>>>> 0e681c9 (fix(website): align tsconfig for Next (Bundler, jsx preserve, vitest types) + robust @ alias; add Section + lib/config)
