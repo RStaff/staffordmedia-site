@@ -53,7 +53,7 @@
   },
   "type": "module",
   "workspaces": [
-    "apps/*"
+    "apps/website"
   ],
   "volta": {
     "node": "22.20.0"
