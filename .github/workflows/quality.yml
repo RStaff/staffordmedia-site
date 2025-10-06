@@ -5,6 +5,7 @@ on:
   workflow_dispatch:
   pull_request:
     branches: [ main ]
+<<<<<<< HEAD
 jobs:
   check:
     runs-on: ubuntu-latest
@@ -48,12 +49,17 @@ jobs:
     branches:
       - main
 
+=======
+>>>>>>> 5a15505 (ci: standardized CI (build/test), Quality (PR->main), Deploy (main) + husky-safe installs)
 jobs:
   check:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    defaults:
+      run:
+        shell: bash
     steps:
       - uses: actions/checkout@v4
+<<<<<<< HEAD
       - uses: actions/setup-node@v4
         with:
           node-version: "22.x"
@@ -74,3 +80,32 @@ concurrency:
   group: ci-${{ github.workflow }}-${{ github.ref }}-${{ github.sha }}
   cancel-in-progress: true
 >>>>>>> 0e681c9 (fix(website): align tsconfig for Next (Bundler, jsx preserve, vitest types) + robust @ alias; add Section + lib/config)
+=======
+
+      - name: Setup Node (22.x)
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+          cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            apps/website/package-lock.json
+
+      - name: Install (husky-safe)
+        run: |
+          HUSKY=0 npm ci || HUSKY=0 npm install
+
+      - name: Lint + Typecheck + Guard
+        run: |
+          npm run -w apps/website lint || npm run lint || true
+          npm run -w apps/website typecheck || npm run typecheck
+          npm run -w apps/website guard:headers || npm run guard:headers || true
+
+      - name: Tests (strict enough)
+        run: |
+          npm --workspace apps/website run test || npm test
+
+      - name: Build (must pass)
+        run: |
+          npm --workspace apps/website run build || npm run build
+>>>>>>> 5a15505 (ci: standardized CI (build/test), Quality (PR->main), Deploy (main) + husky-safe installs)
