@@ -15,7 +15,7 @@
     "dev-free": "node -e \"require('portfinder').getPortPromise({port:3000}).then(p=>{console.log('Dev on port',p);process.env.PORT=p;require('child_process').spawn('next',['dev'],{stdio:'inherit',env:process.env});})\"",
     "build:prod": "npm run build",
     "test:e2e": "playwright test --reporter=html --trace=on --output=test-results",
-    "prepare": "husky"
+    "prepare": "husky || true"
   },
   "dependencies": {
     "@heroicons/react": "^2.2.0",
