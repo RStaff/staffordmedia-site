@@ -1,6 +1,7 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import Script from "next/script";
+import Analytics from "./analytics/Analytics"
 
 import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
@@ -32,6 +33,7 @@ export default function RootLayout({
         />
       </head>
       <body className="antialiased">
+      <Analytics />
         <Navbar />
         <main>{children}</main>
         <Footer />

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 set -euo pipefail
 npm run -w website check
-npm run -w website test || true
+npm run -w website test
 npm run -w website build
