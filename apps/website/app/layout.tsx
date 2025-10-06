@@ -4,9 +4,13 @@ import type { Metadata } from "next";
 <<<<<<< HEAD
 import Script from "next/script";
 <<<<<<< HEAD
+<<<<<<< HEAD
 import Analytics from "./analytics/Analytics"
 =======
 >>>>>>> b2ea271 (chore(ci): finalize doctor verification and guardrail health)
+=======
+import Analytics from "./analytics/Analytics"
+>>>>>>> 69d174d (feat: launch-ready website)
 
 import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
