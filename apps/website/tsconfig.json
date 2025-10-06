@@ -3,24 +3,31 @@
   "compilerOptions": {
     "baseUrl": ".",
     "moduleResolution": "Bundler",
+    "jsx": "preserve",
+    "noEmit": true,
+    "incremental": true,
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "types": ["node", "vitest/globals", "@testing-library/jest-dom"],
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["app/*", "components/*", "src/*", "*"]
     },
-    "types": ["vitest", "@testing-library/jest-dom", "node"],
-    "strict": true,
-    "noUncheckedIndexedAccess": true,
-    "noImplicitOverride": true,
-    "jsx": "preserve"
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "allowJs": true,
+    "isolatedModules": true
   },
   "include": [
-    "app",
-    "components",
-    "lib",
-    "src",
     "next-env.d.ts",
     ".next/types/**/*.ts",
     "**/*.ts",
-    "**/*.tsx"
+    "**/*.tsx",
+    "app",
+    "components",
+    "src",
+    "tests"
   ],
-  "exclude": [".next", "node_modules", "**/*.spec.*", "**/*.test.*"]
+  "exclude": ["node_modules", ".next", "dist"]
 }

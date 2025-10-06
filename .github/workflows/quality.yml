@@ -22,3 +22,7 @@ jobs:
         run: npm run -w website test || true
       - name: Build
         run: npm run -w website build
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}-${{ github.sha }}
+  cancel-in-progress: true
