@@ -1,8 +1,12 @@
 name: Deploy
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
 >>>>>>> 5a15505 (ci: standardized CI (build/test), Quality (PR->main), Deploy (main) + husky-safe installs)
+=======
+
+>>>>>>> c2d0c56 (ci: add/ensure Deploy workflow for main (Vercel prod))
 on:
   push:
     branches: [ main ]
@@ -59,11 +63,12 @@ jobs:
         run: npx vercel deploy --prebuilt --prod --token "$VERCEL_TOKEN"
 =======
     env:
-      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
       VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
       VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
       - name: Setup Node (22.x)
         uses: actions/setup-node@v4
@@ -71,31 +76,22 @@ jobs:
           node-version: 22.x
           cache: npm
 
-      - name: Install (husky-safe)
+      - name: Install
         run: |
           HUSKY=0 npm ci || HUSKY=0 npm install
 
-      - name: Build site
+      - name: Build (Next.js)
         run: |
-          npm --workspace apps/website run build || npm run build
+          npm run build
 
-      - name: Install Vercel CLI
-        run: npm i -g vercel
+      # Prepare Vercel environment & deploy prod
+      - name: Pull Vercel env (prod)
+        run: npx vercel pull --yes --environment=production --token "$VERCEL_TOKEN"
 
-      - name: Check Vercel secrets presence
-        id: guard
-        run: |
-          missing=""
-          [[ -z "${VERCEL_TOKEN:-}" ]] && missing+=" VERCEL_TOKEN"
-          [[ -z "${VERCEL_ORG_ID:-}" ]] && missing+=" VERCEL_ORG_ID"
-          [[ -z "${VERCEL_PROJECT_ID:-}" ]] && missing+=" VERCEL_PROJECT_ID"
-          if [[ -n "$missing" ]]; then
-            echo "Missing secrets:$missing"
-            echo "have_secrets=false" >> "$GITHUB_OUTPUT"
-          else
-            echo "have_secrets=true" >> "$GITHUB_OUTPUT"
-          fi
+      - name: Vercel build (prod)
+        run: npx vercel build --prod --token "$VERCEL_TOKEN"
 
+<<<<<<< HEAD
       - name: Deploy to Vercel (prebuilt)
         if: steps.guard.outputs.have_secrets == 'true'
         run: |
@@ -103,3 +99,7 @@ jobs:
           vercel build --token "$VERCEL_TOKEN"
           vercel deploy --prebuilt --prod --token "$VERCEL_TOKEN"
 >>>>>>> 5a15505 (ci: standardized CI (build/test), Quality (PR->main), Deploy (main) + husky-safe installs)
+=======
+      - name: Vercel deploy (prebuilt, prod)
+        run: npx vercel deploy --prebuilt --prod --token "$VERCEL_TOKEN"
+>>>>>>> c2d0c56 (ci: add/ensure Deploy workflow for main (Vercel prod))
