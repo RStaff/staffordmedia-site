@@ -1,5 +1,6 @@
 name: CI
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 on:
   push:            { branches: ["**"] }
@@ -14,10 +15,22 @@ on:
   pull_request:
     branches: [ "*" ]
 >>>>>>> 1d1bf67 (build(app): single-source globals.css + Nav; normalize layout import)
+=======
+
+on:
+  push:            { branches: ["**"] }
+  pull_request:    { branches: ["**"] }
+  workflow_dispatch:
+
+# some orgs require explicit perms; this is minimal & safe
+permissions:
+  contents: read
+>>>>>>> 95483e7 (ci(automation): install in apps/website and disable Husky in CI; prepare is resilient)
 
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
+<<<<<<< HEAD
 <<<<<<< HEAD
     timeout-minutes: 20
 
@@ -28,15 +41,26 @@ jobs:
 
       - name: Setup Node (22.x)
 =======
+=======
+    timeout-minutes: 20
+
+>>>>>>> 95483e7 (ci(automation): install in apps/website and disable Husky in CI; prepare is resilient)
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
+<<<<<<< HEAD
       - name: 🔧 Setup Node
 >>>>>>> 1d1bf67 (build(app): single-source globals.css + Nav; normalize layout import)
+=======
+      - name: Setup Node (22.x)
+>>>>>>> 95483e7 (ci(automation): install in apps/website and disable Husky in CI; prepare is resilient)
         uses: actions/setup-node@v4
         with:
           node-version: "22.x"
           cache: npm
+<<<<<<< HEAD
 <<<<<<< HEAD
           cache-dependency-path: |
             apps/website/package.json
@@ -78,22 +102,50 @@ concurrency:
   group: ci-${{ github.workflow }}-${{ github.ref }}-${{ github.sha }}
   cancel-in-progress: true
 =======
+=======
+          cache-dependency-path: |
+            apps/website/package.json
+            package-lock.json
+>>>>>>> 95483e7 (ci(automation): install in apps/website and disable Husky in CI; prepare is resilient)
 
-      - name: 📦 Install deps (workspaces)
+      - name: "Guard: no nested lockfiles under apps/"
         run: |
-          if [ ! -f package-lock.json ]; then
-            npm install --workspaces
+          if git ls-files 'apps/**/package-lock.json' | grep -q .; then
+            echo "::error::Found nested package-lock.json under apps/. Remove them (root lockfile only)."
+            exit 1
           fi
-if [ ! -f package-lock.json ]; then
-            npm install --workspaces
-          fi
-          npm ci
-      - name: 🎭 Install Playwright (browsers & libs)
-        run: npm run -w website playwright:install
 
-      - name: 🏗️ Build (production)
-        run: npm run -w website build
+      - name: Show versions
+        run: |
+          node -v
+          npm -v
 
+<<<<<<< HEAD
       - name: ✅ E2E tests
         run: npm run -w website test:e2e
 >>>>>>> 1d1bf67 (build(app): single-source globals.css + Nav; normalize layout import)
+=======
+      # 🔽 app-local install (matches your successful local path)
+      - name: Install deps at app
+        working-directory: apps/website
+        run: |
+          HUSKY=0 npm ci || HUSKY=0 npm install
+
+      - name: Build website (production)
+        working-directory: apps/website
+        env:
+          NODE_OPTIONS: --max_old_space_size=4096
+        run: npm run build
+
+      - name: Upload build artifact (.next)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: website-.next
+          path: apps/website/.next
+          if-no-files-found: ignore
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}-${{ github.sha }}
+  cancel-in-progress: true
+>>>>>>> 95483e7 (ci(automation): install in apps/website and disable Husky in CI; prepare is resilient)
