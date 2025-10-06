@@ -1,11 +1,10 @@
-name: Quality
+name: Quality (auto)
 
 on:
   workflow_dispatch:
-  pull_request:
+  push:
     branches:
-      - main
-      - 'launch/*'
+      - launch/website   # allow immediate run on this branch
 
 jobs:
   check:
@@ -28,13 +27,12 @@ jobs:
           node -v
           npm -v
 
-      - name: Install (workspaces)
+      - name: Install (workspaces) — husky-safe
         run: |
           HUSKY=0 npm ci || HUSKY=0 npm install
 
       - name: Lint + Typecheck + Guard
         run: |
-          # try workspace first, then root fallback
           npm run -w apps/website lint || npm run lint || true
           npm run -w apps/website typecheck || npm run typecheck
           npm run -w apps/website guard:headers || npm run guard:headers || true
