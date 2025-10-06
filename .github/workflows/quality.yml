@@ -15,7 +15,7 @@ jobs:
           node-version: "22.x"
           cache: "npm"
       - name: Install (workspaces)
-        run: npm ci --workspaces
+        run:cd apps/website && HUSKY=0 npm ci --workspaces
       - name: Lint + Typecheck + Guard
         run: npm run -w website check
       - name: Test (allow minimal suites)
