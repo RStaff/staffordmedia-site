@@ -23,19 +23,24 @@ jobs:
           cache: npm
 
       - name: Install
+  working-directory: apps/website
         run: |
           HUSKY=0 npm ci || HUSKY=0 npm install
 
       - name: Build (Next.js)
+  working-directory: apps/website
         run: |
           npm run build
 
       # Prepare Vercel environment & deploy prod
       - name: Pull Vercel env (prod)
+  working-directory: apps/website
         run: npx vercel pull --yes --environment=production --token "$VERCEL_TOKEN"
 
       - name: Vercel build (prod)
+  working-directory: apps/website
         run: npx vercel build --prod --token "$VERCEL_TOKEN"
 
       - name: Vercel deploy (prebuilt, prod)
+  working-directory: apps/website
         run: npx vercel deploy --prebuilt --prod --token "$VERCEL_TOKEN"

@@ -6,10 +6,21 @@
     "jsx": "preserve",
     "noEmit": true,
     "incremental": true,
-    "lib": ["dom", "dom.iterable", "esnext"],
-    "types": ["node", "vitest/globals", "@testing-library/jest-dom"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "types": [
+      "node",
+      "vitest/globals",
+      "@testing-library/jest-dom"
+    ],
     "paths": {
-      "@/*": ["app/*", "components/*", "src/*", "*"]
+      "@/*": [
+        "./*",
+        "src/*"
+      ]
     },
     "plugins": [
       {
@@ -29,5 +40,9 @@
     "src",
     "tests"
   ],
-  "exclude": ["node_modules", ".next", "dist"]
+  "exclude": [
+    "node_modules",
+    ".next",
+    "dist"
+  ]
 }
