@@ -15,11 +15,12 @@ jobs:
       VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
       VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
       VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node (Node 20 LTS)
+      - name: Setup Node (20.x)
         uses: actions/setup-node@v4
         with:
           node-version: 20.x
@@ -27,10 +28,16 @@ jobs:
           cache: npm
           cache-dependency-path: apps/website/package-lock.json
 
+      - name: Show Node & npm
+        run: |
+          node -v
+          npm -v
+
       - name: Install (husky-safe)
         run: HUSKY=0 npm ci || HUSKY=0 npm install
 
-      - name: Typecheck + Lint (non-blocking)
+      # Non-blocking static checks (report warnings but don't fail deploy)
+      - name: Typecheck + Lint (soft)
         run: |
           npm run typecheck || true
           npm run lint || true
