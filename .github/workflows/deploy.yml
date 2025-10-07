@@ -8,6 +8,9 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/website
     env:
       VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
       VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
@@ -21,26 +24,24 @@ jobs:
         with:
           node-version: 22.x
           cache: npm
+          cache-dependency-path: apps/website/package-lock.json
 
-      - name: Install
-  working-directory: apps/website
+      - name: Install (husky-safe)
+        run: HUSKY=0 npm ci || HUSKY=0 npm install
+
+      - name: Typecheck + Lint
         run: |
-          HUSKY=0 npm ci || HUSKY=0 npm install
+          npm run typecheck || true
+          npm run lint || true
 
       - name: Build (Next.js)
-  working-directory: apps/website
-        run: |
-          npm run build
+        run: npm run build
 
-      # Prepare Vercel environment & deploy prod
       - name: Pull Vercel env (prod)
-  working-directory: apps/website
         run: npx vercel pull --yes --environment=production --token "$VERCEL_TOKEN"
 
       - name: Vercel build (prod)
-  working-directory: apps/website
         run: npx vercel build --prod --token "$VERCEL_TOKEN"
 
       - name: Vercel deploy (prebuilt, prod)
-  working-directory: apps/website
         run: npx vercel deploy --prebuilt --prod --token "$VERCEL_TOKEN"
