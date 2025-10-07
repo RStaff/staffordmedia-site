@@ -1,0 +1,4 @@
+{
+  "apps/website/**/*.{ts,tsx,js,jsx}": "eslint --config apps/website/eslint.config.js --cache --cache-location apps/website/.eslintcache --fix",
+  "**/*.{json,md,css}": "prettier --write"
+}

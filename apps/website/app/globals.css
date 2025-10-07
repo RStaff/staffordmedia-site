@@ -1,0 +1,123 @@
+@import "tailwindcss";
+/* Next/Tailwind global stylesheet */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Add any site-wide resets or variables here */
+
+/* --- Stafford Media tokens --- */
+:root {
+  --smc-bg: #0d1520;
+  --smc-card: #0f1826;
+  --smc-text: #e6e8eb;
+  --smc-muted: #94a3b8;
+  --smc-accent: #8b5cf6;
+  --smc-ring: rgba(139, 92, 246, 0.35);
+}
+
+/* === Brand tokens === */
+:root {
+  /* SMC + Abando colors (light) */
+  --brand-surface: #ffffff;
+  --brand-text: #0a0a0a;
+
+  --smc: #0e2a57; /* deep navy */
+  --smc-muted: #b0b6be; /* cool gray */
+
+  --ab-blue: #1877f2; /* Abando blue */
+  --ab-green: #13a47b; /* Abando accent green */
+
+  --brand-border: #e5e7eb;
+}
+
+[data-theme="dark"] {
+  --brand-surface: #0b1220;
+  --brand-text: #e5e7eb;
+  --brand-border: #1f2937;
+
+  /* keep brand hues stable in dark */
+  --smc: #7aa0d1;
+  --smc-muted: #8a93a3;
+  --ab-blue: #7aa7ff;
+  --ab-green: #4ad3a7;
+}
+
+/* Utility helpers */
+.bg-brand {
+  background: var(--brand-surface);
+}
+.text-brand {
+  color: var(--brand-text);
+}
+.border-brand {
+  border-color: var(--brand-border);
+}
+
+.btn-brand {
+  background: var(--ab-blue);
+  color: white;
+}
+.btn-brand:hover {
+  filter: brightness(0.95);
+}
+
+.btn-outline-brand {
+  border: 1px solid var(--brand-border);
+  color: var(--brand-text);
+  background: transparent;
+}
+.btn-outline-brand:hover {
+  background: color-mix(in oklab, var(--brand-text) 6%, transparent);
+}
+
+/* Apply surface/text to body */
+html,
+body {
+  background: var(--brand-surface);
+  color: var(--brand-text);
+}
+
+/* smc brand utilities */
+.smc-btn-primary {
+  @apply inline-flex items-center gap-2 rounded-xl bg-zinc-900 text-white px-5 py-3 text-sm font-medium hover:bg-black;
+}
+.smc-btn-outline {
+  @apply inline-flex items-center gap-2 rounded-xl border px-5 py-3 text-sm font-medium;
+}
+.smc-accent {
+  color: #8c2ac6;
+}
+.smc-accent-bg {
+  background-color: #8c2ac6;
+}
+.smc-grid {
+  background-image:
+    linear-gradient(#0000000d 1px, transparent 1px),
+    linear-gradient(90deg, #0000000d 1px, transparent 1px);
+  background-size: 16px 16px;
+}
+
+/* smc/abando brand layer */
+:root {
+  --brand: #1E73F2;  /* SMC blue */
+  --accent: #13A47B; /* Abando green */
+}
+.btn-brand {
+  @apply rounded-xl px-5 py-3 text-sm font-medium text-white;
+  background: var(--brand);
+}
+.btn-brand:hover { filter: brightness(0.95); }
+.btn-outline {
+  @apply rounded-xl border px-5 py-3 text-sm font-medium;
+}
+.badge-abando {
+  @apply inline-flex items-center gap-2 text-xs rounded-md border px-2 py-1;
+  border-color: color-mix(in oklab, var(--accent) 50%, #d4d4d8);
+  color: #0a0a0a;
+}
+.border-brand { border-color: color-mix(in oklab, var(--brand) 70%, #e5e7eb); }
+.text-brand   { color: var(--brand); }
+.text-accent  { color: var(--accent); }
+.bg-brand     { background: var(--brand); }
+.bg-accent    { background: var(--accent); }

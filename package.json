@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
+    "start": "next start -p $PORT",
     "lint": "eslint",
     "start3000": "PORT=3000 next start",
     "start3001": "PORT=3001 next start",
@@ -13,31 +13,63 @@
     "dev3001": "PORT=3001 next dev",
     "start-free": "node -e \"require('portfinder').getPortPromise({port:3000}).then(p=>{console.log('Starting on port',p);process.env.PORT=p;require('child_process').spawn('next',['start'],{stdio:'inherit',env:process.env});})\"",
     "dev-free": "node -e \"require('portfinder').getPortPromise({port:3000}).then(p=>{console.log('Dev on port',p);process.env.PORT=p;require('child_process').spawn('next',['dev'],{stdio:'inherit',env:process.env});})\"",
-    "test:e2e": "playwright test",
-    "build:prod": "next build",
-    "start:prod": "next start -p 3000",
-    "new:site": "bash -lc 'read -p \"branch name: \" n; git checkout -b site/$n'",
-    "new:llm": "bash -lc 'read -p \"branch name: \" n; git checkout -b llm/$n'"
+    "build:prod": "npm run build",
+    "test:e2e": "playwright test --reporter=html --trace=on --output=test-results",
+    "prepare": "husky || true"
   },
   "dependencies": {
     "@heroicons/react": "^2.2.0",
-    "next": "15.5.3",
-    "react": "19.1.0",
-    "react-dom": "19.1.0"
+    "next": "^15.5.3",
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@next/eslint-plugin-next": "^15.0.0",
     "@playwright/test": "^1.55.1",
     "@tailwindcss/postcss": "^4.1.13",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.0",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "autoprefixer": "^10.4.21",
     "eslint": "^9",
     "eslint-config-next": "15.5.3",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-next": "^0.0.0",
+    "husky": "^9.1.7",
+    "jsdom": "^27.0.0",
+    "lint-staged": "^15.5.2",
     "portfinder": "^1.0.38",
     "postcss": "^8.5.6",
+    "prettier": "^3.6.2",
     "tailwindcss": "^4.1.13",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "^3.2.4"
+  },
+  "engines": {
+    "node": ">=20 <=22"
+  },
+  "type": "module",
+  "workspaces": [
+    "apps/website"
+  ],
+  "volta": {
+    "node": "22.20.0"
+  },
+  "lint-staged": {
+    "**/*.{ts,tsx,js,jsx,json,md,css}": [
+      "prettier --write"
+    ],
+    "apps/website/**/*.{ts,tsx}": [
+      "eslint --fix"
+    ],
+    "apps/website/**/*.{ts,tsx,js,jsx}": [
+      "eslint --config apps/website/eslint.config.js --cache --cache-location apps/website/.eslintcache --fix"
+    ],
+    "**/*.{css,md,json}": [
+      "prettier --write"
+    ]
   }
 }

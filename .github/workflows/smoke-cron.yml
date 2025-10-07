@@ -26,3 +26,7 @@ jobs:
           path: playwright-report/
           if-no-files-found: ignore
           retention-days: 3
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}-${{ github.sha }}
+  cancel-in-progress: true
