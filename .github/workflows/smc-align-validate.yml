@@ -1,0 +1,11 @@
+name: smc-align-validate
+on:
+  pull_request:
+  push: { branches: [ main, chore/**, feat/** ] }
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: npm i ajv@8 -D
+      - run: node -e "const Ajv=require('ajv');const fs=require('fs');const ajv=new Ajv();const schema=JSON.parse(fs.readFileSync('alignment.schema.json'));const data=JSON.parse(fs.readFileSync('alignment.json'));const ok=ajv.validate(schema,data);if(!ok){console.error(ajv.errors);process.exit(1)};console.log('alignment ✅')"
