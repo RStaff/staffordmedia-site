@@ -5,7 +5,18 @@
     "paths": {
       "@/*": ["./*", "./src/*"]
     },
-    "types": ["vitest/globals", "node", "@testing-library/jest-dom"]
+    "types": ["vitest/globals", "node", "@testing-library/jest-dom"],
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "noEmit": true,
+    "incremental": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
   },
   "include": ["**/*.ts", "**/*.tsx", "next-env.d.ts", ".next/types/**/*.ts"],
   "exclude": ["node_modules"]
