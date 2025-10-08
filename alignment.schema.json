@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "SMC↔Product Alignment Contract",
+  "type": "object",
+  "properties": {
+    "service": { "type": "string" },
+    "connected_to": { "type": "string" },
+    "routes": {
+      "type": "object",
+      "properties": {
+        "status": { "type": "string" },
+        "robots": { "type": "string" },
+        "sitemap": { "type": "string" }
+      },
+      "required": ["status", "robots", "sitemap"]
+    },
+    "cors": {
+      "type": "object",
+      "properties": {
+        "allowed_origins": { "type": "array", "items": { "type": "string" } }
+      },
+      "required": ["allowed_origins"]
+    },
+    "billing": {
+      "type": "object",
+      "properties": {
+        "owner": { "type": "string" },
+        "stripe_account": { "type": "string" },
+        "report_tag": { "type": "string" }
+      },
+      "required": ["owner", "stripe_account", "report_tag"]
+    }
+  },
+  "required": ["service", "connected_to", "routes", "cors", "billing"]
+}
