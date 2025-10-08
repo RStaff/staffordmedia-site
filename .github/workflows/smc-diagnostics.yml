@@ -1,0 +1,15 @@
+name: smc-diagnostics
+on:
+  push: { branches: [ main, chore/*, feat/* ] }
+  pull_request:
+jobs:
+  diag:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Repo guards
+        run: |
+          set -e
+          test -f apps/website/app/api/status/route.ts
+          grep -q "abando.ai" apps/website/public/sitemap.xml
+          grep -q "Sitemap:" apps/website/public/robots.txt

@@ -8,9 +8,8 @@ export async function GET() {
     { service: "staffordmedia", connected_to: "abando.ai" },
     {
       headers: {
-        // allow Abando to read this one endpoint (both apex & www)
         "Access-Control-Allow-Origin": "*",
-        "Cache-Control": "public, max-age=60"
+        "Cache-Control": "public, max-age=60, s-maxage=60, stale-while-revalidate=300"
       }
     }
   );
