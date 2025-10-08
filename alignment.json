@@ -1,0 +1,15 @@
+{
+  "service": "staffordmedia",
+  "connected_to": "abando",
+  "routes": {
+    "status": "/api/status",
+    "robots": "/robots.txt",
+    "sitemap": "/sitemap.xml"
+  },
+  "cors": { "allowed_origins": ["https://abando.ai", "https://www.abando.ai"] },
+  "billing": {
+    "owner": "Stafford Media Consulting LLC",
+    "stripe_account": "acct_parent_smc",
+    "report_tag": "abando-ai"
+  }
+}
