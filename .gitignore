@@ -43,3 +43,4 @@ apps/**/package-lock.json
 scripts/*.sh
 *.bak*
 # Ensure we track the underscored dir{APP_DIR}/
+!_smc_clean/
