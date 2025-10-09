@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start -p $PORT",
+    "start": "next start -p 3000",
     "lint": "echo '→ Linting source files (not .next)'; :",
     "start3000": "PORT=3000 next start",
     "start3001": "PORT=3001 next start",
@@ -18,8 +18,7 @@
     "prepare": "husky || true",
     "check:ci": "npm run lint && npm run typecheck",
     "typecheck": "tsc -b --pretty false || true",
-    "check": "npm run lint && npm run typecheck",
-    "test": "echo '✓ skipping tests for _smc_clean bootstrap' && exit 0"
+    "check": "npm run lint && npm run typecheck"
   },
   "dependencies": {
     "@heroicons/react": "^2.2.0",
@@ -32,30 +31,30 @@
     "@eslint/js": "^9.37.0",
     "@next/eslint-plugin-next": "^15.0.0",
     "@playwright/test": "^1.55.1",
-    "@tailwindcss/postcss": "^4.1.13",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.0",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@typescript-eslint/parser": "^8.46.0",
-    "autoprefixer": "^10.4.21",
+    "autoprefixer": "^10.4.20",
     "eslint": "^9",
     "eslint-config-next": "15.5.3",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-next": "^0.0.0",
     "husky": "^9.1.7",
     "jsdom": "^27.0.0",
+    "lightningcss": "^1.30.2",
     "lint-staged": "^15.5.2",
     "portfinder": "^1.0.38",
-    "postcss": "^8.5.6",
+    "postcss": "^8.4.49",
     "prettier": "^3.6.2",
-    "tailwindcss": "^4.1.13",
+    "tailwindcss": "^3.4.14",
     "typescript": "^5",
     "vitest": "^3.2.4"
   },
   "engines": {
-    "node": ">=20 <21"
+    "node": ">=18.17"
   },
   "type": "module",
   "workspaces": [
