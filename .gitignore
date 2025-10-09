@@ -44,3 +44,4 @@ scripts/*.sh
 *.bak*
 apps/website/.eslintcache
 .eslintcache
+!_smc_clean/

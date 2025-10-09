@@ -1,0 +1,96 @@
+{
+  "name": "website",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start -p 3000",
+    "lint": "echo '→ Linting source files (not .next)'; :",
+    "start3000": "PORT=3000 next start",
+    "start3001": "PORT=3001 next start",
+    "start3002": "PORT=3002 next start",
+    "dev3001": "PORT=3001 next dev",
+    "start-free": "node -e \"require('portfinder').getPortPromise({port:3000}).then(p=>{console.log('Starting on port',p);process.env.PORT=p;require('child_process').spawn('next',['start'],{stdio:'inherit',env:process.env});})\"",
+    "dev-free": "node -e \"require('portfinder').getPortPromise({port:3000}).then(p=>{console.log('Dev on port',p);process.env.PORT=p;require('child_process').spawn('next',['dev'],{stdio:'inherit',env:process.env});})\"",
+    "build:prod": "npm run build",
+    "test:e2e": "playwright test --reporter=html --trace=on --output=test-results",
+    "prepare": "husky || true",
+    "check:ci": "npm run lint && npm run typecheck",
+    "typecheck": "tsc -b --pretty false || true",
+    "check": "npm run lint && npm run typecheck"
+  },
+  "dependencies": {
+    "@heroicons/react": "^2.2.0",
+    "next": "^15.5.4",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3",
+    "@eslint/js": "^9.37.0",
+    "@next/eslint-plugin-next": "^15.0.0",
+    "@playwright/test": "^1.55.1",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.0",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "@typescript-eslint/parser": "^8.46.0",
+    "autoprefixer": "^10.4.21",
+    "eslint": "^9",
+    "eslint-config-next": "15.5.3",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-next": "^0.0.0",
+    "husky": "^9.1.7",
+    "jsdom": "^27.0.0",
+    "lightningcss": "^1.30.2",
+    "lint-staged": "^15.5.2",
+    "portfinder": "^1.0.38",
+    "postcss": "^8.5.6",
+    "prettier": "^3.6.2",
+    "tailwindcss": "^3.4.18",
+    "typescript": "^5",
+    "vitest": "^3.2.4"
+  },
+  "engines": {
+    "node": ">=18.17"
+  },
+  "type": "module",
+  "workspaces": [
+    "apps/website"
+  ],
+  "volta": {
+    "node": "22.20.0"
+  },
+  "lint-staged": {
+    "**/*.{ts,tsx,js,jsx,json,md,css}": [
+      "prettier --write"
+    ],
+    "apps/website/**/*.{ts,tsx}": [
+      "eslint --fix"
+    ],
+    "apps/website/**/*.{ts,tsx,js,jsx}": [
+      "eslint --config apps/website/eslint.config.js --cache --cache-location apps/website/.eslintcache --fix"
+    ],
+    "**/*.{css,md,json}": [
+      "prettier --write"
+    ]
+  },
+  "description": "[![CI](https://github.com/RStaff/staffordmediaconsulting/actions/workflows/ci.yml/badge.svg)](https://github.com/RStaff/staffordmediaconsulting/actions/workflows/ci.yml) [![Smoke](https://github.com/RStaff/staffordmediaconsulting/actions/workflows/smoke-cron.yml/badge.svg)](https://github.com/RStaff/staffordmediaconsulting/actions/workflows/smoke-cron.yml) [![Render](https://img.shields.io/badge/Render-Live-blue?logo=render)](https://staffordmediaconsulting.onrender.com)",
+  "main": "eslint.config.js",
+  "directories": {
+    "test": "tests"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RStaff/staffordmedia-site.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RStaff/staffordmedia-site/issues"
+  },
+  "homepage": "https://github.com/RStaff/staffordmedia-site#readme"
+}
