@@ -45,3 +45,4 @@ scripts/*.sh
 apps/website/.eslintcache
 .eslintcache
 !_smc_clean/
+!_smc_clean/
