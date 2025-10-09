@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start -p $PORT",
+    "start": "next start -p 3000",
     "lint": "echo '→ Linting source files (not .next)'; :",
     "start3000": "PORT=3000 next start",
     "start3001": "PORT=3001 next start",
@@ -22,16 +22,15 @@
   },
   "dependencies": {
     "@heroicons/react": "^2.2.0",
-    "next": "^15.5.3",
-    "react": "18.3.1",
-    "react-dom": "18.3.1"
+    "next": "^15.5.4",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@eslint/js": "^9.37.0",
     "@next/eslint-plugin-next": "^15.0.0",
     "@playwright/test": "^1.55.1",
-    "@tailwindcss/postcss": "^4.1.13",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.0",
     "@types/node": "^20",
@@ -45,16 +44,17 @@
     "eslint-plugin-next": "^0.0.0",
     "husky": "^9.1.7",
     "jsdom": "^27.0.0",
+    "lightningcss": "^1.30.2",
     "lint-staged": "^15.5.2",
     "portfinder": "^1.0.38",
     "postcss": "^8.5.6",
     "prettier": "^3.6.2",
-    "tailwindcss": "^4.1.13",
+    "tailwindcss": "^3.4.18",
     "typescript": "^5",
     "vitest": "^3.2.4"
   },
   "engines": {
-    "node": ">=20 <=22"
+    "node": ">=18.17"
   },
   "type": "module",
   "workspaces": [
@@ -76,5 +76,21 @@
     "**/*.{css,md,json}": [
       "prettier --write"
     ]
-  }
+  },
+  "description": "[![CI](https://github.com/RStaff/staffordmediaconsulting/actions/workflows/ci.yml/badge.svg)](https://github.com/RStaff/staffordmediaconsulting/actions/workflows/ci.yml) [![Smoke](https://github.com/RStaff/staffordmediaconsulting/actions/workflows/smoke-cron.yml/badge.svg)](https://github.com/RStaff/staffordmediaconsulting/actions/workflows/smoke-cron.yml) [![Render](https://img.shields.io/badge/Render-Live-blue?logo=render)](https://staffordmediaconsulting.onrender.com)",
+  "main": "eslint.config.js",
+  "directories": {
+    "test": "tests"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RStaff/staffordmedia-site.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RStaff/staffordmedia-site/issues"
+  },
+  "homepage": "https://github.com/RStaff/staffordmedia-site#readme"
 }
