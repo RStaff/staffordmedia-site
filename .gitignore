@@ -42,3 +42,5 @@ apps/**/package-lock.json
 # dev helpers
 scripts/*.sh
 *.bak*
+apps/website/.eslintcache
+.eslintcache
