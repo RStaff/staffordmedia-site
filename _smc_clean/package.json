@@ -1,14 +1,13 @@
 {
   "name": "smc-clean",
   "private": true,
-  "engines": { "node": ">=20 <21" },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start -p ${PORT:-10000}"
   },
   "dependencies": {
-    "next": "15.5.3",
+    "next": "15.5.4",
     "react": "18.2.0",
     "react-dom": "18.2.0"
   },
