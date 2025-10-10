@@ -1,22 +1,34 @@
-import './globals.css';
-import type { Metadata } from 'next';
+import "./globals.css";
+import Image from "next/image";
+import Link from "next/link";
 
-export const metadata: Metadata = {
-  title: 'Stafford Media Consulting',
-  description: 'Unlock 4× ROI in 4 days — no redesigns, no downtime.',
-  icons: [{ rel: 'icon', url: '/favicon.ico' }],
-};
+export const metadata = { title: "Stafford Media Consulting", description: "SMC website" };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className="mx-auto max-w-3xl p-6 text-zinc-900">
-        <header className="mb-8">
-          <a href="/" className="text-sm text-zinc-600 hover:underline">Stafford Media Consulting™</a>
+      <head>
+        <meta httpEquiv="cache-control" content="no-cache, no-store, must-revalidate" />
+        <meta httpEquiv="pragma" content="no-cache" />
+        <meta httpEquiv="expires" content="0" />
+        <meta name="theme-color" content="#0B1220" />
+        <style>{`:root{--brand-bg:#0B1220;--brand-fg:#E8ECF1;--brand-card:#111A2C;--brand-border:#273245;--brand-accent:#F2C24B;--brand-gray:#A8B0BD}html,body{background:var(--brand-bg);color:var(--brand-fg);}`}</style>
+      </head>
+      <body className="brand-v1" data-brand-version="brandv-20251010152435" style={{background:"#0B1220",color:"#E8ECF1"}}>
+        <header className="max-w-6xl mx-auto px-6 py-5 flex items-center gap-3">
+          <Image src={"/smc-logo.svg?v=brandv-20251010152435"} alt="SMC" width={28} height={28} />
+          <div className="font-semibold text-white">Stafford Media Consulting™</div>
+          <nav className="ml-auto flex items-center gap-6 text-sm text-brand-gray">
+            <Link href="/">Home</Link><Link href="/about">About</Link>
+            <Link href="/abando">Abando</Link>
+            <Link href="/contact" className="font-semibold">Book a Strategy Call</Link>
+          </nav>
         </header>
-        {children}
-        <footer className="mt-16 border-t pt-6 text-sm text-zinc-500">
-          <div>© {new Date().getFullYear()} Stafford Media Consulting</div>
+        <main className="max-w-6xl mx-auto px-6 pb-16">{children}</main>
+        <footer className="max-w-6xl mx-auto px-6 pb-10 text-sm text-brand-gray">
+          <div className="mt-4 inline-block px-2 py-1 rounded border border-[color:var(--brand-border)]" style={{background:"#111A2C"}}>
+            BRAND APPLIED • brandv-20251010152435
+          </div>
         </footer>
       </body>
     </html>
