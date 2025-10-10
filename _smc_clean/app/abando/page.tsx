@@ -9,7 +9,7 @@ export default function AbandoPage() {
         <span>Abando™</span>
       </div>
 
-      <h1 className="mt-3 text-6xl md:text-7xl font-extrabold tracking-tight leading-[1.05]">
+      <h1 className="mt-3 text-7xl md:text-8xl font-extrabold tracking-tight leading-[1.05]">
         Recover more checkouts with your <span className="text-brand-accent">AI Shopping Copilot</span>.
       </h1>
 
