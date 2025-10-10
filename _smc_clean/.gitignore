@@ -1,8 +1,4 @@
-node_modules/
-.next/
-.cache/
-dist/
-out/
-*.log
-.env*
+node_modules
+.next
 .DS_Store
+dist
