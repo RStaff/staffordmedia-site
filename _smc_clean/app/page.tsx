@@ -5,7 +5,7 @@ export default function Page() {
   return (
     <div className="mt-8">
       <div className="flex items-center gap-2 text-base text-brand-gray">
-        <Image src="/abando-logo.svg" alt="Abando" width={18} height={18} />
+        <Image src="/abando-logo.v2.png" alt="Abando" width={18} height={18} />
         <span>Abando</span>
       </div>
 
