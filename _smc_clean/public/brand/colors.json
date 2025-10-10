@@ -1,0 +1,14 @@
+{
+  "smc": {
+    "navy":  "#0B2545",
+    "purple":"#8E24AA",
+    "gray":  "#B4BBC3",
+    "gold":  "#F3C34A"
+  },
+  "abando": {
+    "blue":  "#1976D2",
+    "teal":  "#16A085",
+    "dark":  "#0D1D2A",
+    "bg":    "#FAF7F2"
+  }
+}
