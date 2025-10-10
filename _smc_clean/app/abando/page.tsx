@@ -22,26 +22,6 @@ export default function AbandoPage() {
         <Link href="/start" className="btn-primary">Start Free Trial</Link>
         <Link href="/demo" className="btn-ghost">Try the Demo</Link>
       </div>
-
-      <div className="mt-10 grid gap-6 md:grid-cols-2">
-        <section className="card p-6">
-          <h3 className="font-semibold mb-2">Why it converts</h3>
-          <ul className="list-disc ml-6 space-y-1 text-brand-gray">
-            <li>Answers that convert (shipping, sizing, returns).</li>
-            <li>Guided checkout with minimal friction.</li>
-            <li>Proven playbooks (discount, urgency, FAQ).</li>
-            <li>Analytics that show recovered revenue.</li>
-          </ul>
-        </section>
-        <section className="card p-6">
-          <h3 className="font-semibold mb-2">Channels</h3>
-          <ul className="list-disc ml-6 space-y-1 text-brand-gray">
-            <li>Email, SMS, WhatsApp, push — wherever customers are.</li>
-            <li>Installs with no redesigns, no downtime.</li>
-            <li>Measurable ROI in <strong>4 days</strong>.</li>
-          </ul>
-        </section>
-      </div>
     </div>
   );
 }
