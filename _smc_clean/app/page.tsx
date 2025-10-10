@@ -1,44 +1,38 @@
+import Image from "next/image";
+import Link from "next/link";
 export default function Page() {
   return (
-    <main>
-      <div className="mb-3 text-xs">🏷️ Abando</div>
-
-      <h1 className="text-3xl font-bold leading-tight">
-        Unlock 4× ROI in 4 days—<br />no redesigns, no downtime.
-      </h1>
-
-      <p className="mt-4 text-zinc-700">
-        Try Abando.ai free; cancel anytime.
-      </p>
-
-      <div className="mt-4 flex gap-4">
-        <a href="/abando#start" className="rounded bg-amber-400 px-3 py-2 text-sm font-semibold hover:bg-amber-300">
-          Start Free Trial
-        </a>
-        <a href="/demo" className="text-sm font-semibold text-indigo-600 hover:underline">
-          See Abando.ai In Action
-        </a>
+    <div className="mt-8">
+      <div className="flex items-center gap-2 text-sm text-brand-gray">
+        <Image src="/abando-logo.svg" alt="Abando" width={18} height={18} />
+        <span>Abando</span>
       </div>
-
-      <section className="mt-10">
-        <h2 className="text-xl font-semibold">Who it’s for</h2>
-        <ul className="mt-3 list-disc pl-6 space-y-2">
-          <li>Ecommerce teams on Shopify, WooCommerce, BigCommerce, or custom carts.</li>
-          <li>Marketers who want higher conversion without redesigns or long projects.</li>
-          <li>Founders who need measurable ROI fast (days, not months).</li>
-        </ul>
-      </section>
-
-      <section className="mt-8">
-        <h2 className="text-xl font-semibold">What it does</h2>
-        <ul className="mt-3 list-disc pl-6 space-y-2">
-          <li>An AI copilot that speaks in your brand’s voice — not a template.</li>
-          <li>Engages via email, SMS, WhatsApp, push — wherever customers are.</li>
-          <li>Handles objections in real time (price, shipping, trust).</li>
-          <li>Installs with no redesigns, no downtime.</li>
-          <li>Delivers measurable ROI in <strong>4 days</strong> — not weeks.</li>
-        </ul>
-      </section>
-    </main>
+      <h1 className="mt-2 text-5xl font-extrabold tracking-tight">Unlock 4× ROI in 4 days—<br/>no redesigns, no downtime.</h1>
+      <p className="mt-3 text-brand-gray">Try Abando.ai free; cancel anytime.</p>
+      <div className="mt-5 flex gap-3">
+        <Link href="/start" className="btn-primary">Start Free Trial</Link>
+        <Link href="/demo" className="btn-ghost">See Abando.ai In Action</Link>
+      </div>
+      <div className="mt-8 grid gap-6 md:grid-cols-2">
+        <section className="card p-6">
+          <h3 className="font-semibold mb-2">Who it’s for</h3>
+          <ul className="list-disc ml-6 space-y-1 text-brand-gray">
+            <li>Ecommerce teams on Shopify, WooCommerce, BigCommerce, or custom carts.</li>
+            <li>Marketers who want higher conversion without redesigns or long projects.</li>
+            <li>Founders who need measurable ROI fast (days, not months).</li>
+          </ul>
+        </section>
+        <section className="card p-6">
+          <h3 className="font-semibold mb-2">What it does</h3>
+          <ul className="list-disc ml-6 space-y-1 text-brand-gray">
+            <li>AI copilot in your brand’s voice.</li>
+            <li>Engages via email, SMS, WhatsApp, push.</li>
+            <li>Handles objections in real time.</li>
+            <li>Installs with no redesigns, no downtime.</li>
+            <li>Delivers measurable ROI in <strong>4 days</strong>.</li>
+          </ul>
+        </section>
+      </div>
+    </div>
   );
 }
