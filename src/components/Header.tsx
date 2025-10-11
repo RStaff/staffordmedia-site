@@ -10,7 +10,7 @@ export default function Header() {
         {/* Brand (logo + wordmark) */}
         <Link href="/" className="flex items-center gap-4">
           <Image
-            src="/smc-logo.svg"
+            src="/smc-logo.png?v=assetv-png-20251011113708"
             alt="Stafford Media Consulting logo"
             className="h-8 sm:h-10 md:h-12 lg:h-14 xl:h-16 w-auto"
             priority
