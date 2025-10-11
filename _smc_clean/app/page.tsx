@@ -4,8 +4,8 @@ import Link from "next/link";
 export default function Page() {
   return (
     <div className="mt-8">
-      <div className="flex items-center gap-2 text-sm text-brand-gray">
-        <Image src="/abando-logo.svg" alt="Abando" width={18} height={18} />
+      <div className="flex items-center gap-2 text-base text-brand-gray">
+        <Image src="/abando-logo.png?v=assetv-png-20251011113708" alt="Abando" width={18} height={18} />
         <span>Abando</span>
       </div>
 
