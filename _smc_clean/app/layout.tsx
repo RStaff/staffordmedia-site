@@ -20,10 +20,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <nav className="ml-auto flex items-center gap-6 text-sm text-brand-gray">
             <Link href="/">Home</Link>
             <Link href="/about">About</Link>
-            <Link href="/abando" className="flex items-center gap-1">
-              <img src="/abando-logo.svg" alt="Abando" width="18" height="18" />
-              <span>Abando</span>
-            </Link>
+            <Link href="/abando" className="flex items-center gap-1"><img src="/abando-logo.svg" alt="Abando" width="18" height="18" className="inline-block align-[-2px]" /><span>Abando</span></Link>
             <Link href="/contact" className="font-semibold">Book a Strategy Call</Link>
           </nav>
         </header>
