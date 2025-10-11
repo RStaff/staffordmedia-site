@@ -27,6 +27,7 @@ jobs:
           check-latest: true
           cache: npm
           cache-dependency-path: _smc_clean/package-lock.json
+          cache-dependency-path: _smc_clean/package-lock.json
 
       - name: Show Node & npm
         run: |
