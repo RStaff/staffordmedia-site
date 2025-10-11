@@ -4,12 +4,12 @@ import Link from "next/link";
 export default function AbandoPage() {
   return (
     <div className="mt-8">
-      <div className="flex items-center gap-2 text-base text-brand-gray">
-        <img src="/abando-logo.png?v=assetv-png-20251011113708" alt="Abando" width="24" height="24" />
-        <span>Abando™</span>
-      </div>
+<div className="flex items-center gap-2 text-base text-brand-gray">
+  <img src="/abando-logo.svg" alt="Abando" width="24" height="24" className="inline-block align-[-2px]" />
+  <span>Abando</span>
+</div>
 
-      <h1 className="mt-3 text-7xl md:text-8xl font-extrabold tracking-tight leading-[1.05]">
+<h1 className="mt-3 text-7xl md:text-8xl font-extrabold tracking-tight leading-[1.05]">
         Recover more checkouts with your <span className="text-brand-accent">AI Shopping Copilot</span>.
       </h1>
 
