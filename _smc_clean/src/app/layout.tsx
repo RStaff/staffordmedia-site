@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
@@ -26,7 +27,41 @@ export default function RootLayout({
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+
+
+
       >
+{/* SMC-HEADER-MANAGED START */}
+<header className="border-b">
+  <div className="mx-auto max-w-5xl px-4 py-3 flex items-center justify-between">
+    <a href="/" className="inline-flex items-center gap-2">
+      <img src="/logos/stafford-primary.png" width="28" height="28" className="h-7 w-7 align-[-2px]" alt="Stafford Media Consulting" />
+      <span className="font-semibold">Stafford Media Consulting</span>
+    </a>
+    <nav className="flex items-center gap-4 text-sm">
+      <a href="/">Home</a>
+      <a href="/about">About</a>
+      <a href="/abando" className="inline-flex items-center gap-1">
+        <img src="/logos/abando.png" width="18" height="18" className="h-5 w-5 align-[-2px]" alt="Abando" />
+        <span>Abando</span>
+      </a>
+      <a href="/contact" className="font-medium">Book a Strategy Call</a>
+    </nav>
+  </div>
+</header>
+{/* SMC-HEADER-MANAGED END */}
+
+
+
+
+
+
+
+
+
+
+
+
         {children}
       </body>
     </html>
