@@ -1,7 +1,5 @@
-// Pure ESM Next.js config for Render
-import { fileURLToPath } from 'url';
-import path from 'path';
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
+/** CommonJS Next.js config (Render-safe) */
+const path = require('path');
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -9,7 +7,6 @@ const nextConfig = {
   assetPrefix: '/',
   images: { unoptimized: true },
 
-  // Legacy → canonical logo paths
   async redirects() {
     return [
       // legacy /logos → canonical root files
@@ -20,8 +17,13 @@ const nextConfig = {
       { source: '/brands/stafford-primary.png', destination: '/smc-logo.png',     permanent: true },
       { source: '/brands/abando.png',           destination: '/abando-logo.png',  permanent: true },
 
-      // (optional) general brands folder passthrough if you use /brand/*
+      // brands folder passthrough (optional)
       { source: '/brands/:path*', destination: '/brand/:path*', permanent: true },
+
+      // keep your existing soft redirects if desired
+      { source: '/start',   destination: '/abando#start', permanent: false },
+      { source: '/abando',  destination: '/abando',       permanent: false },
+      { source: '/contact', destination: '/contact',      permanent: false },
     ];
   },
 
@@ -29,4 +31,4 @@ const nextConfig = {
   outputFileTracingRoot: __dirname,
 };
 
-export default nextConfig;
+module.exports = nextConfig;
