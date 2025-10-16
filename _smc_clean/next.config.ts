@@ -16,4 +16,7 @@ const __cfg:any = __cfg as any;
 __cfg.outputFileTracingRoot = __dirname;
 __cfg.eslint = Object.assign({}, __cfg.eslint, { ignoreDuringBuilds: true });
 __cfg.typescript = Object.assign({}, __cfg.typescript, { ignoreBuildErrors: true });
+__cfg.redirects = async () => ([
+  { source: '/brands/:path*', destination: '/logos/:path*', permanent: true },
+]);
 export default __cfg;
