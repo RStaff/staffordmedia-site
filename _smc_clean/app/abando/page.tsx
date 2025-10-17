@@ -5,7 +5,7 @@ export default function AbandoPage() {
   return (
     <div className="mt-8">
 <div className="flex items-center gap-2 text-base text-brand-gray">
-  <img src="/abando-logo.svg" alt="Abando" width="24" height="24" className="inline-block align-[-2px]" />
+  <img src="/abando-logo.svg" alt="Abando" width={24} height={24} className="inline-block align-[-2px]" />
   <span>Abando</span>
 </div>
 
