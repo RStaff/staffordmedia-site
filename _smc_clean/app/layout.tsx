@@ -14,7 +14,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="brand-v1" data-brand-version="brandv-20251010172040">
         <header className="max-w-6xl mx-auto px-6 py-5 flex items-center gap-3">
           <Link href="/" className="flex items-center gap-2">
-            <img src="/smc-logo.svg" alt="SMC" width={28} height={28} />
+            <img src="/smc-logo.png" alt="SMC" width={28} height={28} />
             <div className="font-semibold text-white">Stafford Media Consulting™</div>
           </Link>
           <nav className="ml-auto flex items-center gap-6 text-sm text-brand-gray">

@@ -7,7 +7,7 @@ const nextConfig = {
   async redirects() {
     return [
       // legacy logo URLs → canonical files
-      { source: '/logos/stafford-primary.png', destination: '/smc-logo.png',     permanent: true },
+      { source: "/smc-logo.png", destination: '/smc-logo.png',     permanent: true },
       { source: '/logos/abando.png',            destination: '/abando-logo.png', permanent: true },
 
       // older "/brands/*" forms
