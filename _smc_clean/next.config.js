@@ -15,13 +15,14 @@ const nextConfig = {
       { source: '/brands/abando.png',           destination: '/abando-logo.png',  permanent: true },
       { source: '/brands/:path*',               destination: '/brand/:path*',     permanent: true },
 
-      // simple page redirects
+      // simple page redirects (keep if you use them)
       { source: '/start',   destination: '/abando#start', permanent: false },
       { source: '/abando',  destination: '/abando',       permanent: false },
       { source: '/contact', destination: '/contact',      permanent: false },
     ];
   },
 
+  // helps Render’s file tracing in nested setups
   outputFileTracingRoot: __dirname,
 };
 
