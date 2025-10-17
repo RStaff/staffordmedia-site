@@ -1,0 +1,51 @@
+name: CI (_smc_clean)
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-smc:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: _smc_clean
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Use Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: _smc_clean/package-lock.json
+
+      - name: Cache node_modules (extra)
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.npm
+            _smc_clean/node_modules
+          key: ${{ runner.os }}-node20-${{ hashFiles('_smc_clean/package-lock.json') }}
+
+      - name: Install deps
+        run: npm ci --include=optional --no-audit --no-fund
+
+      - name: Build
+        run: npm run build
+
+      - name: Assert .next exists
+        run: test -d .next || { echo "::error::.next not found after build"; exit 1; }
+
+      - name: Upload .next artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: next-build-smc
+          path: _smc_clean/.next
+          if-no-files-found: error
