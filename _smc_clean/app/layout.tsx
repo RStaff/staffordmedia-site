@@ -14,13 +14,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="brand-v1" data-brand-version="brandv-20251010172040">
         <header className="max-w-6xl mx-auto px-6 py-5 flex items-center gap-3">
           <Link href="/" className="flex items-center gap-2">
-            <img src="/smc-logo.svg" alt="SMC" width="28" height="28" />
+            <img src="/smc-logo.svg" alt="SMC" width={28} height={28} />
             <div className="font-semibold text-white">Stafford Media Consulting™</div>
           </Link>
           <nav className="ml-auto flex items-center gap-6 text-sm text-brand-gray">
             <Link href="/">Home</Link>
             <Link href="/about">About</Link>
-            <Link href="/abando" className="flex items-center gap-1"><img src="/abando-logo.svg?v=20251011115754" width="18" height="18" class="h-5 w-5 align-\[-2px\]" alt="Abando" width="18" height="18" className="inline-block align-[-2px]" /><span>Abando</span></Link>
+            <Link href="/abando" className="flex items-center gap-1"><img src="/abando-logo.png" width={18} height={18} className="h-5 w-5 align-\[-2px\]" alt="Abando" className="inline-block align-[-2px]" /><span>Abando</span></Link>
             <Link href="/contact" className="font-semibold">Book a Strategy Call</Link>
           </nav>
         </header>
