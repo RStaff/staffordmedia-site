@@ -32,11 +32,16 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
  </Link>
  
  <nav className="ml-auto flex items-center gap-6 text-sm text-brand-gray">
- <Link href="/">Home</Link>
- <Link href="/about">About</Link>
- <Link href="/abando" className="flex items-center gap-1"><img src="/abando-logo.png" width={18} height={18} className="h-5 w-5 align-\[-2px\]" alt="Abando" /><span>Abando</span></Link>
- <Link href="/contact" className="font-semibold">Book a Strategy Call</Link>
- </nav>
+<a href="/">Home</a>
+  <a href="/about">About</a>
+  <a href="/services">Services</a>
+  <a href="/testimonials">Testimonials</a>
+  <a href="https://www.abando.ai" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1">
+    <img src="/abando-logo.png" width="18" height="18" className="h-5 w-5 align-[-2px]" alt="Abando" />
+    <span>Abando</span>
+  </a>
+  <a href="/contact" className="font-semibold">Book a Strategy Call</a>
+</nav>
  </header>
  <main className="max-w-6xl mx-auto px-6 pb-16">{children}</main>
  <footer className="max-w-6xl mx-auto px-6 pb-10 text-sm text-brand-gray">
