@@ -42,7 +42,7 @@ a:hover{text-decoration:underline;}
 /* smc-logo visibility */
 .header-light img.smc-logo {
   /* Force “dark” appearance so a light/white PNG shows on white headers */
-  filter: brightness(0);
+  filter: none;
 }
 img.smc-logo {
   height: 28px;
@@ -54,7 +54,7 @@ img.smc-logo {
 /* smc-logo visibility */
 .header-light img.smc-logo {
   /* If your SMC logo PNG is white-on-transparent, this makes it visible on a white header */
-  filter: brightness(0);
+  filter: none;
 }
 img.smc-logo {
   height: 28px;
@@ -66,7 +66,7 @@ img.smc-logo {
 /* smc-logo visibility */
 .header-light img.smc-logo {
   /* White logo on white header: make it visible */
-  filter: brightness(0);
+  filter: none;
 }
 img.smc-logo {
   height: 28px;
@@ -78,7 +78,7 @@ img.smc-logo {
 /* smc-logo visibility */
 .header-light img.smc-logo {
   /* Make a white logo visible on light background */
-  filter: brightness(0);
+  filter: none;
 }
 img.smc-logo {
   height: 28px;
@@ -90,7 +90,7 @@ img.smc-logo {
 /* smc-logo visibility */
 .header-light img.smc-logo {
   /* Make a white logo visible on light background */
-  filter: brightness(0);
+  filter: none;
 }
 img.smc-logo {
   height: 28px;
