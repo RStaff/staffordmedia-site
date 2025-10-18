@@ -8,7 +8,21 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
  <head>
  <meta name="theme-color" content="#0B1220" />
  <style>{`:root{--brand-bg:#0B1220;--brand-fg:#E8ECF1;--brand-card:#111A2C;--brand-border:#273245;--brand-accent:#F2C24B;--brand-gray:#A8B0BD}html,body{background:var(--brand-bg);color:var(--brand-fg);}`}</style>
- </head>
+ 
+<meta name="description" content="SMC helps ecommerce teams unlock 4× ROI in days—no redesigns, no downtime." />
+
+<meta property="og:title" content="Stafford Media Consulting" />
+
+<meta property="og:description" content="Unlock 4× ROI in days with Abando.ai and SMC." />
+
+<meta property="og:type" content="website" />
+
+<meta property="og:url" content="https://www.staffordmedia.ai/" />
+
+<meta property="og:image" content="https://www.staffordmedia.ai/smc-logo.v2.png" />
+
+<meta name="twitter:card" content="summary_large_image" />
+</head>
  <body className="brand-v1" data-brand-version="brandv-20251010172040">
  <header className="max-w-6xl mx-auto px-6 py-5 flex items-center gap-3">
  
