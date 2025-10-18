@@ -14,7 +14,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <header className="max-w-6xl mx-auto px-6 py-5 flex items-center gap-3">
           
     <Link href="/" className="flex items-center gap-2">
-      <Image src="/smc-logo.v2.png" alt="SMC" width={28} height={28} className="smc-logo" priority / unoptimized placeholder="empty" />
+      <img src="/smc-logo.v2.png" alt="SMC" width={28} height={28} className="smc-logo" / / />
       <div className="font-semibold text-white">Stafford Media Consulting™</div>
     </Link>
   
