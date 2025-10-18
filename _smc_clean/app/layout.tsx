@@ -11,8 +11,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <meta name="theme-color" content="#0B1220" />
         <style>{`:root{--brand-bg:#0B1220;--brand-fg:#E8ECF1;--brand-card:#111A2C;--brand-border:#273245;--brand-accent:#F2C24B;--brand-gray:#A8B0BD}html,body{background:var(--brand-bg);color:var(--brand-fg);}`}</style>
       </head>
-      <body className="brand-v1 header-light" data-brand-version="brandv-20251010172040">
-        <header className="max-w-6xl mx-auto px-6 py-5 flex items-center gap-3 header-light">
+      <body className="brand-v1" data-brand-version="brandv-20251010172040">
+        <header className="max-w-6xl mx-auto px-6 py-5 flex items-center gap-3">
           
     <Link href="/" className="flex items-center gap-2">
       <img src="/smc-logo.png" alt="SMC" width={28} height={28} className="smc-logo" />
