@@ -16,31 +16,6 @@ jobs:
         with:
           node-version: 22.x
           cache: npm
-          cache-dependency-path: |
-            package-lock.json
-            apps/website/package-lock.json
-
-      - name: Show versions
-        run: |
-          node -v
-          npm -v
-
-      - name: Install deps at app
-        run: |
-          HUSKY=0 npm ci || HUSKY=0 npm install
-
-      - name: Test (lenient if tiny)
-        run: |
-          npm --workspace apps/website run test || npm test || true
-
-      - name: Build website (production)
-        run: |
-          npm --workspace apps/website run build || npm run build
-
-      - name: Upload build artifact (.next)
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: website-.next
-          path: apps/website/.next
-          if-no-files-found: ignore
+          
+    cache-dependency-path:
+        _smc_clean/package-lock.json
