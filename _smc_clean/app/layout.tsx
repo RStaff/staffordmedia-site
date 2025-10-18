@@ -1,8 +1,6 @@
 import "./globals.css";
 import Image from "next/image";
 import Link from "next/link";
-import smcLogo from '../public/smc-logo.png'
-
 export const metadata = { title: "Stafford Media Consulting", description: "SMC website" };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -16,7 +14,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <header className="max-w-6xl mx-auto px-6 py-5 flex items-center gap-3">
           
     <Link href="/" className="flex items-center gap-2">
-      <Image src={smcLogo} alt="SMC" width={28} height={28} className="smc-logo" priority />
+      <Image src="/smc-logo.v2.png" className="smc-logo" alt="SMC" width={28} height={28} priority unoptimized /> <Image src={smcLogo} alt="SMC" width={28} height={28} className="smc-logo" priority />
       <div className="font-semibold text-white">Stafford Media Consulting™</div>
     </Link>
   
