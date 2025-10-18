@@ -38,3 +38,39 @@ a:hover{text-decoration:underline;}
   padding:.65rem 1.0rem; border-radius:.75rem;
   border:1px solid var(--brand-border);
 }
+
+/* smc-logo visibility */
+.header-light img.smc-logo {
+  /* Force “dark” appearance so a light/white PNG shows on white headers */
+  filter: brightness(0);
+}
+img.smc-logo {
+  height: 28px;
+  width: 28px;
+  display: inline-block;
+  vertical-align: -2px;
+}
+
+/* smc-logo visibility */
+.header-light img.smc-logo {
+  /* If your SMC logo PNG is white-on-transparent, this makes it visible on a white header */
+  filter: brightness(0);
+}
+img.smc-logo {
+  height: 28px;
+  width: 28px;
+  display: inline-block;
+  vertical-align: -2px;
+}
+
+/* smc-logo visibility */
+.header-light img.smc-logo {
+  /* White logo on white header: make it visible */
+  filter: brightness(0);
+}
+img.smc-logo {
+  height: 28px;
+  width: 28px;
+  display: inline-block;
+  vertical-align: -2px;
+}
