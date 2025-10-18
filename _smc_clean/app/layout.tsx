@@ -11,10 +11,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <meta name="theme-color" content="#0B1220" />
         <style>{`:root{--brand-bg:#0B1220;--brand-fg:#E8ECF1;--brand-card:#111A2C;--brand-border:#273245;--brand-accent:#F2C24B;--brand-gray:#A8B0BD}html,body{background:var(--brand-bg);color:var(--brand-fg);}`}</style>
       </head>
-      <body "className="brand-v1 header-light"" data-brand-version="brandv-20251010172040">
+      <body className="brand-v1 header-light" data-brand-version="brandv-20251010172040">
         <header className="max-w-6xl mx-auto px-6 py-5 flex items-center gap-3 header-light">
           <Link href="/" className="flex items-center gap-2">
-            <img src="/smc-logo.png" alt="SMC" width={28} height={28} className="smc-logo">>
+            <img src="/smc-logo.png" alt="SMC" width={28} height={28} className="smc-logo" />
             <div className="font-semibold text-white">Stafford Media Consulting™</div>
           </Link>
           <nav className="ml-auto flex items-center gap-6 text-sm text-brand-gray">
