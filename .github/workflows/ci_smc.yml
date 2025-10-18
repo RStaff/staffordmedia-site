@@ -10,42 +10,42 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build-smc:
+  build:
     runs-on: ubuntu-latest
     defaults:
       run:
+        shell: bash
         working-directory: _smc_clean
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Use Node 20
+      - name: Setup Node (20.x) with npm cache
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
-          cache: 'npm'
+          node-version: 20.x
+          cache: npm
           cache-dependency-path: _smc_clean/package-lock.json
 
-      - name: Cache node_modules (extra)
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.npm
-            _smc_clean/node_modules
-          key: ${{ runner.os }}-node20-${{ hashFiles('_smc_clean/package-lock.json') }}
+      - name: Versions
+        run: |
+          node -v
+          npm -v
 
-      - name: Install deps
+      - name: Install
+        env:
+          HUSKY: "0"
         run: npm ci --include=optional --no-audit --no-fund
 
       - name: Build
         run: npm run build
 
-      - name: Assert .next exists
+      - name: Assert output
         run: test -d .next || { echo "::error::.next not found after build"; exit 1; }
 
-      - name: Upload .next artifact
+      - name: Upload .next
         uses: actions/upload-artifact@v4
         with:
-          name: next-build-smc
+          name: next-build
           path: _smc_clean/.next
           if-no-files-found: error
