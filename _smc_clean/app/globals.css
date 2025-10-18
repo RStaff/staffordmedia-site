@@ -86,3 +86,15 @@ img.smc-logo {
   display: inline-block;
   vertical-align: -2px;
 }
+
+/* smc-logo visibility */
+.header-light img.smc-logo {
+  /* Make a white logo visible on light background */
+  filter: brightness(0);
+}
+img.smc-logo {
+  height: 28px;
+  width: 28px;
+  display: inline-block;
+  vertical-align: -2px;
+}
