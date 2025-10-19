@@ -6,16 +6,10 @@ services:
     envVars:
       - key: NODE_VERSION
         value: 20.19.5
-      # Optional public config you can use in pages (uncomment + set if you want)
-      # - key: NEXT_PUBLIC_CALENDLY_URL
-      #   value: https://calendly.com/YOUR_HANDLE
-      # - key: NEXT_PUBLIC_CONTACT_EMAIL
-      #   value: info@staffordmedia.ai
+      - key: NEXT_TELEMETRY_DISABLED
+        value: "1"
     buildCommand: >
       npm ci --include=optional --no-audit --no-fund &&
-      npm run build &&
-      mkdir -p .next/standalone/.next &&
-      cp -R .next/static .next/standalone/.next/static &&
-      cp -R public .next/standalone/public
+      npm run build
     startCommand: node .next/standalone/server.js
     autoDeploy: true
