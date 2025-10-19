@@ -4,8 +4,9 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start -p ${PORT:-10000}",
-    "prebuild": "node scripts/verify-build.mjs"
+    "start": "node .next/standalone/server.js",
+    "prebuild": "node scripts/verify-build.mjs",
+    "postbuild": "node scripts/fix-standalone.js"
   },
   "dependencies": {
     "next": "15.5.4",
