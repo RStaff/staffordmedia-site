@@ -4,6 +4,7 @@
   "version": "1.0.0",
   "description": "Root wrapper so Render can build the app in _smc_clean",
   "scripts": {
-    "build": "node scripts/render-root-build.js"
+    "build": "node scripts/render-root-build.js",
+    "start": "node .next/standalone/server.js"
   }
 }
