@@ -5,7 +5,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start -p ${PORT:-10000}",
-    "prebuild": "node --loader=module _smc_clean/scripts/verify-build.mjs"
+    "prebuild": "node scripts/verify-build.mjs"
   },
   "dependencies": {
     "next": "15.5.4",
