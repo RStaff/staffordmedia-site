@@ -1,56 +1,45 @@
-// Build inside _smc_clean and copy the standalone output to repo root
 const { execSync } = require('node:child_process');
-const { existsSync } = require('node:fs');
-const { mkdirSync } = require('node:fs');
-const { cpSync } = require('node:fs');
+const { existsSync, mkdirSync, cpSync } = require('node:fs');
 const path = require('node:path');
 
 const ROOT = process.cwd();
 const APP = path.join(ROOT, '_smc_clean');
 
-// safety checks
-if (!existsSync(path.join(APP, 'package.json'))) {
-  console.error('Missing _smc_clean/package.json');
-  process.exit(1);
-}
-
-function run(cmd, cwd = ROOT) {
-  console.log(`\n$ ${cmd}`);
+function run(cmd, cwd = APP) {
+  console.log(`\n$ (in ${cwd.replace(ROOT,'./')}) ${cmd}`);
   execSync(cmd, { stdio: 'inherit', cwd });
 }
 
-// 1) Clean, deterministic install in _smc_clean (uses existing lockfile)
-run('npm ci --include=optional --no-audit --no-fund', APP);
+if (!existsSync(path.join(APP, 'package.json'))) {
+  console.error('❌ Missing _smc_clean/package.json');
+  process.exit(1);
+}
 
-// 2) Build Next in _smc_clean
-run('npm run build', APP);
+run('npm ci --include=optional --no-audit --no-fund');   // install in _smc_clean
+run('npm run build');                                    // next build in _smc_clean
 
-// 3) Sync the standalone layout to repo root so existing Render cmds keep working
+// Copy standalone layout to repo root so start command is stable
 const SRC_STANDALONE = path.join(APP, '.next', 'standalone');
 const SRC_STATIC     = path.join(APP, '.next', 'static');
 const SRC_PUBLIC     = path.join(APP, 'public');
 
 const DEST_STANDALONE = path.join(ROOT, '.next', 'standalone');
 const DEST_INNER_NEXT = path.join(DEST_STANDALONE, '.next');
-const DEST_STATIC     = path.join(DEST_INNER_NEXT, 'static');
-const DEST_PUBLIC     = path.join(DEST_STANDALONE, 'public');
 
-// ensure dirs
+if (!existsSync(SRC_STANDALONE)) {
+  console.error('❌ Build completed but .next/standalone not found');
+  process.exit(2);
+}
+
 mkdirSync(path.join(ROOT, '.next'), { recursive: true });
 mkdirSync(DEST_INNER_NEXT, { recursive: true });
 
-// copy the standalone server and tree
 cpSync(SRC_STANDALONE, DEST_STANDALONE, { recursive: true });
-
-// ensure static + public present at expected paths (idempotent)
 if (existsSync(SRC_STATIC)) {
-  mkdirSync(DEST_STATIC, { recursive: true });
-  cpSync(SRC_STATIC, DEST_STATIC, { recursive: true });
+  cpSync(SRC_STATIC, path.join(DEST_INNER_NEXT, 'static'), { recursive: true });
 }
 if (existsSync(SRC_PUBLIC)) {
-  mkdirSync(DEST_PUBLIC, { recursive: true });
-  cpSync(SRC_PUBLIC, DEST_PUBLIC, { recursive: true });
+  cpSync(SRC_PUBLIC, path.join(DEST_STANDALONE, 'public'), { recursive: true });
 }
 
-console.log('\n✅ Standalone synced to repo root: .next/standalone');
-console.log('   You can run: node .next/standalone/server.js');
+console.log('\n✅ Built in _smc_clean and synced .next/standalone to repo root.');
