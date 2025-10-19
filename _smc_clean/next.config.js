@@ -1,6 +1,5 @@
 /** CommonJS Next.js config for Render */
 const nextConfig = {
-  output: 'standalone',
   assetPrefix: '/',
   images: { unoptimized: true },
 

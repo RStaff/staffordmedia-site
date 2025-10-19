@@ -4,7 +4,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start -p ${PORT:-10000}",
+    "start": "next start -p $PORT",
     "prebuild": "node --loader=module _smc_clean/scripts/verify-build.mjs"
   },
   "dependencies": {
