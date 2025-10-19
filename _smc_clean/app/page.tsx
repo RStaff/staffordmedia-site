@@ -1,9 +1,14 @@
 import Image from "next/image";
 import Link from "next/link";
+import HomeAbandoSection from "@/components/HomeAbandoSection";
 
 export default function Page() {
   return (
-    <div className="mt-8">
+    
+    {/* BEGIN: AbandoTeaser (managed) */}
+      <HomeAbandoSection />
+      {/* END: AbandoTeaser */}
+<div className="mt-8">
       <div className="flex items-center gap-2 text-base text-brand-gray">
         <Image src="/abando-logo.png?v=assetv-png-20251011113708" alt="Abando" width={18} height={18} />
         <span>Abando</span>
