@@ -3,10 +3,12 @@ import Link from "next/link";
 import HomeAbandoSection from "@/components/HomeAbandoSection";
 
 export default function Page() {
-  return (
-  <>
+  return (<>
   
-  <>
+    {/* BEGIN: AbandoTeaser (managed) */}
+    <HomeAbandoSection />
+  {/* END: AbandoTeaser */}
+<>
     
   
   
@@ -53,6 +55,5 @@ export default function Page() {
       </div>
       </>
   
-  </>
-);
+  </>);
 }
