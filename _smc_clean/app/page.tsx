@@ -5,9 +5,7 @@ import HomeAbandoSection from "@/components/HomeAbandoSection";
 export default function Page() {
   return (
   <>
-  {/* BEGIN: AbandoTeaser (managed) */}
-    <HomeAbandoSection />
-  {/* END: AbandoTeaser */}
+  
   <>
     
   
