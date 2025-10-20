@@ -5,7 +5,8 @@ import HomeAbandoSection from "@/components/HomeAbandoSection";
 export default function Page() {
   return (
     
-    {/* BEGIN: AbandoTeaser (managed) */}
+      <>
+{/* BEGIN: AbandoTeaser (managed) */}
       <HomeAbandoSection />
       {/* END: AbandoTeaser */}
 <div className="mt-8">
@@ -49,5 +50,6 @@ export default function Page() {
         </section>
       </div>
     </div>
-  );
+    </>
+);
 }
