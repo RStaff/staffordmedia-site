@@ -1,12 +1,6 @@
 {
   "compilerOptions": {
-<<<<<<< HEAD
-<<<<<<< HEAD
     "target": "ES2022",
-    "module": "ESNext",
-    "moduleResolution": "Bundler",
-=======
-    "target": "ES2017",
     "lib": [
       "dom",
       "dom.iterable",
@@ -14,94 +8,48 @@
     ],
     "allowJs": true,
     "skipLibCheck": true,
->>>>>>> dcc2fa6 (fix(root+website): make @ alias resolve from root & apps; add fallback Section)
     "strict": true,
-<<<<<<< HEAD
-    "skipLibCheck": true,
-=======
     "noEmit": true,
     "esModuleInterop": true,
-    "module": "esnext",
+    "module": "ESNext",
     "moduleResolution": "Bundler",
->>>>>>> c952e30 (fix(ts): enforce Bundler moduleResolution + robust @ paths; ensure Section fallback (root+app))
     "resolveJsonModule": true,
-<<<<<<< HEAD
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
     "baseUrl": ".",
     "paths": {
       "@/*": [
-<<<<<<< HEAD
-<<<<<<< HEAD
         "src/*",
-        "*"
+        "app/*",
+        "components/*",
+        "lib/*"
       ]
     }
-  }
-=======
-        "./src/*",
-=======
->>>>>>> c952e30 (fix(ts): enforce Bundler moduleResolution + robust @ paths; ensure Section fallback (root+app))
-        "src/*",
-        "apps/website/src/*",
-        "apps/*/src/*"
-      ]
-    },
-=======
-    "isolatedModules": true,
-    "jsx": "preserve",
-    "incremental": true,
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ],
->>>>>>> b90ac2b (build: app-local @ alias; remove root @; place lib/config under apps/website/src)
-    "baseUrl": "."
   },
   "include": [
-    "**/*.ts",
-    "**/*.tsx",
+    "next-env.d.ts",
     ".next/types/**/*.ts",
-    "apps/website/app",
-    "apps/website/src",
-    "next-env.d.ts"
+    "**/*.ts",
+    "**/*.tsx"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    ".next",
+    "dist",
+    "_smc_clean",
+    "_archive*",
+    ".archive*",
+    "archive_*",
+    "apps/website",
+    "apps/website/_smc_clean",
+    "apps/website/_archive*",
+    "apps/website/.archive*",
+    "apps/website/archive_*"
   ]
->>>>>>> dcc2fa6 (fix(root+website): make @ alias resolve from root & apps; add fallback Section)
-=======
-    "target": "ES2022",
-    "module": "ESNext",
-    "moduleResolution": "Bundler",
-    "strict": true,
-    "skipLibCheck": true,
-    "resolveJsonModule": true,
-    "esModuleInterop": true,
-<<<<<<< HEAD
-    "forceConsistentCasingInFileNames": true
-  }
->>>>>>> 0e681c9 (fix(website): align tsconfig for Next (Bundler, jsx preserve, vitest types) + robust @ alias; add Section + lib/config)
-=======
-    "forceConsistentCasingInFileNames": true,
-    "lib": ["dom", "dom.iterable", "esnext"],
-    "allowJs": true,
-    "noEmit": true,
-    "incremental": true,
-    "isolatedModules": true,
-    "jsx": "preserve",
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ],
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["src/*", "app/*", "components/*", "lib/*"]
-    }
-  },
-  "include": ["next-env.d.ts", ".next/types/**/*.ts", "**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules"]
->>>>>>> 2ea91aa (PROD: activate ShopiFixer + audit-result routes for live site)
 }
