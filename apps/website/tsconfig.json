@@ -19,6 +19,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       "@/*": ["./*", "./src/*"]
     },
     "types": ["vitest/globals", "node", "@testing-library/jest-dom"],
@@ -92,6 +93,9 @@
 >>>>>>> 7a98f0c (chore(ci): finalize guardrails + husky modernization)
 =======
       "@/*": ["app/*", "components/*", "src/*", "*"]
+=======
+      "@/*": ["src/*", "app/*", "components/*", "lib/*"]
+>>>>>>> 2ea91aa (PROD: activate ShopiFixer + audit-result routes for live site)
     },
     "plugins": [
       {

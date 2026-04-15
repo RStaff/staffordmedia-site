@@ -1,2 +1,38 @@
+<<<<<<< HEAD
 /* minimal global styles to satisfy Next import */
 :root { --smc-placeholder: 1; }
+=======
+@import "tailwindcss";
+
+:root {
+  color-scheme: dark;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+  background: #0a0f2a;
+  color: white;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+a {
+  text-decoration: none;
+}
+
+.container-max {
+  width: min(1120px, calc(100% - 2rem));
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.min-h-hero {
+  min-height: calc(100vh - 96px);
+}
+>>>>>>> 2ea91aa (PROD: activate ShopiFixer + audit-result routes for live site)
