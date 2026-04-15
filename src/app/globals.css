@@ -1,15 +1,182 @@
 @import "tailwindcss";
 
-/* Minimal global styles required by the active Next app */
 :root {
-  --smc-placeholder: 1;
+  --smc-bg: #07111e;
+  --smc-bg-deep: #040913;
+  --smc-surface: rgba(12, 20, 34, 0.78);
+  --smc-surface-strong: rgba(8, 14, 25, 0.94);
+  --smc-surface-soft: rgba(255, 255, 255, 0.03);
+  --smc-border: rgba(148, 163, 184, 0.16);
+  --smc-border-strong: rgba(255, 255, 255, 0.12);
+  --smc-text: #f8fafc;
+  --smc-muted: #9fb0c7;
+  --smc-muted-strong: #c7d2e2;
+  --smc-accent: #ffe169;
+  --smc-shopifixer-green: #34d399;
+  --smc-shopifixer-violet: #a78bfa;
+  --smc-radius-card: 24px;
+  --smc-radius-button: 14px;
+  --smc-header-height: 76px;
+  --smc-max-width: 1200px;
+  --smc-section-pad-y: 72px;
+  --smc-page-pad-x: 24px;
+  --smc-input-height: 52px;
+  --smc-button-height: 52px;
+  --smc-hero-size: 42px;
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --smc-section-pad-y: 96px;
+    --smc-page-pad-x: 40px;
+    --smc-hero-size: 64px;
+  }
 }
 
 html,
 body {
   min-height: 100%;
+  background:
+    radial-gradient(circle at top left, rgba(52, 211, 153, 0.1), transparent 26%),
+    radial-gradient(circle at top right, rgba(167, 139, 250, 0.12), transparent 22%),
+    linear-gradient(180deg, var(--smc-bg) 0%, #091425 48%, var(--smc-bg-deep) 100%);
+  color: var(--smc-text);
+  scroll-behavior: smooth;
 }
 
 body {
   margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.site-shell {
+  width: min(100%, var(--smc-max-width));
+  margin-inline: auto;
+  padding-inline: var(--smc-page-pad-x);
+}
+
+.section-pad {
+  padding-block: var(--smc-section-pad-y);
+}
+
+.hero-copy-max {
+  max-width: 560px;
+}
+
+.premium-panel {
+  border: 1px solid var(--smc-border);
+  border-radius: var(--smc-radius-card);
+  background: linear-gradient(180deg, rgba(12, 20, 34, 0.96), rgba(7, 12, 22, 0.9));
+  box-shadow: 0 30px 120px rgba(0, 0, 0, 0.3);
+}
+
+.premium-panel-soft {
+  border: 1px solid var(--smc-border);
+  border-radius: var(--smc-radius-card);
+  background: var(--smc-surface);
+  backdrop-filter: blur(18px);
+}
+
+.eyebrow {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+}
+
+.hero-title {
+  font-size: var(--smc-hero-size);
+  line-height: 0.98;
+  letter-spacing: -0.04em;
+  font-weight: 650;
+}
+
+.body-lg {
+  font-size: 18px;
+  line-height: 1.8;
+  color: var(--smc-muted);
+}
+
+.body-md {
+  font-size: 16px;
+  line-height: 1.75;
+  color: var(--smc-muted);
+}
+
+.smc-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--smc-button-height);
+  padding-inline: 24px;
+  border-radius: var(--smc-radius-button);
+  border: 1px solid transparent;
+  font-size: 15px;
+  font-weight: 650;
+  transition: 180ms ease;
+}
+
+.smc-button:hover {
+  transform: translateY(-1px);
+}
+
+.smc-button-primary {
+  background: var(--smc-accent);
+  color: #09111e;
+}
+
+.smc-button-primary:hover {
+  filter: brightness(1.03);
+}
+
+.smc-button-secondary {
+  border-color: var(--smc-border-strong);
+  color: var(--smc-text);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.smc-button-secondary:hover {
+  border-color: rgba(255, 255, 255, 0.28);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.smc-field {
+  width: 100%;
+  min-height: var(--smc-input-height);
+  border-radius: 14px;
+  border: 1px solid var(--smc-border);
+  background: rgba(4, 9, 19, 0.82);
+  color: var(--smc-text);
+  padding: 0 16px;
+  font-size: 15px;
+  outline: none;
+}
+
+.smc-field::placeholder {
+  color: rgba(248, 250, 252, 0.35);
+}
+
+.smc-field:focus {
+  border-color: rgba(255, 225, 105, 0.5);
+  box-shadow: 0 0 0 3px rgba(255, 225, 105, 0.12);
+}
+
+.offer-grid {
+  display: grid;
+  gap: 24px;
+}
+
+@media (min-width: 1024px) {
+  .offer-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }

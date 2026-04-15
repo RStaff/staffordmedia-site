@@ -5,31 +5,41 @@ import Image from "next/image";
 
 export default function Header() {
   return (
-    <header className="bg-transparent">
-      <div className="mx-auto max-w-7xl px-6 py-5 flex items-center justify-between">
-        {/* Brand (logo + wordmark) */}
+    <header className="sticky top-0 z-50 border-b border-white/10 bg-slate-950/82 backdrop-blur-xl">
+      <div
+        className="site-shell flex items-center justify-between gap-6"
+        style={{ minHeight: "var(--smc-header-height)" }}
+      >
         <Link href="/" className="flex items-center gap-4">
           <Image
             src="/smc-logo.png"
             alt="Stafford Media Consulting logo"
-            className="h-8 sm:h-10 md:h-12 lg:h-14 xl:h-16 w-auto"
+            width={200}
+            height={200}
             priority
-           width={200} height={200} />
-          <span className="text-white font-semibold tracking-tight">
-            Stafford Media Consulting™
-          </span>
+            className="h-9 w-auto md:h-11"
+          />
+          <div className="hidden sm:block">
+            <p className="text-sm font-semibold tracking-tight text-white">Stafford Media Consulting™</p>
+            <p className="text-[11px] uppercase tracking-[0.22em] text-slate-500">Parent company</p>
+          </div>
         </Link>
 
-        {/* Nav */}
-        <nav className="flex items-center gap-8 text-sm">
-          <Link href="/" className="text-white/90 hover:underline">Home</Link>
-          <Link href="/about" className="text-white/90 hover:underline">About</Link>
-          <Link href="/abando" className="text-white/90 hover:underline">Abando</Link>
-          <Link
-            href="/contact"
-            className="text-white font-semibold px-3 py-2 rounded-md hover:bg-white/5"
-          >
-            Book a Strategy Call
+        <nav className="flex items-center gap-3 text-sm md:gap-6">
+          <Link href="/" className="text-white/80 transition hover:text-white">
+            Home
+          </Link>
+          <Link href="/shopifixer" className="text-white/80 transition hover:text-white">
+            ShopiFixer
+          </Link>
+          <Link href="/#abando" className="text-white/80 transition hover:text-white">
+            Abando
+          </Link>
+          <Link href="/services" className="text-white/80 transition hover:text-white">
+            Services
+          </Link>
+          <Link href="/contact" className="smc-button smc-button-secondary hidden md:inline-flex">
+            Book Strategy Call
           </Link>
         </nav>
       </div>
