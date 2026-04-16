@@ -142,7 +142,7 @@ export default async function AuditResultPage({ searchParams }: PageProps) {
             This result reflects the strongest issue surfaced by the ShopiFixer engine for your store, with the first
             recommended move preserved from the same canonical payload used across the audit flow.
           </p>
-          <div className="mt-4 inline-flex max-w-full items-center gap-3 rounded-2xl border border-black/8 bg-white px-4 py-3 text-sm text-slate-900 shadow-sm">
+          <div className="mt-5 inline-flex max-w-full items-center gap-3 rounded-2xl border border-white/10 bg-slate-950/90 px-4 py-3 text-sm text-slate-100 shadow-[inset_0_1px_0_rgba(255,255,255,0.04),0_8px_30px_rgba(0,0,0,0.18)]">
             <Image
               src="/brand/shopify_partner-logo-white.png"
               alt="Official Shopify Partner"
@@ -150,7 +150,7 @@ export default async function AuditResultPage({ searchParams }: PageProps) {
               height={48}
               className="h-5 w-auto shrink-0"
             />
-            <span className="whitespace-nowrap text-sm font-medium text-slate-700">Official Shopify Partner</span>
+            <span className="whitespace-nowrap text-sm font-medium text-slate-200">Official Shopify Partner</span>
           </div>
 
           <div className="mt-6 grid gap-4 md:grid-cols-3">
@@ -187,9 +187,19 @@ export default async function AuditResultPage({ searchParams }: PageProps) {
                 This page reflects the same canonical ShopiFixer payload used to generate the audit email. The goal is
                 to make the strongest issue clear, preserve the recommended next move, and give operators a cleaner path to action.
               </p>
+              <div className="mt-5 inline-flex max-w-full items-center gap-3 rounded-2xl border border-white/10 bg-slate-950/90 px-4 py-3 text-sm text-slate-100 shadow-[inset_0_1px_0_rgba(255,255,255,0.04),0_8px_30px_rgba(0,0,0,0.18)]">
+                <Image
+                  src="/brand/shopify_partner-logo-white.png"
+                  alt="Official Shopify Partner"
+                  width={220}
+                  height={48}
+                  className="h-4 w-auto shrink-0"
+                />
+                <span className="text-xs font-medium uppercase tracking-[0.18em] text-slate-200">Official Shopify Partner</span>
+              </div>
             </div>
 
-            <div className="space-y-3">
+            <div className="space-y-3 pt-1">
               <div className="rounded-2xl border border-slate-800 bg-slate-950/60 p-4 text-sm font-medium text-slate-200">
                 Canonical payload shared across email and page
               </div>
@@ -198,16 +208,6 @@ export default async function AuditResultPage({ searchParams }: PageProps) {
               </div>
               <div className="rounded-2xl border border-slate-800 bg-slate-950/60 p-4 text-sm font-medium text-slate-200">
                 Recommended action preserved without reinterpretation
-              </div>
-              <div className="inline-flex items-center gap-3 rounded-2xl border border-black/8 bg-white px-4 py-3 text-sm text-slate-900 shadow-sm">
-                <Image
-                  src="/brand/shopify_partner-logo-white.png"
-                  alt="Official Shopify Partner"
-                  width={220}
-                  height={48}
-                  className="h-4 w-auto shrink-0"
-                />
-                <span className="text-xs font-medium uppercase tracking-[0.18em] text-slate-700">Official Shopify Partner</span>
               </div>
             </div>
           </div>

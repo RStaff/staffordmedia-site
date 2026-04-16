@@ -37,34 +37,36 @@ export default function HomeHero() {
         </div>
 
         <div className="premium-panel p-6 md:p-8">
-          <div className="flex flex-wrap items-center gap-4">
-            <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-3">
+          <div className="flex flex-col gap-5">
+            <div className="flex flex-wrap items-center gap-4">
+              <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-3">
+                <Image
+                  src="/brand/smc-logo.inline.png"
+                  alt="Stafford Media Consulting"
+                  width={64}
+                  height={64}
+                  className="h-12 w-auto"
+                />
+              </div>
+              <div className="space-y-2">
+                <p className="eyebrow text-slate-400">Commercial system</p>
+                <h2 className="text-2xl font-semibold text-white">Audit to recovery in one path</h2>
+              </div>
+            </div>
+
+            <div className="inline-flex max-w-full items-center gap-3 self-start rounded-2xl border border-white/10 bg-slate-950/90 px-4 py-3 text-sm text-slate-100 shadow-[inset_0_1px_0_rgba(255,255,255,0.04),0_8px_30px_rgba(0,0,0,0.18)]">
               <Image
-                src="/brand/smc-logo.inline.png"
-                alt="Stafford Media Consulting"
-                width={64}
-                height={64}
-                className="h-12 w-auto"
+                src="/brand/shopify_partner-logo-white.png"
+                alt="Official Shopify Partner"
+                width={220}
+                height={48}
+                className="h-5 w-auto shrink-0"
               />
-            </div>
-            <div>
-              <p className="eyebrow text-slate-400">Commercial system</p>
-              <h2 className="mt-2 text-2xl font-semibold text-white">Audit to recovery in one path</h2>
+              <span className="whitespace-nowrap text-sm font-medium text-slate-200">Official Shopify Partner</span>
             </div>
           </div>
 
-          <div className="mt-4 inline-flex max-w-full items-center gap-3 rounded-2xl border border-black/8 bg-white px-4 py-3 text-sm text-slate-900 shadow-sm">
-            <Image
-              src="/brand/shopify_partner-logo-white.png"
-              alt="Official Shopify Partner"
-              width={220}
-              height={48}
-              className="h-5 w-auto shrink-0"
-            />
-            <span className="whitespace-nowrap text-sm font-medium text-slate-700">Official Shopify Partner</span>
-          </div>
-
-          <div className="mt-8 space-y-4">
+          <div className="mt-6 space-y-4">
             <div className="premium-panel-soft p-5">
               <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--smc-shopifixer-green)]">
                 1. ShopiFixer audit
