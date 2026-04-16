@@ -144,7 +144,7 @@ export default async function AuditResultPage({ searchParams }: PageProps) {
           </p>
           <div className="mt-4 inline-flex max-w-full items-center gap-3 rounded-2xl border border-black/8 bg-white px-4 py-3 text-sm text-slate-900 shadow-sm">
             <Image
-              src="/brand/shopify_partner-logo.PNG"
+              src="/brand/shopify_partner-logo-white.png"
               alt="Official Shopify Partner"
               width={220}
               height={48}
@@ -201,7 +201,7 @@ export default async function AuditResultPage({ searchParams }: PageProps) {
               </div>
               <div className="inline-flex items-center gap-3 rounded-2xl border border-black/8 bg-white px-4 py-3 text-sm text-slate-900 shadow-sm">
                 <Image
-                  src="/brand/shopify_partner-logo.PNG"
+                  src="/brand/shopify_partner-logo-white.png"
                   alt="Official Shopify Partner"
                   width={220}
                   height={48}
