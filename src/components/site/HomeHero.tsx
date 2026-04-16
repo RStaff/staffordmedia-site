@@ -53,15 +53,15 @@ export default function HomeHero() {
             </div>
           </div>
 
-          <div className="mt-4 flex flex-wrap items-center gap-3 text-sm text-slate-300">
+          <div className="mt-4 inline-flex max-w-full items-center gap-3 rounded-2xl border border-black/8 bg-white px-4 py-3 text-sm text-slate-900 shadow-sm">
             <Image
               src="/brand/shopify_partner-logo.PNG"
               alt="Official Shopify Partner"
               width={220}
               height={48}
-              className="h-6 w-auto"
+              className="h-5 w-auto shrink-0"
             />
-            <span>Official Shopify Partner</span>
+            <span className="whitespace-nowrap text-sm font-medium text-slate-700">Official Shopify Partner</span>
           </div>
 
           <div className="mt-8 space-y-4">

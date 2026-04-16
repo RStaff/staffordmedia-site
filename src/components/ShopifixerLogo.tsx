@@ -11,8 +11,8 @@ export default function ShopifixerLogo({
     <Image
       src="/brand/new_shopifixer-logo2.png"
       alt="ShopiFixer"
-      width={720}
-      height={180}
+      width={880}
+      height={220}
       priority={priority}
       className={className}
     />

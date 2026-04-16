@@ -39,16 +39,15 @@ export default function SystemFlow() {
           {cards.map((card) => (
             <article key={card.title} className="premium-panel-soft p-6">
               <p className={`text-xs font-semibold uppercase tracking-[0.24em] ${card.accent}`}>{card.label}</p>
-              <div className="mt-5 min-h-[32px]">
+              <div className="mt-5 min-h-[48px]">
                 {card.type === "shopifixer" ? (
-                  <ShopifixerLogo className="h-auto w-full max-w-[180px]" />
+                  <ShopifixerLogo className="h-auto w-full max-w-[230px]" />
                 ) : card.type === "abando" ? (
                   <AbandoTitle />
                 ) : (
                   <h3 className="text-2xl font-semibold text-white">{card.title}</h3>
                 )}
               </div>
-              {card.type !== "fix" ? null : <h3 className="mt-5 text-2xl font-semibold text-white">{card.title}</h3>}
               <p className="body-md mt-4">{card.body}</p>
             </article>
           ))}

@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { AuditPayload, assertValidPayload } from "@/lib/auditPayload";
 
@@ -136,17 +137,20 @@ export default async function AuditResultPage({ searchParams }: PageProps) {
       <div className="mx-auto max-w-6xl space-y-8">
         <section className="rounded-[28px] border border-slate-800 bg-[radial-gradient(circle_at_top_left,rgba(34,211,238,0.12),transparent_32%),linear-gradient(180deg,rgba(15,23,42,0.98),rgba(2,6,23,0.94))] p-8 shadow-2xl shadow-black/30">
           <p className="text-[11px] font-semibold uppercase tracking-[0.3em] text-cyan-300">ShopiFixer Audit Result</p>
-          <h1 className="mt-3 text-4xl font-semibold tracking-tight text-white">Your Store Review</h1>
+          <h1 className="mt-3 text-4xl font-semibold tracking-tight text-white">Your Store Audit Result</h1>
           <p className="mt-4 max-w-3xl text-base leading-8 text-slate-300">
-            ShopiFixer found the strongest current issue surfaced by the engine for your store.
+            This result reflects the strongest issue surfaced by the ShopiFixer engine for your store, with the first
+            recommended move preserved from the same canonical payload used across the audit flow.
           </p>
-          <div className="mt-4 flex flex-wrap items-center gap-3 text-sm text-slate-300">
-            <img
+          <div className="mt-4 inline-flex max-w-full items-center gap-3 rounded-2xl border border-black/8 bg-white px-4 py-3 text-sm text-slate-900 shadow-sm">
+            <Image
               src="/brand/shopify_partner-logo.PNG"
               alt="Official Shopify Partner"
-              className="h-6 w-auto"
+              width={220}
+              height={48}
+              className="h-5 w-auto shrink-0"
             />
-            <span>Official Shopify Partner</span>
+            <span className="whitespace-nowrap text-sm font-medium text-slate-700">Official Shopify Partner</span>
           </div>
 
           <div className="mt-6 grid gap-4 md:grid-cols-3">
@@ -175,6 +179,41 @@ export default async function AuditResultPage({ searchParams }: PageProps) {
         </section>
 
         <section className="rounded-3xl border border-slate-800 bg-slate-900/90 p-8 shadow-2xl shadow-black/20">
+          <div className="grid gap-6 lg:grid-cols-[minmax(0,1.15fr)_minmax(300px,0.85fr)] lg:items-start">
+            <div>
+              <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-cyan-300">Proof and confidence</p>
+              <h2 className="mt-4 text-3xl font-semibold tracking-tight text-white">Same audit result, rendered for action.</h2>
+              <p className="mt-4 max-w-3xl text-sm leading-7 text-slate-300">
+                This page reflects the same canonical ShopiFixer payload used to generate the audit email. The goal is
+                to make the strongest issue clear, preserve the recommended next move, and give operators a cleaner path to action.
+              </p>
+            </div>
+
+            <div className="space-y-3">
+              <div className="rounded-2xl border border-slate-800 bg-slate-950/60 p-4 text-sm font-medium text-slate-200">
+                Canonical payload shared across email and page
+              </div>
+              <div className="rounded-2xl border border-slate-800 bg-slate-950/60 p-4 text-sm font-medium text-slate-200">
+                Top issue shown from the same engine response
+              </div>
+              <div className="rounded-2xl border border-slate-800 bg-slate-950/60 p-4 text-sm font-medium text-slate-200">
+                Recommended action preserved without reinterpretation
+              </div>
+              <div className="inline-flex items-center gap-3 rounded-2xl border border-black/8 bg-white px-4 py-3 text-sm text-slate-900 shadow-sm">
+                <Image
+                  src="/brand/shopify_partner-logo.PNG"
+                  alt="Official Shopify Partner"
+                  width={220}
+                  height={48}
+                  className="h-4 w-auto shrink-0"
+                />
+                <span className="text-xs font-medium uppercase tracking-[0.18em] text-slate-700">Official Shopify Partner</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="rounded-3xl border border-slate-800 bg-slate-900/90 p-8 shadow-2xl shadow-black/20">
           <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-cyan-300">Issues</p>
           <div className="mt-5 grid gap-4 md:grid-cols-2">
             {payload.issues.map((issue) => (
@@ -187,6 +226,11 @@ export default async function AuditResultPage({ searchParams }: PageProps) {
 
         <section className="rounded-3xl border border-slate-800 bg-[linear-gradient(180deg,rgba(8,47,73,0.55),rgba(15,23,42,0.95))] p-8 shadow-2xl shadow-black/20">
           <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-cyan-300">Next Step</p>
+          <h2 className="mt-4 text-3xl font-semibold tracking-tight text-white">Take the first fix forward with context.</h2>
+          <p className="mt-4 max-w-3xl text-sm leading-7 text-slate-300">
+            Use the audit result to request the prioritized first fixes for this store, or rerun the audit flow if you
+            want a fresh submission tied to the same destination page.
+          </p>
           <div className="mt-5 flex flex-wrap gap-4">
             <a
               className="rounded-full bg-cyan-400 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-cyan-300"
