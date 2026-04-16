@@ -140,6 +140,14 @@ export default async function AuditResultPage({ searchParams }: PageProps) {
           <p className="mt-4 max-w-3xl text-base leading-8 text-slate-300">
             ShopiFixer found the strongest current issue surfaced by the engine for your store.
           </p>
+          <div className="mt-4 flex flex-wrap items-center gap-3 text-sm text-slate-300">
+            <img
+              src="/brand/shopify_partner-logo.PNG"
+              alt="Official Shopify Partner"
+              className="h-6 w-auto"
+            />
+            <span>Official Shopify Partner</span>
+          </div>
 
           <div className="mt-6 grid gap-4 md:grid-cols-3">
             <MetaCard label="Store Domain" value={payload.store_domain} />
