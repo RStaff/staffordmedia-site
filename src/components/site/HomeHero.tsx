@@ -37,7 +37,7 @@ export default function HomeHero() {
         </div>
 
         <div className="premium-panel p-6 md:p-8">
-          <div className="flex items-center gap-4">
+          <div className="flex flex-wrap items-center gap-4">
             <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-3">
               <Image
                 src="/brand/smc-logo.inline.png"
@@ -53,21 +53,38 @@ export default function HomeHero() {
             </div>
           </div>
 
+          <div className="mt-4 flex flex-wrap items-center gap-3 text-sm text-slate-300">
+            <Image
+              src="/brand/shopify_partner-logo.PNG"
+              alt="Official Shopify Partner"
+              width={220}
+              height={48}
+              className="h-6 w-auto"
+            />
+            <span>Official Shopify Partner</span>
+          </div>
+
           <div className="mt-8 space-y-4">
             <div className="premium-panel-soft p-5">
               <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--smc-shopifixer-green)]">
                 1. ShopiFixer audit
               </p>
               <p className="mt-3 text-lg font-semibold text-white">See the clearest issue first.</p>
-              <p className="body-md mt-2">Start with a real audit read so the strongest problem is obvious before you change anything.</p>
+              <p className="body-md mt-2">
+                Start with a real audit read so the strongest problem is obvious before you change anything.
+              </p>
             </div>
+
             <div className="premium-panel-soft p-5">
               <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--smc-accent)]">
                 2. Fix the issue
               </p>
               <p className="mt-3 text-lg font-semibold text-white">Focus the next move.</p>
-              <p className="body-md mt-2">Use the diagnosis to concentrate on the one change most likely to move revenue.</p>
+              <p className="body-md mt-2">
+                Use the diagnosis to concentrate on the one change most likely to move revenue.
+              </p>
             </div>
+
             <div className="premium-panel-soft p-5">
               <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--smc-shopifixer-violet)]">
                 3. Abando recovery
