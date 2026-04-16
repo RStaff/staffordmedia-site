@@ -1,14 +1,7 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> d51f9d3 (fix(pricing): valid JSX + top-level Next flags; untrack node_modules)
 import Section from "@/components/Section";
 
 /** App Router build flags must be at module top-level (not inside the component) */
 export const dynamic = "force-dynamic";
-<<<<<<< HEAD
 export const revalidate = 0;
 
 export default function Page() {
@@ -20,15 +13,10 @@ export default function Page() {
           and you can cancel anytime.
         </p>
       </Section>
-=======
-=======
-=======
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
->>>>>>> a74e90e (chore(ci+ts): parent-as-root workspace; app-owned Next+@ alias; top-level page flags; deterministic CI)
 import { PRICE_BASIC, PRICE_GROWTH, PRICE_PRO, TRIAL_URL } from "@/lib/config";
 
->>>>>>> dd26c5a (feat(site): refined About/Services, inline Pricing (fix 404), app robots/sitemap, SITE_URL)
 export const metadata = {
   title: "Pricing – Stafford Media",
   description: "Simple plans that pay for themselves after a single recovered cart.",
@@ -56,10 +44,7 @@ function Tier({ name, price, features }:{ name:string; price:string; features:st
 export default function Page(){
 // @ts-expect-error-next-line// @ts-expect-error-next-linereturn (
     <main className="bg-[#0B1220] min-h-screen text-white">
-<<<<<<< HEAD
       <Pricing />
->>>>>>> f751bc5 (feat(site): About + Services + Pricing pages (drop-in))
-=======
       <div className="w-full max-w-6xl mx-auto px-4 py-12 md:py-16">
         <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-white mb-8">Choose your plan</h1>
         <p className="text-white/80 mb-8">
@@ -71,8 +56,6 @@ export default function Page(){
           <Tier name="Pro"    price={PRICE_PRO}    features={["All Growth features","Dedicated success manager","24/7 priority support"]}/>
         </div>
       </div>
->>>>>>> dd26c5a (feat(site): refined About/Services, inline Pricing (fix 404), app robots/sitemap, SITE_URL)
-=======
 export const revalidate = 0;
 
 export default function Page() {
@@ -84,7 +67,6 @@ export default function Page() {
           and you can cancel anytime.
         </p>
       </Section>
->>>>>>> d51f9d3 (fix(pricing): valid JSX + top-level Next flags; untrack node_modules)
     </main>
   );
 }

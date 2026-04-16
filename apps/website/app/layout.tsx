@@ -1,16 +1,8 @@
 import "./globals.css";
 import type { Metadata } from "next";
-<<<<<<< HEAD
-<<<<<<< HEAD
 import Script from "next/script";
-<<<<<<< HEAD
-<<<<<<< HEAD
 import Analytics from "./analytics/Analytics"
-=======
->>>>>>> b2ea271 (chore(ci): finalize doctor verification and guardrail health)
-=======
 import Analytics from "./analytics/Analytics"
->>>>>>> 69d174d (feat: launch-ready website)
 
 import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
@@ -46,13 +38,10 @@ export default function RootLayout({
         <Navbar />
         <main>{children}</main>
         <Footer />
-=======
 import Nav from "@/components/Nav";
-=======
 import Script from "next/script";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
->>>>>>> 7a98f0c (chore(ci): finalize guardrails + husky modernization)
 
 export const metadata: Metadata = {
   title: "Stafford Media Consulting",
@@ -66,13 +55,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-<<<<<<< HEAD
     <html lang="en">
       <body className="bg-[#0B1220] text-white">
         <Nav />
         {children}
->>>>>>> dd26c5a (feat(site): refined About/Services, inline Pricing (fix 404), app robots/sitemap, SITE_URL)
-=======
     <html lang="en" suppressHydrationWarning>
       <head>
         <Script
@@ -91,7 +77,6 @@ export default function RootLayout({
         <Navbar />
         <main>{children}</main>
         <Footer />
->>>>>>> 7a98f0c (chore(ci): finalize guardrails + husky modernization)
       </body>
     </html>
   );

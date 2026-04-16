@@ -6,96 +6,23 @@
     "jsx": "preserve",
     "noEmit": true,
     "incremental": true,
-    "lib": ["dom", "dom.iterable", "esnext"],
-    "types": ["node", "vitest/globals", "@testing-library/jest-dom"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "types": [
+      "node",
+      "vitest/globals",
+      "@testing-library/jest-dom"
+    ],
     "paths": {
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-      "@/*": ["./*", "./src/*"]
-    },
-    "types": ["vitest/globals", "node", "@testing-library/jest-dom"],
-    "lib": ["dom", "dom.iterable", "esnext"],
-    "allowJs": true,
-    "noEmit": true,
-    "incremental": true,
-    "isolatedModules": true,
-    "jsx": "preserve",
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ]
-  },
-  "include": ["**/*.ts", "**/*.tsx", "next-env.d.ts", ".next/types/**/*.ts"],
-  "exclude": ["node_modules"]
-=======
-      "@/*": ["./*"]
-=======
-      "@/*": ["src/*", "./*"]
->>>>>>> 1625c42 (fix(ci): map @ alias to src/* in apps/website)
-=======
       "@/*": [
         "src/*",
-        "./*"
+        "app/*",
+        "components/*",
+        "lib/*"
       ]
-<<<<<<< HEAD
->>>>>>> dcc2fa6 (fix(root+website): make @ alias resolve from root & apps; add fallback Section)
-    }
-=======
-    },
-    "moduleResolution": "Bundler"
->>>>>>> c952e30 (fix(ts): enforce Bundler moduleResolution + robust @ paths; ensure Section fallback (root+app))
-=======
-      "@/*": ["src/*"]
-    }
->>>>>>> 6f1c366 (ci(build): run Next from apps/website; make app own next.config + @ alias)
-=======
-      "@/*": [
-        "src/*",                // local app src
-        "./*",                  // local app root (if some files live alongside src)
-        "../../apps/website/src/*"  // explicit absolute-to-root fallback for CI
-      ]
-    },
-    // keep JSX/strict/etc from parent; we only pin alias + resolver here
-    "types": []
->>>>>>> 0867077 (tsconfig(website): own @ alias (local-first + explicit fallback); ensure Section exists)
-=======
-      "@/*": ["src/*", "./*"]
-    }
->>>>>>> b4fc3c2 (fix(website): restore Next app conventions (app/globals.css), resolvable '@/components/Nav', and top-level route exports)
-=======
-      "@/*": ["src/*"]
-=======
-      "@/*": [
-        "src/*"
-      ]
->>>>>>> 5dde282 (build: enforce single workspace install; CJS build configs; canonical globals.css; stable @ alias)
-    },
-    "types": []
->>>>>>> a74e90e (chore(ci+ts): parent-as-root workspace; app-owned Next+@ alias; top-level page flags; deterministic CI)
-=======
-      "@/*": ["src/*"]
-    },
-    "types": ["vitest", "@testing-library/jest-dom", "node"],
-    "strict": true,
-    "noUncheckedIndexedAccess": true,
-    "noImplicitOverride": true,
-    "jsx": "preserve"
->>>>>>> 7a98f0c (chore(ci): finalize guardrails + husky modernization)
-=======
-      "@/*": ["app/*", "components/*", "src/*", "*"]
-=======
-      "@/*": ["src/*", "app/*", "components/*", "lib/*"]
->>>>>>> 2ea91aa (PROD: activate ShopiFixer + audit-result routes for live site)
     },
     "plugins": [
       {
@@ -104,28 +31,28 @@
     ],
     "allowJs": true,
     "isolatedModules": true
->>>>>>> 0e681c9 (fix(website): align tsconfig for Next (Bundler, jsx preserve, vitest types) + robust @ alias; add Section + lib/config)
   },
   "include": [
     "next-env.d.ts",
     ".next/types/**/*.ts",
     "**/*.ts",
-<<<<<<< HEAD
-    "**/*.tsx"
-<<<<<<< HEAD
-  ]
->>>>>>> b1c211a (fix(ci): add local tsconfig with @ alias for apps/website)
-=======
-  ],
-  "exclude": [".next", "node_modules", "**/*.spec.*", "**/*.test.*"]
->>>>>>> 7a98f0c (chore(ci): finalize guardrails + husky modernization)
-=======
     "**/*.tsx",
     "app",
     "components",
     "src",
     "tests"
   ],
-  "exclude": ["node_modules", ".next", "dist"]
->>>>>>> 0e681c9 (fix(website): align tsconfig for Next (Bundler, jsx preserve, vitest types) + robust @ alias; add Section + lib/config)
+  "exclude": [
+    "node_modules",
+    ".next",
+    "dist",
+    "_smc_clean",
+    "_archive*",
+    ".archive*",
+    "archive_*",
+    "apps/website/_smc_clean",
+    "apps/website/_archive*",
+    "apps/website/.archive*",
+    "apps/website/archive_*"
+  ]
 }

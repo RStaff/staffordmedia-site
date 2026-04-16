@@ -46,12 +46,7 @@ export default function Analytics() {
             fbq('init', '${fbId}'); fbq('track', 'PageView');
           `}</Script>
           <noscript>
-            { }
-<<<<<<< HEAD
-            <img height={1} width={1} style={{display:'none'}}
-=======
             <img height="1" width="1" style={{display:'none'}}
->>>>>>> 69d174d (feat: launch-ready website)
               src={`https://www.facebook.com/tr?id=${fbId}&ev=PageView&noscript=1`} alt="" />
           </noscript>
         </>

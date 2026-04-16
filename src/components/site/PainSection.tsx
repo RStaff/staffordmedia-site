@@ -1,0 +1,35 @@
+const painPoints = [
+  "High add-to-cart, low checkout completion",
+  "Drop-offs during shipping or pricing steps",
+  "Returning visitors who never convert",
+  "No clear signal on what to fix first",
+];
+
+export default function PainSection() {
+  return (
+    <section className="section-pad pt-0">
+      <div className="site-shell">
+        <div className="premium-panel p-6 md:p-8">
+          <div className="grid gap-8 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:items-start">
+            <div>
+              <p className="eyebrow text-slate-400">The problem</p>
+              <h2 className="mt-4 text-4xl font-semibold tracking-tight text-white">
+                Most stores don’t have a traffic problem. They have a conversion leak.
+              </h2>
+              <p className="body-md mt-5">
+                You’re getting visitors and interest, but revenue stalls because the real issue isn’t obvious.
+              </p>
+            </div>
+            <div className="grid gap-4 sm:grid-cols-2">
+              {painPoints.map((item) => (
+                <div key={item} className="premium-panel-soft p-5">
+                  <p className="text-base leading-7 text-slate-200">{item}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}

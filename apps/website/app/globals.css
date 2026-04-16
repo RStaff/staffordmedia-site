@@ -1,21 +1,11 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
 @import "tailwindcss";
-=======
->>>>>>> b4fc3c2 (fix(website): restore Next app conventions (app/globals.css), resolvable '@/components/Nav', and top-level route exports)
-=======
 @import "tailwindcss";
->>>>>>> 61e9267 (build: Tailwind v4 PostCSS migration (use @tailwindcss/postcss; canonical .cjs configs))
 /* Next/Tailwind global stylesheet */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 /* Add any site-wide resets or variables here */
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 7a98f0c (chore(ci): finalize guardrails + husky modernization)
 
 /* --- Stafford Media tokens --- */
 :root {
@@ -108,10 +98,6 @@ body {
     linear-gradient(90deg, #0000000d 1px, transparent 1px);
   background-size: 16px 16px;
 }
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> b48eb19 (chore: ESLint stable + test/build green; prepare launch)
 
 /* smc/abando brand layer */
 :root {
@@ -136,10 +122,3 @@ body {
 .text-accent  { color: var(--accent); }
 .bg-brand     { background: var(--brand); }
 .bg-accent    { background: var(--accent); }
-<<<<<<< HEAD
-=======
->>>>>>> b4fc3c2 (fix(website): restore Next app conventions (app/globals.css), resolvable '@/components/Nav', and top-level route exports)
-=======
->>>>>>> 7a98f0c (chore(ci): finalize guardrails + husky modernization)
-=======
->>>>>>> b48eb19 (chore: ESLint stable + test/build green; prepare launch)

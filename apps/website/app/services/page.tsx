@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 export default function Services() {
   return (
     <div className="mx-auto max-w-6xl px-4 py-16">
@@ -41,19 +38,14 @@ export default function Services() {
     </div>
   );
 }
-=======
 export const metadata = {
   title: "Services – Stafford Media Consulting",
   description: "Pragmatic AI for marketing: conversion agent, journey playbooks, lifecycle messaging, analytics, and integrations.",
 };
-=======
->>>>>>> dd26c5a (feat(site): refined About/Services, inline Pricing (fix 404), app robots/sitemap, SITE_URL)
 import Section from "@/components/Section";
 
 function Card({title, children}:{title:string; children:React.ReactNode}) {
-=======
 export default function Services() {
->>>>>>> 7a98f0c (chore(ci): finalize guardrails + husky modernization)
   return (
     <div className="mx-auto max-w-6xl px-4 py-16">
       <h1 className="text-3xl font-semibold tracking-tight">
@@ -93,7 +85,6 @@ export default function Services() {
     </div>
   );
 }
-<<<<<<< HEAD
 
 export const metadata = {
   title: "Services – Stafford Media",
@@ -125,6 +116,3 @@ export default function Page(){
     </main>
   );
 }
->>>>>>> f751bc5 (feat(site): About + Services + Pricing pages (drop-in))
-=======
->>>>>>> 7a98f0c (chore(ci): finalize guardrails + husky modernization)

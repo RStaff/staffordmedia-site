@@ -1,11 +1,8 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
 import Hero from "./components/Hero";
 
 export default function Page() {
   const variant = "roi" as const;
   return <Hero variant={variant} />;
-=======
 // apps/website/app/page.tsx
 import Link from "next/link";
 
@@ -43,12 +40,9 @@ export default function HomePage() {
       </section>
     </main>
   );
->>>>>>> 007a482 (feat(website): add Home and Contact pages)
-=======
 import Hero from "./components/Hero";
 
 export default function Page() {
   const variant = "roi" as const;
   return <Hero variant={variant} />;
->>>>>>> 7a98f0c (chore(ci): finalize guardrails + husky modernization)
 }
