@@ -13,8 +13,8 @@ const nextConfig = {
       { source: "/brands/abando.png", destination: "/abando-logo.png", permanent: true },
       { source: "/brands/:path*", destination: "/brand/:path*", permanent: true },
       { source: "/start", destination: "/abando#start", permanent: false },
-      { source: "/abando", destination: "/abando", permanent: false },
-      { source: "/contact", destination: "/contact", permanent: false },
+      
+      
     ];
   },
 
