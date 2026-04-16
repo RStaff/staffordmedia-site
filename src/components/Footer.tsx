@@ -10,7 +10,13 @@ export default function Footer() {
         <div className="flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
           <div className="max-w-xl">
             <div className="flex items-center gap-4">
-              <Image src="/brand/smc.png" alt="Stafford Media Consulting" width={160} height={48} className="h-10 w-auto" />
+              <Image
+                src="/brand/smc-logo.inline.png"
+                alt="Stafford Media Consulting"
+                width={160}
+                height={48}
+                className="h-10 w-auto"
+              />
               <div>
                 <p className="text-sm font-semibold text-white">Stafford Media Consulting™</p>
                 <p className="text-xs uppercase tracking-[0.22em] text-slate-500">Parent company</p>

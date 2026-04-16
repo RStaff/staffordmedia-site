@@ -12,12 +12,12 @@ export default function Header() {
       >
         <Link href="/" className="flex items-center gap-4">
           <Image
-            src="/brand/smc.png"
+            src="/brand/smc-logo.inline.png"
             alt="Stafford Media Consulting logo"
             width={200}
             height={200}
             priority
-            className="h-9 w-auto md:h-11"
+            className="h-6 w-auto md:h-11"
           />
           <div className="hidden sm:block">
             <p className="text-sm font-semibold tracking-tight text-white">Stafford Media Consulting™</p>

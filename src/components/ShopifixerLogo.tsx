@@ -9,7 +9,7 @@ export default function ShopifixerLogo({
 }) {
   return (
     <Image
-      src="/brand/shopifixer.png"
+      src="/brand/transparent-shopifixer-logo.png"
       alt="ShopiFixer"
       width={720}
       height={180}
