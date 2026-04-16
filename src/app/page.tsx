@@ -53,7 +53,7 @@ export default function HomePage() {
             <div className="flex items-center gap-4">
               <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-3">
                 <Image
-                  src="/smc-logo.png"
+                  src="/brand/smc.png"
                   alt="Stafford Media Consulting"
                   width={64}
                   height={64}
