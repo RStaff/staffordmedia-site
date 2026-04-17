@@ -116,7 +116,7 @@ export default async function ShopifixerSummaryResultPage({ searchParams }: Page
 
           <div className="mt-8 rounded-2xl border border-cyan-900/30 bg-cyan-950/20 p-5">
             <p className="text-sm leading-7 text-slate-200">
-              Your full ShopiFixer review has been emailed. Use this summary to make the fastest next move, or open the full review for richer proof.
+              Your full ShopiFixer review has been emailed. Use this summary to make the fastest next move, or check your email for the full review.
             </p>
           </div>
 
