@@ -100,6 +100,59 @@ function InsightCard({ label, value, subcopy }: { label: string; value: string; 
   );
 }
 
+function getScoreBand(score: number) {
+  if (score <= 39) {
+    return "Critical";
+  }
+
+  if (score <= 59) {
+    return "Weak";
+  }
+
+  if (score <= 79) {
+    return "Fair";
+  }
+
+  return "Strong";
+}
+
+function getConfidenceLabel(issueCount: number) {
+  if (issueCount >= 3) {
+    return "High confidence";
+  }
+
+  if (issueCount >= 2) {
+    return "Medium confidence";
+  }
+
+  return "Directional read";
+}
+
+function buildWhyThisMatters(topIssue: string, recommendedAction: string) {
+  const normalized = topIssue.toLowerCase();
+  let explanation =
+    "The clearest friction point is likely suppressing conversion and deserves focused testing first.";
+
+  if (normalized.includes("cart recovery")) {
+    explanation =
+      "Purchase intent is leaving without a recovery path, so revenue is likely leaking after interest is already created.";
+  } else if (normalized.includes("checkout")) {
+    explanation = "Friction is interrupting purchase intent near the decision stage, where buyers should already be closing.";
+  }
+
+  return {
+    explanation,
+    nextMove: `The fastest next move is to test: ${recommendedAction}`,
+  };
+}
+
+function getScoreBandClasses(label: string) {
+  if (label === "Critical") return "border-rose-500/25 bg-rose-950/30 text-rose-200";
+  if (label === "Weak") return "border-amber-500/25 bg-amber-950/30 text-amber-200";
+  if (label === "Fair") return "border-cyan-500/25 bg-cyan-950/30 text-cyan-200";
+  return "border-emerald-500/25 bg-emerald-950/30 text-emerald-200";
+}
+
 export default async function AuditResultPage({ searchParams }: PageProps) {
   const params = (await searchParams) || {};
   const store = cleanStoreDomain(params.store || "");
@@ -133,6 +186,9 @@ export default async function AuditResultPage({ searchParams }: PageProps) {
       `Store: ${payload.store_domain}\nAudit score: ${payload.audit_score}\nTop issue: ${payload.top_issue}\nRecommended action: ${payload.recommended_action}\n\nI want the prioritized first fixes for this store.`
     )}`;
   const screenshotUrl = getStorefrontScreenshot(payload.store_domain);
+  const scoreBand = getScoreBand(payload.audit_score);
+  const confidenceLabel = getConfidenceLabel(payload.issues.length);
+  const whyThisMatters = buildWhyThisMatters(payload.top_issue, payload.recommended_action);
 
   return (
     <main className="min-h-screen bg-slate-950 px-6 py-10 text-slate-100">
@@ -144,6 +200,28 @@ export default async function AuditResultPage({ searchParams }: PageProps) {
             This result reflects the strongest issue surfaced by the ShopiFixer engine for your store, with the first
             recommended move preserved from the same canonical payload used across the audit flow.
           </p>
+          <div className="mt-6 grid gap-4 md:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)_minmax(0,0.8fr)]">
+            <div className="rounded-2xl border border-cyan-500/20 bg-slate-950/80 p-5 md:col-span-1">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-cyan-300">Audit score</p>
+              <p className="mt-3 text-5xl font-semibold tracking-tight text-white">{payload.audit_score}</p>
+            </div>
+            <div className="rounded-2xl border border-slate-800 bg-slate-950/60 p-4">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-500">Score band</p>
+              <p className={`mt-2 inline-flex rounded-full border px-3 py-1 text-sm font-semibold ${getScoreBandClasses(scoreBand)}`}>
+                {scoreBand}
+              </p>
+              <p className="mt-3 text-sm leading-6 text-slate-300">This band is derived directly from the current audit score.</p>
+            </div>
+            <div className="rounded-2xl border border-slate-800 bg-slate-950/60 p-4">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-500">Confidence</p>
+              <p className="mt-2 text-lg font-semibold text-white">{confidenceLabel}</p>
+              <p className="mt-3 text-sm leading-6 text-slate-300">Based on {payload.issues.length} surfaced issue signal{payload.issues.length === 1 ? "" : "s"} in this review.</p>
+            </div>
+            <div className="rounded-2xl border border-slate-800 bg-slate-950/60 p-4 md:col-span-3">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-500">Estimated 30-day opportunity</p>
+              <p className="mt-2 text-2xl font-semibold text-white">{payload.estimated_revenue_loss}</p>
+            </div>
+          </div>
           <div className="mt-5 inline-flex w-fit max-w-full items-center gap-2.5 rounded-xl border border-white/12 bg-slate-950 px-3 py-2.5 text-sm text-slate-100 shadow-[inset_0_1px_0_rgba(255,255,255,0.05),0_10px_24px_rgba(0,0,0,0.22)]">
             <Image
               src="/brand/shopify_partner-logo-white.png"
@@ -154,6 +232,8 @@ export default async function AuditResultPage({ searchParams }: PageProps) {
             />
             <span className="whitespace-nowrap text-sm font-medium text-slate-200">Official Shopify Partner</span>
           </div>
+
+          <p className="mt-6 text-[11px] font-semibold uppercase tracking-[0.24em] text-cyan-300">Storefront proof</p>
 
           <div className="mt-6 overflow-hidden rounded-3xl border border-slate-800 bg-slate-950/50 shadow-2xl shadow-black/20">
             <img
@@ -173,9 +253,9 @@ export default async function AuditResultPage({ searchParams }: PageProps) {
 
         <section className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
           <InsightCard
-            label="Estimated Revenue Loss"
+            label="Estimated 30-day opportunity"
             value={payload.estimated_revenue_loss}
-            subcopy="Exact value supplied by the audit engine for this result."
+            subcopy="Time-boxed from the current audit payload as a 30-day opportunity estimate."
           />
           <InsightCard
             label="Top Issue"
@@ -187,6 +267,14 @@ export default async function AuditResultPage({ searchParams }: PageProps) {
             value={payload.recommended_action}
             subcopy="The first recommended action from the same canonical payload."
           />
+        </section>
+
+        <section className="rounded-3xl border border-slate-800 bg-slate-900/90 p-8 shadow-2xl shadow-black/20">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-cyan-300">Why this matters</p>
+          <div className="mt-4 max-w-4xl space-y-4">
+            <p className="text-base leading-8 text-slate-200">{whyThisMatters.explanation}</p>
+            <p className="text-sm leading-7 text-slate-300">{whyThisMatters.nextMove}</p>
+          </div>
         </section>
 
         <section className="rounded-3xl border border-slate-800 bg-slate-900/90 p-8 shadow-2xl shadow-black/20">
@@ -243,12 +331,13 @@ export default async function AuditResultPage({ searchParams }: PageProps) {
             want a fresh submission tied to the same destination page.
           </p>
           <div className="mt-5 flex flex-wrap gap-4">
-            <a
+            <Link
+              href={`/fix?store=${encodeURIComponent(payload.store_domain)}`}
               className="rounded-full bg-cyan-400 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-cyan-300"
-              href={requestFixesHref}
             >
-              Request My First Fixes
-            </a>
+              Fix This for Me
+            </Link>
+            <p className="mt-3 text-sm text-slate-300">Fixed in 3–5 days. No retainer.</p>
             <Link
               href={`/shopifixer?store=${encodeURIComponent(payload.store_domain)}`}
               className="rounded-full border border-slate-600 px-5 py-3 text-sm font-semibold text-white transition hover:border-cyan-300 hover:text-cyan-200"
