@@ -21,7 +21,7 @@ export default function AuditFormCard({
           <button type="submit" className="smc-button smc-button-primary">
             Run ShopiFixer Audit
           </button>
-          <Link href="/audit-result?store=elkeyecoffee.com" className="smc-button smc-button-secondary">
+          <Link href="/shopifixer/result?store=elkeyecoffee.com" className="smc-button smc-button-secondary">
             View Example Audit
           </Link>
         </div>

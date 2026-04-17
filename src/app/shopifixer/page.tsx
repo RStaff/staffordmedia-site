@@ -61,7 +61,7 @@ async function submitAudit(formData: FormData) {
   const json = await response.json();
   const payload = assertValidPayload(json?.payload || json);
 
-  redirect(`/audit-result?store=${encodeURIComponent(payload.store_domain)}`);
+  redirect(`/shopifixer/result?store=${encodeURIComponent(payload.store_domain)}`);
 }
 
 export default function ShopifixerPage() {
