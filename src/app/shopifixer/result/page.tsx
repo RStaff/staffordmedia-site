@@ -121,12 +121,6 @@ export default async function ShopifixerSummaryResultPage({ searchParams }: Page
           </div>
 
           <div className="mt-8 flex flex-wrap gap-4">
-            <Link
-              href={`/audit-result?store=${encodeURIComponent(payload.store_domain)}`}
-              className="rounded-full bg-cyan-400 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-cyan-300"
-            >
-              See Full Review
-            </Link>
             <a
               href={requestFixesHref}
               className="rounded-full border border-slate-600 px-5 py-3 text-sm font-semibold text-white transition hover:border-cyan-300 hover:text-cyan-200"
