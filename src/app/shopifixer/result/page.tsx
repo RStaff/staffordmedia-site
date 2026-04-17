@@ -89,7 +89,7 @@ export default async function ShopifixerSummaryResultPage({ searchParams }: Page
           <div className="mt-6 grid gap-4 md:grid-cols-4">
             <SummaryMetricCard label="Store Domain" value={payload.store_domain} />
             <SummaryMetricCard label="Audit Score" value={String(payload.audit_score)} />
-            <SummaryMetricCard label="Revenue Loss" value={payload.estimated_revenue_loss} />
+            <SummaryMetricCard label="Estimated Revenue Loss" value={payload.estimated_revenue_loss} />
             <SummaryMetricCard label="Generated" value={payload.generated_at} />
           </div>
         </section>
@@ -116,7 +116,7 @@ export default async function ShopifixerSummaryResultPage({ searchParams }: Page
 
           <div className="mt-8 rounded-2xl border border-cyan-900/30 bg-cyan-950/20 p-5">
             <p className="text-sm leading-7 text-slate-200">
-              We emailed your full ShopiFixer review with the richer proof surface and next-step context.
+              Your full ShopiFixer review has been emailed. Use this summary to make the fastest next move, or open the full review for richer proof.
             </p>
           </div>
 
@@ -125,13 +125,13 @@ export default async function ShopifixerSummaryResultPage({ searchParams }: Page
               href={`/audit-result?store=${encodeURIComponent(payload.store_domain)}`}
               className="rounded-full bg-cyan-400 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-cyan-300"
             >
-              Open Full Review
+              See Full Review
             </Link>
             <a
               href={requestFixesHref}
               className="rounded-full border border-slate-600 px-5 py-3 text-sm font-semibold text-white transition hover:border-cyan-300 hover:text-cyan-200"
             >
-              Request My First Fixes
+              Request First Fixes
             </a>
           </div>
         </section>
