@@ -44,6 +44,18 @@ async function fetchAuditPayload(store: string): Promise<AuditPayload> {
   });
 
   if (!response.ok) {
+    const status = response.status;
+    let errorCode = "AUDIT_ENGINE_UNAVAILABLE";
+
+    try {
+      const json = await response.json();
+      errorCode = json?.error || errorCode;
+    } catch {}
+
+    if (status === 404 || errorCode === "audit_payload_not_found" || errorCode === "payload_not_found") {
+      throw new Error("AUDIT_PAYLOAD_NOT_FOUND");
+    }
+
     throw new Error("AUDIT_ENGINE_UNAVAILABLE");
   }
 
@@ -176,7 +188,42 @@ export default async function AuditResultPage({ searchParams }: PageProps) {
     );
   }
 
-  const payload = await fetchAuditPayload(store);
+  let payload;
+  try {
+    payload = await fetchAuditPayload(store);
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+
+    if (message === "AUDIT_PAYLOAD_NOT_FOUND") {
+      return (
+        <main className="min-h-screen bg-slate-950 px-6 py-10 text-slate-100">
+          <div className="mx-auto max-w-4xl rounded-3xl border border-slate-800 bg-slate-900/90 p-8 shadow-2xl shadow-black/20">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-cyan-300">ShopiFixer</p>
+            <h1 className="mt-4 text-3xl font-semibold tracking-tight text-white">No live audit is available for this store yet.</h1>
+            <p className="mt-4 max-w-2xl text-sm leading-7 text-slate-300">
+              This store does not currently have a saved ShopiFixer payload in the live engine. Run the audit first to generate the review, then reopen this page.
+            </p>
+            <div className="mt-6 flex flex-wrap gap-4">
+              <Link
+                href="/shopifixer"
+                className="rounded-full bg-cyan-400 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-cyan-300"
+              >
+                Run ShopiFixer
+              </Link>
+              <Link
+                href={`/shopifixer/result?store=${encodeURIComponent(store)}`}
+                className="rounded-full border border-slate-600 px-5 py-3 text-sm font-semibold text-white transition hover:border-cyan-300 hover:text-cyan-200"
+              >
+                Go to Summary
+              </Link>
+            </div>
+          </div>
+        </main>
+      );
+    }
+
+    throw error;
+  }
   await verifyPayloadParity(store, payload);
 
   const requestFixesHref =
