@@ -1,21 +1,44 @@
-const cards = [
-  { label: "What you get", value: "Top issue, estimated upside, and evidence." },
-  {
-    label: "How it works",
-    value: "Submit your store and email, then review the same engine-backed audit result sent to your inbox.",
-  },
-  { label: "Best current examples", value: "elkeyecoffee.com · luckettstore.com · dripaccessory.com" },
-];
-
 export default function AuditBenefitsRow() {
   return (
-    <div className="mt-10 grid gap-4 lg:grid-cols-3">
-      {cards.map((card) => (
-        <div key={card.label} className="premium-panel-soft p-5">
-          <p className="text-xs uppercase tracking-[0.2em] text-white/50">{card.label}</p>
-          <p className="mt-3 text-sm leading-7 text-white/85">{card.value}</p>
+    <section className="mb-10 rounded-3xl border border-slate-800 bg-slate-900/70 p-6 shadow-xl shadow-black/20">
+      <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-cyan-300">
+        How it works
+      </p>
+
+      <h2 className="mt-3 text-2xl font-semibold tracking-tight text-white">
+        Diagnose the issue. Fix the blocker. Recover the revenue.
+      </h2>
+
+      <p className="mt-3 max-w-3xl text-sm leading-7 text-slate-300">
+        ShopiFixer identifies the clearest conversion issue, Stafford Media implements the highest-impact
+        fix, and Abando helps recover more revenue automatically after the problem is resolved.
+      </p>
+
+      <div className="mt-6 grid gap-4 md:grid-cols-3">
+        <div className="rounded-2xl border border-slate-800 bg-slate-950/60 p-4">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-500">Diagnose</p>
+          <h3 className="mt-2 text-sm font-semibold text-white">ShopiFixer audit</h3>
+          <p className="mt-2 text-sm leading-6 text-slate-400">
+            See the clearest issue, estimated 30-day upside, and the first move worth testing.
+          </p>
         </div>
-      ))}
-    </div>
+
+        <div className="rounded-2xl border border-slate-800 bg-slate-950/60 p-4">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-500">Fix</p>
+          <h3 className="mt-2 text-sm font-semibold text-white">Stafford Media implementation</h3>
+          <p className="mt-2 text-sm leading-6 text-slate-400">
+            Get the highest-priority fix implemented for you without a retainer or guesswork.
+          </p>
+        </div>
+
+        <div className="rounded-2xl border border-slate-800 bg-slate-950/60 p-4">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-500">Recover</p>
+          <h3 className="mt-2 text-sm font-semibold text-white">Abando automation</h3>
+          <p className="mt-2 text-sm leading-6 text-slate-400">
+            Recover more revenue automatically from shoppers who still leave after the fix.
+          </p>
+        </div>
+      </div>
+    </section>
   );
 }
