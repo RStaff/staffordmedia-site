@@ -125,7 +125,7 @@ export default async function ShopifixerSummaryResultPage({ searchParams }: Page
               href={requestFixesHref}
               className="rounded-full border border-slate-600 px-5 py-3 text-sm font-semibold text-white transition hover:border-cyan-300 hover:text-cyan-200"
             >
-              Request First Fixes
+              Fix This for Me
             </a>
           </div>
         </section>
