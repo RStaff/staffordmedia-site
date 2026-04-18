@@ -69,12 +69,7 @@ export default async function ShopifixerSummaryResultPage({ searchParams }: Page
 
   const payload = await fetchAuditPayload(store);
 
-  const requestFixesHref =
-    `mailto:support@staffordmedia.ai` +
-    `?subject=${encodeURIComponent(`ShopiFixer review for ${payload.store_domain}`)}` +
-    `&body=${encodeURIComponent(
-      `Store: ${payload.store_domain}\nAudit score: ${payload.audit_score}\nTop issue: ${payload.top_issue}\nRecommended action: ${payload.recommended_action}\n\nI want the prioritized first fixes for this store.`
-    )}`;
+  const fixHref = `/fix?store=${encodeURIComponent(payload.store_domain)}`;
 
   return (
     <main className="min-h-screen bg-slate-950 px-6 py-10 text-slate-100">
@@ -83,13 +78,13 @@ export default async function ShopifixerSummaryResultPage({ searchParams }: Page
           <p className="text-[11px] font-semibold uppercase tracking-[0.3em] text-cyan-300">ShopiFixer Summary</p>
           <h1 className="mt-3 text-4xl font-semibold tracking-tight text-white">Your ShopiFixer summary is ready.</h1>
           <p className="mt-4 max-w-3xl text-base leading-8 text-slate-300">
-            We found the strongest issue most likely affecting conversion. Your full review is available by email and below.
+            We found the clearest issue most likely suppressing conversion. Review the diagnosis here, then move straight into the implementation path if you want this fixed for you.
           </p>
 
           <div className="mt-6 grid gap-4 md:grid-cols-4">
             <SummaryMetricCard label="Store Domain" value={payload.store_domain} />
             <SummaryMetricCard label="Audit Score" value={String(payload.audit_score)} />
-            <SummaryMetricCard label="Estimated Revenue Loss" value={payload.estimated_revenue_loss} />
+            <SummaryMetricCard label="Estimated 30-day opportunity" value={payload.estimated_revenue_loss} />
             <SummaryMetricCard label="Generated" value={payload.generated_at} />
           </div>
         </section>
@@ -116,13 +111,13 @@ export default async function ShopifixerSummaryResultPage({ searchParams }: Page
 
           <div className="mt-8 rounded-2xl border border-cyan-900/30 bg-cyan-950/20 p-5">
             <p className="text-sm leading-7 text-slate-200">
-              Your full ShopiFixer review has been emailed. Use this summary to make the fastest next move, or check your email for the full review.
+              Your full ShopiFixer review has been emailed. If you want this fixed for you, the next step is the implementation page tied directly to this diagnosis.
             </p>
           </div>
 
           <div className="mt-8 flex flex-wrap gap-4">
             <a
-              href={requestFixesHref}
+              href={fixHref}
               className="rounded-full border border-slate-600 px-5 py-3 text-sm font-semibold text-white transition hover:border-cyan-300 hover:text-cyan-200"
             >
               Fix This for Me
