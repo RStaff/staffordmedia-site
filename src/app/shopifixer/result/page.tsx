@@ -69,7 +69,7 @@ export default async function ShopifixerSummaryResultPage({ searchParams }: Page
 
   const payload = await fetchAuditPayload(store);
 
-  const fixHref = `/fix?store=${encodeURIComponent(payload.store_domain)}`;
+  const pricingHref = `/pricing?store=${encodeURIComponent(payload.store_domain)}`;
 
   return (
     <main className="min-h-screen bg-slate-950 px-6 py-10 text-slate-100">
@@ -117,10 +117,10 @@ export default async function ShopifixerSummaryResultPage({ searchParams }: Page
 
           <div className="mt-8 flex flex-wrap gap-4">
             <a
-              href={fixHref}
+              href={pricingHref}
               className="rounded-full border border-slate-600 px-5 py-3 text-sm font-semibold text-white transition hover:border-cyan-300 hover:text-cyan-200"
             >
-              Fix This for Me
+              See Pricing & Checkout
             </a>
           </div>
         </section>

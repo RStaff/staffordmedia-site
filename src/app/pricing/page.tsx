@@ -1,46 +1,219 @@
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
+import Link from "next/link";
+import { AuditPayload, assertValidPayload } from "@/lib/auditPayload";
 
-export const metadata = {
-  title: "Pricing – Stafford Media Consulting",
-  description: "Simple plans that pay for themselves after a single recovered cart.",
+export const dynamic = "force-dynamic";
+
+type PageProps = {
+  searchParams?: Promise<{ store?: string }>;
 };
 
-export default function Page(){
+function cleanStoreDomain(value: string) {
+  return String(value || "")
+    .trim()
+    .toLowerCase()
+    .replace(/^https?:\/\//, "")
+    .replace(/^www\./, "")
+    .replace(/\/.*$/, "");
+}
+
+function getFixAuditUrl(store: string) {
+  const configured = String(process.env.NEXT_PUBLIC_SHOPIFIXER_ENGINE_URL || "").trim();
+  const base = configured
+    ? configured.includes("/api/")
+      ? configured
+      : `${configured.replace(/\/$/, "")}/api/fix-audit`
+    : "https://app.abando.ai/api/fix-audit";
+
+  return `${base}?store=${encodeURIComponent(store)}`;
+}
+
+function getCheckoutUrl() {
+  return String(process.env.NEXT_PUBLIC_SHOPIFIXER_FIX_CHECKOUT_URL || "").trim() ||
+    "https://buy.stripe.com/REPLACE_WITH_YOUR_LINK";
+}
+
+async function fetchAuditPayload(store: string): Promise<AuditPayload> {
+  const response = await fetch(getFixAuditUrl(store), {
+    method: "GET",
+    cache: "no-store",
+    headers: { Accept: "application/json" },
+  });
+
+  if (response.status === 404) {
+    throw new Error("AUDIT_PAYLOAD_NOT_FOUND");
+  }
+
+  if (!response.ok) {
+    throw new Error("AUDIT_ENGINE_UNAVAILABLE");
+  }
+
+  const json = await response.json();
+  return assertValidPayload(json?.payload || json);
+}
+
+export default async function PricingPage({ searchParams }: PageProps) {
+  const params = (await searchParams) || {};
+  const store = cleanStoreDomain(params.store || "");
+  const checkoutHref = getCheckoutUrl();
+
+  if (!store) {
+    return (
+      <main className="min-h-screen bg-slate-950 px-6 py-10 text-slate-100">
+        <div className="mx-auto max-w-4xl rounded-3xl border border-slate-800 bg-slate-900/90 p-8 shadow-2xl shadow-black/20">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-cyan-300">Pricing & Checkout</p>
+          <h1 className="mt-4 text-3xl font-semibold tracking-tight text-white">Run a ShopiFixer audit first.</h1>
+          <p className="mt-4 max-w-2xl text-sm leading-7 text-slate-300">
+            Pricing and checkout are tied to the store diagnosis, so the commercial step stays grounded in the exact issue surfaced for that store.
+          </p>
+          <div className="mt-6 flex flex-wrap gap-4">
+            <Link
+              href="/shopifixer"
+              className="rounded-full bg-cyan-400 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-cyan-300"
+            >
+              Run ShopiFixer
+            </Link>
+          </div>
+        </div>
+      </main>
+    );
+  }
+
+  let payload: AuditPayload;
+
+  try {
+    payload = await fetchAuditPayload(store);
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+
+    if (message === "AUDIT_PAYLOAD_NOT_FOUND") {
+      return (
+        <main className="min-h-screen bg-slate-950 px-6 py-10 text-slate-100">
+          <div className="mx-auto max-w-4xl rounded-3xl border border-slate-800 bg-slate-900/90 p-8 shadow-2xl shadow-black/20">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-cyan-300">Pricing & Checkout</p>
+            <h1 className="mt-4 text-3xl font-semibold tracking-tight text-white">No live audit is available for this store yet.</h1>
+            <p className="mt-4 max-w-2xl text-sm leading-7 text-slate-300">
+              The pricing step is tied to the live ShopiFixer payload. Run the audit first, then return here for pricing and checkout.
+            </p>
+            <div className="mt-6 flex flex-wrap gap-4">
+              <Link
+                href="/shopifixer"
+                className="rounded-full bg-cyan-400 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-cyan-300"
+              >
+                Run ShopiFixer
+              </Link>
+              <Link
+                href={`/shopifixer/result?store=${encodeURIComponent(store)}`}
+                className="rounded-full border border-slate-600 px-5 py-3 text-sm font-semibold text-white transition hover:border-cyan-300 hover:text-cyan-200"
+              >
+                Go to Summary
+              </Link>
+            </div>
+          </div>
+        </main>
+      );
+    }
+
+    throw error;
+  }
+
   return (
-    <main className="min-h-screen px-6 py-12 text-white">
-      <h1 className="text-3xl md:text-4xl font-bold mb-6">Choose your plan</h1>
-      <p className="text-white/80 mb-10">Abando™ pays for itself after a single recovered cart. 14-day free trial. Cancel anytime.</p>
+    <main className="min-h-screen bg-slate-950 px-6 py-10 text-slate-100">
+      <div className="mx-auto max-w-5xl space-y-8">
+        <section className="rounded-[28px] border border-slate-800 bg-[radial-gradient(circle_at_top_left,rgba(34,211,238,0.12),transparent_32%),linear-gradient(180deg,rgba(15,23,42,0.98),rgba(2,6,23,0.94))] p-8 shadow-2xl shadow-black/30">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.3em] text-cyan-300">Pricing & Checkout</p>
+          <h1 className="mt-3 text-4xl font-semibold tracking-tight text-white">Stafford Media implementation pricing</h1>
+          <p className="mt-4 max-w-3xl text-base leading-8 text-slate-300">
+            This is the commercial step between diagnosis and checkout. The price path is tied directly to the live ShopiFixer result so buyers understand what is being fixed before they pay.
+          </p>
 
-      <div className="grid md:grid-cols-3 gap-6">
-        <div className="rounded-2xl bg-slate-900/50 ring-1 ring-white/10 p-8">
-          <h3 className="text-xl font-semibold">Basic</h3>
-          <div className="text-4xl font-bold mt-2">$29<span className="text-base text-white/70">/mo</span></div>
-          <ul className="mt-4 space-y-2 text-sm text-white/80">
-            <li>Core conversion agent</li>
-            <li>Email support</li>
-          </ul>
-        </div>
+          <div className="mt-6 flex flex-wrap items-center gap-3 rounded-2xl border border-slate-800 bg-slate-950/60 p-4">
+            <img src="/brand/smc-logo.inline.png" alt="Stafford Media Consulting" className="h-8 w-auto" />
+            <div>
+              <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-cyan-300">Paid implementation service</p>
+              <p className="mt-1 text-sm leading-6 text-slate-300">
+                Stafford Media Consulting is the paid service layer in this system. ShopiFixer diagnoses the problem, then Stafford Media implements the fix path.
+              </p>
+            </div>
+          </div>
 
-        <div className="rounded-2xl bg-slate-900/50 ring-1 ring-white/10 p-8">
-          <h3 className="text-xl font-semibold">Growth</h3>
-          <div className="text-4xl font-bold mt-2">$59<span className="text-base text-white/70">/mo</span></div>
-          <ul className="mt-4 space-y-2 text-sm text-white/80">
-            <li>All Basic features</li>
-            <li>Playbooks & integrations</li>
-            <li>Priority email support</li>
-          </ul>
-        </div>
+          <div className="mt-8 grid gap-4 md:grid-cols-3">
+            <div className="rounded-2xl border border-slate-800 bg-slate-950/60 p-4">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-500">Store</p>
+              <p className="mt-2 text-sm font-medium text-slate-100">{payload.store_domain}</p>
+            </div>
+            <div className="rounded-2xl border border-slate-800 bg-slate-950/60 p-4">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-500">Top issue</p>
+              <p className="mt-2 text-sm font-medium text-slate-100">{payload.top_issue}</p>
+            </div>
+            <div className="rounded-2xl border border-slate-800 bg-slate-950/60 p-4">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-500">Estimated 30-day opportunity</p>
+              <p className="mt-2 text-sm font-medium text-slate-100">{payload.estimated_revenue_loss}</p>
+            </div>
+          </div>
+        </section>
 
-        <div className="rounded-2xl bg-slate-900/50 ring-1 ring-white/10 p-8">
-          <h3 className="text-xl font-semibold">Pro</h3>
-          <div className="text-4xl font-bold mt-2">$149<span className="text-base text-white/70">/mo</span></div>
-          <ul className="mt-4 space-y-2 text-sm text-white/80">
-            <li>All Growth features</li>
-            <li>Dedicated success manager</li>
-            <li>24/7 priority support</li>
-          </ul>
-        </div>
+        <section className="rounded-3xl border border-slate-800 bg-slate-900/90 p-8 shadow-2xl shadow-black/20">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-cyan-300">What you’re paying for</p>
+          <p className="mt-4 max-w-3xl text-sm leading-7 text-slate-300">
+            This is a focused Stafford Media implementation pass tied to the live audit result — not a vague optimization package, open-ended redesign, or generic retainer.
+          </p>
+
+          <div className="mt-6 grid gap-4 md:grid-cols-2">
+            <div className="rounded-2xl border border-slate-800 bg-slate-950/60 p-5">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-500">Included</p>
+              <ul className="mt-4 space-y-3 text-sm leading-6 text-slate-200">
+                <li>Implementation of the recommended fix path</li>
+                <li>Validation pass after implementation</li>
+                <li>Updated notes on what changed</li>
+                <li>One next recommended move after the fix is in place</li>
+              </ul>
+            </div>
+
+            <div className="rounded-2xl border border-slate-800 bg-slate-950/60 p-5">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-500">Commercial framing</p>
+              <div className="mt-4 space-y-4 text-sm leading-6 text-slate-200">
+                <div>
+                  <p className="font-semibold text-white">Timeline</p>
+                  <p>3–5 business days from confirmed access and payment</p>
+                </div>
+                <div>
+                  <p className="font-semibold text-white">What we may need</p>
+                  <p>Shopify collaborator access, theme access, or brief implementation coordination depending on the fix.</p>
+                </div>
+                <div>
+                  <p className="font-semibold text-white">Checkout</p>
+                  <p>This page is the dedicated pricing and checkout layer for the diagnosis you just surfaced.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="rounded-3xl border border-slate-800 bg-[linear-gradient(180deg,rgba(8,47,73,0.55),rgba(15,23,42,0.95))] p-8 shadow-2xl shadow-black/20">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-cyan-300">Diagnosis → Pricing → Checkout</p>
+          <h2 className="mt-4 text-3xl font-semibold tracking-tight text-white">Ready to move forward?</h2>
+          <p className="mt-4 max-w-3xl text-sm leading-7 text-slate-300">
+            If you want Stafford Media to implement this fix for your store, continue to checkout below.
+          </p>
+
+          <div className="mt-6 flex flex-wrap gap-4">
+            <a
+              href={checkoutHref}
+              className="rounded-full bg-cyan-400 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-cyan-300"
+            >
+              Buy Now
+            </a>
+
+            <p className="mt-3 text-sm text-slate-300">Paid service. Fixed in 3–5 days. No retainer. No back-and-forth.</p>
+
+            <Link
+              href={`/audit-result?store=${encodeURIComponent(payload.store_domain)}`}
+              className="rounded-full border border-slate-600 px-5 py-3 text-sm font-semibold text-white transition hover:border-cyan-300 hover:text-cyan-200"
+            >
+              Back to Full Review
+            </Link>
+          </div>
+        </section>
       </div>
     </main>
   );

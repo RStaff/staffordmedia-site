@@ -379,10 +379,10 @@ export default async function AuditResultPage({ searchParams }: PageProps) {
           </p>
           <div className="mt-5 flex flex-wrap gap-4">
             <Link
-              href={`/fix?store=${encodeURIComponent(payload.store_domain)}`}
+              href={`/pricing?store=${encodeURIComponent(payload.store_domain)}`}
               className="rounded-full bg-cyan-400 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-cyan-300"
             >
-              Fix This for Me
+              See Pricing & Checkout
             </Link>
             <p className="mt-3 text-sm text-slate-300">Fixed in 3–5 days. No retainer.</p>
             <Link

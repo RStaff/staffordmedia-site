@@ -34,6 +34,16 @@ export default function SystemFlow() {
           <h2 className="mt-4 text-4xl font-semibold tracking-tight text-white">
             One system from diagnosis to revenue recovery.
           </h2>
+      <div className="mt-4 flex flex-wrap items-center gap-3 rounded-2xl border border-slate-800 bg-slate-950/60 p-4">
+        <img src="/brand/smc-logo.inline.png" alt="Stafford Media Consulting" className="h-8 w-auto" />
+        <div>
+          <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-cyan-300">Step 2 is a paid service</p>
+          <p className="mt-1 text-sm leading-6 text-slate-300">
+            Stafford Media Consulting is the paid implementation layer in this system. Diagnosis leads into a defined commercial service and checkout path.
+          </p>
+        </div>
+      </div>
+
         </div>
         <div className="mt-10 grid gap-5 lg:grid-cols-3">
           {cards.map((card) => (
