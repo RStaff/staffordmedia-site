@@ -1,13 +1,5 @@
 #!/usr/bin/env bash
 set -euo pipefail
 npm run -w website check
-<<<<<<< HEAD
-<<<<<<< HEAD
 npm run -w website test
-=======
-npm run -w website test || true
->>>>>>> 7a98f0c (chore(ci): finalize guardrails + husky modernization)
-=======
-npm run -w website test
->>>>>>> 69d174d (feat: launch-ready website)
 npm run -w website build

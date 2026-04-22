@@ -10,11 +10,14 @@ export default function HomeHero() {
         <div className="hero-copy-max">
           <p className="eyebrow text-[var(--smc-accent)]">Stafford Media Consulting</p>
           <h1 className="hero-title mt-5 text-white">
-            Find where your store is losing revenue — and recover it automatically.
+            Find the clearest place your store is losing revenue — then recover it automatically.
           </h1>
           <p className="body-lg mt-6">
             Run a real audit of your store. See the exact issue holding back conversion. Then activate a system that
             recovers lost revenue without redesigning everything.
+          </p>
+          <p className="mt-4 text-sm leading-7 text-slate-400">
+            Built around the same live audit flow used to generate your review and full follow-through plan.
           </p>
           <div className="mt-10 flex flex-wrap gap-4">
             <Link href="/shopifixer" className="smc-button smc-button-primary">
@@ -54,15 +57,15 @@ export default function HomeHero() {
               </div>
             </div>
 
-            <div className="inline-flex max-w-full items-center gap-3 self-start rounded-2xl border border-white/10 bg-slate-950/90 px-4 py-3 text-sm text-slate-100 shadow-[inset_0_1px_0_rgba(255,255,255,0.04),0_8px_30px_rgba(0,0,0,0.18)]">
+            <div className="inline-flex w-fit max-w-full items-center gap-3 self-start rounded-xl border border-white/12 bg-slate-950 px-4 py-3 text-sm text-slate-100 shadow-[inset_0_1px_0_rgba(255,255,255,0.05),0_10px_24px_rgba(0,0,0,0.22)]">
               <Image
                 src="/brand/shopify_partner-logo-white.png"
                 alt="Official Shopify Partner"
                 width={220}
                 height={48}
-                className="h-5 w-auto shrink-0"
+                className="h-7 w-auto shrink-0"
               />
-              <span className="whitespace-nowrap text-sm font-medium text-slate-200">Official Shopify Partner</span>
+              <span className="whitespace-nowrap text-sm font-semibold text-slate-100">Official Shopify Partner</span>
             </div>
           </div>
 

@@ -1,16 +1,7 @@
 import React from "react";
-<<<<<<< HEAD
-<<<<<<< HEAD
-
 import { PRICE_BASIC, PRICE_GROWTH, PRICE_PRO, TRIAL_URL } from "../lib/config";
-=======
-=======
 
->>>>>>> b2ea271 (chore(ci): finalize doctor verification and guardrail health)
-import { PRICE_BASIC, PRICE_GROWTH, PRICE_PRO, TRIAL_URL } from "@/lib/config";
->>>>>>> f751bc5 (feat(site): About + Services + Pricing pages (drop-in))
-
-function Tier({ name, price, features }:{ name:string; price:string; features:string[] }) {
+function Tier({ name, price, features }:{ name:string; price:string | number; features:string[] }) {
   return (
     <div className="rounded-2xl bg-slate-900/50 ring-1 ring-white/10 p-8 md:p-10 flex flex-col gap-6">
       <h3 className="text-xl font-semibold text-white">{name}</h3>

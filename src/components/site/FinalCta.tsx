@@ -13,6 +13,9 @@ export default function FinalCta() {
             Use ShopiFixer to get the clearest read on your store. If the path is worth pushing further, Abando is
             there as the recovery system that follows.
           </p>
+          <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-slate-400">
+            The sooner the issue is clear, the sooner you can stop guessing and start testing the right fix.
+          </p>
           <div className="mt-8 flex flex-wrap justify-center gap-4">
             <Link href="/shopifixer" className="smc-button smc-button-primary">
               Run ShopiFixer Audit

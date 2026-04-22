@@ -38,10 +38,7 @@ export default function Navbar() {
             </Link>
           ))}
           <a className="text-sm text-zinc-600 hover:underline" href="https://getabando.com" target="_blank" rel="noreferrer">Abando</a>
-</nav>
         </nav>
-          <a className="text-sm text-zinc-600 hover:underline" href="https://getabando.com" target="_blank" rel="noreferrer">Abando</a>
-</nav>
         <div className="hidden sm:flex items-center gap-2">
           <Link
             href="/how-it-works"

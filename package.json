@@ -22,6 +22,7 @@
   "dependencies": {
     "@heroicons/react": "^2.2.0",
     "next": "^15.5.3",
+    "playwright": "^1.59.1",
     "react": "18.3.1",
     "react-dom": "18.3.1"
   },
@@ -42,6 +43,8 @@
     "eslint-plugin-next": "^0.0.0",
     "husky": "^9.1.7",
     "jsdom": "^27.0.0",
+    "lightningcss": "^1.32.0",
+    "lightningcss-darwin-arm64": "^1.32.0",
     "lint-staged": "^15.5.2",
     "portfinder": "^1.0.38",
     "postcss": "^8.5.6",
@@ -68,7 +71,7 @@
       "eslint --fix"
     ],
     "apps/website/**/*.{ts,tsx,js,jsx}": [
-      "eslint --config apps/website/eslint.config.js --cache --cache-location apps/website/.eslintcache --fix"
+      "eslint --config eslint.config.js --cache --cache-location .eslintcache --fix"
     ],
     "**/*.{css,md,json}": [
       "prettier --write"

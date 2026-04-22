@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 const painPoints = [
   "High add-to-cart, low checkout completion",
   "Drop-offs during shipping or pricing steps",
@@ -27,6 +29,11 @@ export default function PainSection() {
                 </div>
               ))}
             </div>
+          </div>
+          <div className="mt-8">
+            <Link href="/shopifixer" className="smc-button smc-button-primary">
+              Run Audit on Your Store
+            </Link>
           </div>
         </div>
       </div>
