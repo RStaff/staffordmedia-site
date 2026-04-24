@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { assertValidPayload } from "@/lib/auditPayload";
 import { triggerShopifixerOutreach } from "../../../lib/shopifixerOutreach";
+import { saveShopifixerLead } from "@/lib/shopifixerLeadStore";
 import AuditBenefitsRow from "@/components/shopifixer/AuditBenefitsRow";
 import AuditFormCard from "@/components/shopifixer/AuditFormCard";
 import AuditHero from "@/components/shopifixer/AuditHero";
@@ -61,6 +62,16 @@ async function submitAudit(formData: FormData) {
 
   const json = await response.json();
   const payload = assertValidPayload(json?.payload || json);
+
+  try {
+    await saveShopifixerLead({
+      submitted_email: email,
+      submitted_store: storeUrl,
+      payload,
+    });
+  } catch (error) {
+    console.error("[shopifixer-lead-store] unexpected failure", error);
+  }
 
   try {
     await triggerShopifixerOutreach({
