@@ -61,6 +61,7 @@ async function submitAudit(formData: FormData) {
   }
 
   const json = await response.json();
+  const leadId = json?.leadId || null;
   const payload = assertValidPayload(json?.payload || json);
 
   try {
@@ -68,6 +69,7 @@ async function submitAudit(formData: FormData) {
       submitted_email: email,
       submitted_store: storeUrl,
       payload,
+      leadId,
     });
   } catch (error) {
     console.error("[shopifixer-lead-store] unexpected failure", error);

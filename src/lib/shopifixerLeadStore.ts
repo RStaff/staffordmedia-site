@@ -6,6 +6,7 @@ type ShopifixerLeadInput = {
   submitted_email: string;
   submitted_store: string;
   payload: AuditPayload;
+  leadId?: string;
 };
 
 function buildFullReviewUrl(store: string) {
@@ -19,6 +20,7 @@ export async function saveShopifixerLead(input: ShopifixerLeadInput) {
   const record = {
     source: "shopifixer_audit_submission",
     captured_at: new Date().toISOString(),
+    lead_id: input.leadId || null,
     submitted_email: input.submitted_email,
     submitted_store: input.submitted_store,
     store_domain: input.payload.store_domain,
