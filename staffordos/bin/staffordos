@@ -5,7 +5,9 @@ COMMAND="$1"
 
 if [ "$COMMAND" = "preflight" ]; then
   node staffordos/preflight/preflight_v1.mjs
+elif [ "$COMMAND" = "promote" ]; then
+  node staffordos/preflight/promote_v1.mjs
 else
-  echo "Usage: staffordos preflight"
+  echo "Usage: staffordos preflight|promote"
   exit 1
 fi

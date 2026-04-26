@@ -18,7 +18,8 @@
     "prepare": "husky || true",
     "prebuild": "node scripts/assert-no-duplicate-routes.cjs",
     "postbuild": "mkdir -p .next/standalone/.next && rm -rf .next/standalone/.next/static .next/standalone/public && cp -R .next/static .next/standalone/.next/static && cp -R public .next/standalone/public",
-    "staffordos:preflight": "bash staffordos/bin/staffordos preflight"
+    "staffordos:preflight": "bash staffordos/bin/staffordos preflight",
+    "staffordos:promote": "bash staffordos/bin/staffordos promote"
   },
   "dependencies": {
     "@heroicons/react": "^2.2.0",
