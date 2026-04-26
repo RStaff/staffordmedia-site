@@ -28,5 +28,8 @@ jobs:
       - name: Install
         run: npm install --force --no-package-lock
 
+      - name: Install Linux lightningcss binary
+        run: npm install lightningcss-linux-x64-gnu --no-save --force --no-package-lock
+
       - name: Build
         run: npm run build
