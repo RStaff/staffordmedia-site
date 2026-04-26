@@ -64,3 +64,4 @@ scripts/*.sh
 .eslintcache
 .next
 node_modules
+staffordos/preflight/preflight_report_v1.json
