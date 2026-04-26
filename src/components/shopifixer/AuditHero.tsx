@@ -8,11 +8,11 @@ export default function AuditHero() {
         <ShopifixerLogo className="h-auto w-full max-w-[320px]" priority />
       </div>
       <h1 className="mt-6 text-[clamp(42px,6vw,62px)] font-semibold tracking-[-0.04em] text-white">
-        Find the clearest conversion leak in your store.
+        Find the one Shopify leak most likely costing you revenue.
       </h1>
       <p className="body-lg mt-6 max-w-3xl">
-        ShopiFixer is a service-led audit built to surface the strongest issue first, show the evidence behind the
-        read, and make the next fix obvious.
+        ShopiFixer reviews your storefront, identifies the strongest conversion issue first, shows the evidence behind
+        the read, and gives you the first fix worth testing.
       </p>
     </div>
   );
