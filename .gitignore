@@ -61,3 +61,6 @@ node_modules/
 scripts/*.sh
 *.bak*
 >>>>>>> c10e578 (chore: tidy helpers, ignore .bak files)
+.eslintcache
+.next
+node_modules

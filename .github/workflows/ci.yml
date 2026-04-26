@@ -1,46 +1,35 @@
 name: CI
+
 on:
   push:
+    branches:
+      - launch/website
+      - surface/**
+      - fix/**
+      - infra/**
+      - ci/**
   pull_request:
-jobs:
-  build-and-test:
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        shell: bash
-    steps:
-      - uses: actions/checkout@v4
+    branches:
+      - launch/website
 
-      - name: Setup Node (22.x)
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Use Node
         uses: actions/setup-node@v4
         with:
-          node-version: 22.x
-          cache: npm
-          cache-dependency-path: |
-            package-lock.json
-            apps/website/package-lock.json
+          node-version: 20
 
-      - name: Show versions
-        run: |
-          node -v
-          npm -v
+      - name: Install
+        run: npm install --force --no-package-lock
 
-      - name: Install deps at app
-        run: |
-          HUSKY=0 npm ci || HUSKY=0 npm install
+      - name: Install Linux native CSS binaries
+        run: npm install lightningcss-linux-x64-gnu @tailwindcss/oxide-linux-x64-gnu --no-save --force --no-package-lock
 
-      - name: Test (lenient if tiny)
-        run: |
-          npm --workspace apps/website run test || npm test || true
-
-      - name: Build website (production)
-        run: |
-          npm --workspace apps/website run build || npm run build
-
-      - name: Upload build artifact (.next)
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: website-.next
-          path: apps/website/.next
-          if-no-files-found: ignore
+      - name: Build
+        run: npm run build

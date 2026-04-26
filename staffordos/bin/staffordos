@@ -1,0 +1,11 @@
+#!/bin/bash
+set -e
+
+COMMAND="$1"
+
+if [ "$COMMAND" = "preflight" ]; then
+  node staffordos/preflight/preflight_v1.mjs
+else
+  echo "Usage: staffordos preflight"
+  exit 1
+fi
