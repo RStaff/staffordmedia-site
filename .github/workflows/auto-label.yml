@@ -11,7 +11,7 @@ jobs:
           script: |
             const head = context.payload.pull_request.head.ref || '';
             const add = [];
-            if (/^site\//.test(head)) add.push('Website Build');
+            if (/^(site|surface|fix|infra|ci)\//.test(head)) add.push('Website Build');
             if (/^llm\//.test(head))  add.push('LLM Dev Work');
             if (add.length) {
               await github.rest.issues.addLabels({
