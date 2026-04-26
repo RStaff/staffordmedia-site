@@ -1,0 +1,19 @@
+{
+  "ok": true,
+  "agent": "staffordos_preflight_v1",
+  "generated_at": "2026-04-26T16:56:02.350Z",
+  "repo_root": "/Users/rossstafford/projects/StaffordMediaConsulting/apps/website",
+  "branch": "ci/fix-workflow-alignment-v1",
+  "remote": "origin\thttps://github.com/RStaff/staffordmedia-site.git (fetch)\norigin\thttps://github.com/RStaff/staffordmedia-site.git (push)",
+  "status": "M apps/website/.eslintcache\n M package.json\n?? staffordos/",
+  "source_of_truth": {
+    "production_branch": "launch/website",
+    "correct_vercel_project": "staffordmedia-site-website",
+    "legacy_vercel_project_to_cleanup": "staffordmedia-site"
+  },
+  "issues": [],
+  "warnings": [
+    "Local eslint cache is dirty. Restore or ignore before committing."
+  ],
+  "next_action": "Proceed only with scoped branch work, then CI/preview/promotion gate."
+}
