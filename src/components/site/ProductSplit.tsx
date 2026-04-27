@@ -45,8 +45,8 @@ export default function ProductSplit() {
               <li>Best framed as the scale path after the issue is clear.</li>
             </ul>
             <div className="mt-8">
-              <Link href="/services" className="smc-button smc-button-secondary">
-                See Recovery System
+              <Link href="/recovery-demo" className="smc-button smc-button-secondary">
+                See Recovery Demo
               </Link>
             </div>
           </article>

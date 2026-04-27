@@ -1,0 +1,27 @@
+SYSTEM MODE — NON-NEGOTIABLE
+
+1. ONE SLICE AT A TIME
+   - Do not start new work until current slice is complete and verified
+
+2. SOURCE OF TRUTH FIRST
+   - Always read system_inventory artifacts before making changes
+
+3. NO NEW IDEAS DURING EXECUTION
+   - Only execute what is defined in the current slice
+
+4. NO UI-ONLY WORK
+   - Every UI element must map to a real system path
+
+5. VERIFY BEFORE MOVING ON
+   - Each slice must produce a real, testable outcome
+
+6. NO CROSS-SYSTEM BLENDING
+   - ShopiFixer = diagnose/fix
+   - Abando = recovery/attribution
+   - StaffordMedia = decision layer only
+
+7. BUILD FOR REVENUE PATH ONLY
+   - If it does not move user toward:
+     audit → payment OR recovery proof → install
+     it is not in scope
+

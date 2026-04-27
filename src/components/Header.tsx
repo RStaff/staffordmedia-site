@@ -32,8 +32,8 @@ export default function Header() {
           <Link href="/shopifixer" className="text-white/80 transition hover:text-white">
             ShopiFixer
           </Link>
-          <Link href="/#abando" className="text-white/80 transition hover:text-white">
-            Abando
+          <Link href="/recovery-demo" className="text-white/80 transition hover:text-white">
+            Recovery Demo
           </Link>
           <Link href="/services" className="text-white/80 transition hover:text-white">
             Services
