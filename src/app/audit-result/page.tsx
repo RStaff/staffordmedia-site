@@ -374,6 +374,9 @@ export default async function AuditResultPage({ searchParams }: PageProps) {
           <h2 className="mt-4 text-3xl font-semibold tracking-tight text-white">Fix the first leak.</h2>
           <p className="mt-4 max-w-3xl text-sm leading-7 text-slate-300">
             The clearest next move from this review is to test <span className="font-semibold text-white">{payload.recommended_action}</span> first.
+            <br />
+            <br />
+            Once this is fixed, <a href="/abando" className="font-semibold text-cyan-300 underline underline-offset-4">Abando can scale recovery automatically</a>.
             Use this diagnosis to request the prioritized first fixes for the store, or rerun the audit flow if you want a fresh submission tied to the same destination page.
           </p>
           <div className="mt-5 flex flex-wrap gap-4">

@@ -14,10 +14,10 @@ export default function RecoveryDemoPage() {
             Abando Recovery Demo
           </p>
           <h1 className="mt-4 text-4xl font-semibold tracking-tight text-white">
-            Experience how Abando brings shoppers back.
+            See the proof loop: message sent, shopper returns, revenue attributed.
           </h1>
           <p className="mt-4 max-w-3xl text-sm leading-7 text-slate-300">
-            This demo path is for recovery proof: message sent, shopper returns, and recovered revenue can be measured.
+            This demo is the proof path for Abando: recovery message, return tracking, and recovered revenue attribution.
             It is separate from the ShopiFixer audit and fix path.
           </p>
 
@@ -38,7 +38,7 @@ export default function RecoveryDemoPage() {
 
           <div className="mt-8 flex flex-wrap gap-4">
             <Link href="/shopifixer" className="rounded-full border border-slate-600 px-5 py-3 text-sm font-semibold text-white transition hover:border-violet-300 hover:text-violet-200">
-              Go to ShopiFixer
+              Run ShopiFixer Audit
             </Link>
           </div>
         </section>
