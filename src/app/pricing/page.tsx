@@ -29,7 +29,7 @@ function getFixAuditUrl(store: string) {
 
 function getCheckoutUrl() {
   return String(process.env.NEXT_PUBLIC_SHOPIFIXER_FIX_CHECKOUT_URL || "").trim() ||
-    "https://buy.stripe.com/REPLACE_WITH_YOUR_LINK";
+    "https://buy.stripe.com/00w5kEe4sanJaHB15j00001";
 }
 
 async function fetchAuditPayload(store: string): Promise<AuditPayload> {
@@ -175,7 +175,7 @@ export default async function PricingPage({ searchParams }: PageProps) {
 
       <div className="mt-6 flex flex-wrap gap-4">
         <a
-          href="https://buy.stripe.com/REPLACE_WITH_YOUR_LINK"
+          href={checkoutHref}
           className="rounded-full bg-cyan-400 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-cyan-300"
         >
           Buy Now
@@ -246,7 +246,7 @@ export default async function PricingPage({ searchParams }: PageProps) {
 
   <div className="mt-6 flex flex-wrap gap-4">
     <a
-      href="https://buy.stripe.com/REPLACE_WITH_YOUR_LINK"
+      href={checkoutHref}
       className="rounded-full bg-cyan-400 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-cyan-300"
     >
       Buy Now
