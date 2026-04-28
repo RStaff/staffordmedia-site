@@ -46,7 +46,7 @@ export default function ProductSplit() {
             </ul>
             <div className="mt-8">
               <Link href="/recovery-demo" className="smc-button smc-button-secondary">
-                See Recovery Demo
+                See Abando Recovery Demo
               </Link>
             </div>
           </article>

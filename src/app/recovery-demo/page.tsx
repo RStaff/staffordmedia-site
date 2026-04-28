@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 export const metadata = {
-  title: "Recovery Demo — Stafford Media Consulting™",
+  title: "Abando Recovery Demo — Stafford Media Consulting™",
   description: "Experience how Abando recovery proof works before install."
 };
 
@@ -11,7 +11,7 @@ export default function RecoveryDemoPage() {
       <div className="mx-auto max-w-5xl space-y-8">
         <section className="rounded-[28px] border border-slate-800 bg-slate-900/90 p-8 shadow-2xl shadow-black/20">
           <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-violet-300">
-            Recovery Demo
+            Abando Recovery Demo
           </p>
           <h1 className="mt-4 text-4xl font-semibold tracking-tight text-white">
             Experience how Abando brings shoppers back.
