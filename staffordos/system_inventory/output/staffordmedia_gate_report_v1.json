@@ -1,0 +1,116 @@
+{
+  "generated_at": "2026-04-29T22:19:08.543Z",
+  "repo": "/private/tmp/smc-approved",
+  "branch": "surface/shopifixer/component-polish-v1",
+  "commit": "71dfe95",
+  "dirty": true,
+  "enforcement_level": "LOCAL_GATE_V1",
+  "rule": "No patch, deploy, send, or outreach unless relevant gates pass.",
+  "gates": {
+    "pre_patch_gate": {
+      "status": "PASS",
+      "required": [
+        {
+          "file": "src/components/site/HomeHero.tsx",
+          "exists": true
+        },
+        {
+          "file": "src/components/Header.tsx",
+          "exists": true
+        },
+        {
+          "file": "src/app/page.tsx",
+          "exists": true
+        },
+        {
+          "file": "src/app/shopifixer/page.tsx",
+          "exists": true
+        },
+        {
+          "file": "src/app/audit-result/page.tsx",
+          "exists": true
+        },
+        {
+          "file": "src/app/pricing/page.tsx",
+          "exists": true
+        },
+        {
+          "file": "src/app/shopifixer/result/page.tsx",
+          "exists": true
+        },
+        {
+          "file": "src/components/shopifixer/AuditHero.tsx",
+          "exists": true
+        },
+        {
+          "file": "src/components/shopifixer/AuditFormCard.tsx",
+          "exists": true
+        },
+        {
+          "file": "src/components/site/SystemFlow.tsx",
+          "exists": true
+        },
+        {
+          "file": "src/components/site/FinalCta.tsx",
+          "exists": true
+        }
+      ]
+    },
+    "source_owner_gate": {
+      "status": "PASS",
+      "owners": {
+        "home_hero": "src/components/site/HomeHero.tsx",
+        "global_header": "src/components/Header.tsx",
+        "shopifixer_page": "src/app/shopifixer/page.tsx",
+        "audit_result": "src/app/audit-result/page.tsx",
+        "pricing": "src/app/pricing/page.tsx"
+      }
+    },
+    "product_identity_gate": {
+      "status": "PASS",
+      "required_terms": {
+        "ShopiFixer": true,
+        "Abando": true,
+        "StaffordMedia": true
+      }
+    },
+    "no_fake_proof_gate": {
+      "status": "REQUIRES_RUNTIME_PROOF",
+      "required_proof_types": [
+        "HTTP status",
+        "file diff",
+        "build result",
+        "provider id if email sent",
+        "Stripe session if checkout opened"
+      ]
+    },
+    "money_path_gate": {
+      "status": "NOT_RUNTIME_TESTED",
+      "required_routes": [
+        "/",
+        "/shopifixer",
+        "/audit-result",
+        "/pricing",
+        "/shopifixer/result"
+      ],
+      "note": "Run live/local HTTP checks before outreach or deploy approval."
+    },
+    "no_client_facing_action_gate": {
+      "status": "BLOCKED_UNTIL_LIVE_SURFACE_AND_MONEY_PATH_PASS",
+      "blocks": [
+        "outreach",
+        "auto-send",
+        "lead traffic",
+        "public claims of readiness"
+      ]
+    },
+    "commit_hygiene_gate": {
+      "status": "DIRTY_REPO",
+      "git_status_short": "M package-lock.json\n?? staffordos/"
+    },
+    "rollback_gate": {
+      "status": "PASS",
+      "rollback_command": "git checkout 71dfe95"
+    }
+  }
+}

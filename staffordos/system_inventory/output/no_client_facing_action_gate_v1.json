@@ -1,0 +1,7 @@
+{
+  "generated_at": "2026-04-29T22:18:56.458Z",
+  "action": "client_facing_action",
+  "allowed": false,
+  "blockers": ["dirty_repo"],
+  "rule": "No outreach, auto-send, live traffic, or public launch action while blocked."
+}
