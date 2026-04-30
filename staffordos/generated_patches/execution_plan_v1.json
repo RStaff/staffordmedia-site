@@ -1,0 +1,25 @@
+{
+  "generated_at": "2026-04-30T12:54:52.565Z",
+  "work_id": "smc_shopifixer_ux_001",
+  "execution_plan": {
+    "type": "code_patch",
+    "target_files": [
+      "src/app/shopifixer/page.tsx",
+      "src/components/shopifixer/AuditHero.tsx"
+    ],
+    "objective": "Improve ShopiFixer page conversion before StaffordMedia launch",
+    "actions": [
+      "tighten CTA dominance",
+      "reduce repeated explanatory copy",
+      "reduce scroll friction before audit form",
+      "preserve ShopiFixer / Stafford Media / Abando product boundaries"
+    ],
+    "forbidden_areas": ["Abando runtime", "Stripe billing", "outreach systems"],
+    "required_after_patch": [
+      "./run_system.sh",
+      "visual review of /shopifixer",
+      "commit only owner files and proof artifacts"
+    ]
+  },
+  "patch_script": "/private/tmp/smc-approved/staffordos/generated_patches/smc_shopifixer_ux_001_generated_patch_v1.sh"
+}

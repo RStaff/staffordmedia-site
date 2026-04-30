@@ -22,5 +22,8 @@ sleep 5
 # 6. Enforce proof (BLOCKS IF BAD)
 ./staffordos/gates/proof_enforcement_gate_v1.sh
 
+# 7. Brand integrity
+./staffordos/gates/brand_integrity_gate_v1.sh
+
 echo ""
 echo "✅ SYSTEM FULLY VERIFIED — SAFE TO WORK"

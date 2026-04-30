@@ -1,0 +1,36 @@
+{
+  "work_id": "smc_shopifixer_ux_001",
+  "objective": "Improve ShopiFixer page conversion before StaffordMedia launch",
+  "scope": "UX/copy/layout only",
+  "status": "IN_PROGRESS",
+
+  "owner_files": [
+    "src/app/shopifixer/page.tsx",
+    "src/components/shopifixer/AuditHero.tsx"
+  ],
+
+  "blocked_areas": ["Abando runtime", "Stripe billing", "outreach systems"],
+
+  "definition_of_done": [
+    "/shopifixer returns 200",
+    "audit form visible without excessive scroll",
+    "copy is not repetitive",
+    "page drives clear action",
+    "money_path_gate passes"
+  ],
+
+  "required_gates": [
+    "pre_patch_required_v1",
+    "runtime_sync_gate_v1",
+    "money_path_gate_v2",
+    "proof_enforcement_gate_v1"
+  ],
+
+  "current_issue": "Page still too verbose and not decisively driving audit submission",
+
+  "last_action": "Simplified hero and flow, introduced syntax break (now fixing)",
+
+  "next_action": "Validate syntax fix → tighten CTA dominance → reduce scroll friction",
+
+  "rollback_command": "git checkout HEAD~1"
+}

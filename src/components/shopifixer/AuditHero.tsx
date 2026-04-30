@@ -8,8 +8,13 @@ export default function AuditHero() {
         <ShopifixerLogo className="h-auto w-full max-w-[320px]" priority />
       </div>
       <h1 className="mt-6 text-[clamp(42px,6vw,62px)] font-semibold tracking-[-0.04em] text-white">
-        Find the one Shopify leak most likely costing you revenue.
+        Find the exact conversion leak costing you revenue — and fix it first.
       </h1>
+
+<p className="mt-4 text-sm text-slate-300 max-w-xl">
+Most stores don’t need more traffic first. They need to know what is breaking conversion.
+</p>
+
       <p className="body-lg mt-6 max-w-3xl">
         ShopiFixer reviews your storefront, identifies the strongest conversion issue first, shows the evidence behind
         the read, and gives you the first fix worth testing.
