@@ -25,5 +25,8 @@ sleep 5
 # 7. Brand integrity
 ./staffordos/gates/brand_integrity_gate_v1.sh
 
+# 8. Visual integrity
+./staffordos/gates/visual_integrity_gate_v1.sh
+
 echo ""
 echo "✅ SYSTEM FULLY VERIFIED — SAFE TO WORK"
