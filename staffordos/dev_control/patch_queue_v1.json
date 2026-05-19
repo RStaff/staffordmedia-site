@@ -136,6 +136,137 @@
         "run visual review"
       ],
       "visual_review_required": true
+    },
+    {
+      "patch_id": "THEME-INTELLIGENCE-REGISTRY",
+      "title": "Theme intelligence registry foundation",
+      "target_surface": "shopifixer_auto_foundation",
+      "repo": "/Users/rossstafford/projects/StaffordMediaConsulting/apps/website",
+      "machine": "Mac",
+      "status": "PLANNED",
+      "risk_level": "low",
+      "owner": "StaffordOS",
+      "created_at": "2026-05-19",
+      "blocked_by": [
+        "foundation-only documentation exists; implementation requires separate approved patch",
+        "no live Shopify mutation authorized"
+      ],
+      "depends_on": ["SHOPIFIXER-SURFACE-APPROVAL"],
+      "active_transition_allowed_when": [
+        "SHOPIFIXER-SURFACE-APPROVAL is APPROVED or APPROVED_WITH_MODIFICATIONS",
+        "scope remains documentation or sandbox-only"
+      ],
+      "validation_required": [
+        "verify registry JSON parses",
+        "confirm no live merchant connection",
+        "confirm no production surface mutation"
+      ],
+      "visual_review_required": false
+    },
+    {
+      "patch_id": "SNAPSHOT-SANDBOX-PIPELINE",
+      "title": "Snapshot and sandbox pipeline foundation",
+      "target_surface": "shopifixer_auto_foundation",
+      "repo": "/Users/rossstafford/projects/StaffordMediaConsulting/apps/website",
+      "machine": "Mac",
+      "status": "PLANNED",
+      "risk_level": "medium",
+      "owner": "StaffordOS",
+      "created_at": "2026-05-19",
+      "blocked_by": [
+        "snapshot/sandbox model is documented only",
+        "no Shopify account connection or theme duplicate implementation authorized"
+      ],
+      "depends_on": ["THEME-INTELLIGENCE-REGISTRY"],
+      "active_transition_allowed_when": [
+        "THEME-INTELLIGENCE-REGISTRY is complete",
+        "implementation scope explicitly excludes live-store mutation"
+      ],
+      "validation_required": [
+        "confirm before snapshot requirement",
+        "confirm duplicate theme requirement",
+        "confirm rollback path requirement"
+      ],
+      "visual_review_required": false
+    },
+    {
+      "patch_id": "MUTATION-PACKET-STANDARD",
+      "title": "Mutation packet standard foundation",
+      "target_surface": "shopifixer_auto_foundation",
+      "repo": "/Users/rossstafford/projects/StaffordMediaConsulting/apps/website",
+      "machine": "Mac",
+      "status": "PLANNED",
+      "risk_level": "low",
+      "owner": "StaffordOS",
+      "created_at": "2026-05-19",
+      "blocked_by": [
+        "packet standard is documentation only",
+        "execution workers are NOT_IMPLEMENTED"
+      ],
+      "depends_on": ["THEME-INTELLIGENCE-REGISTRY"],
+      "active_transition_allowed_when": [
+        "THEME-INTELLIGENCE-REGISTRY is complete",
+        "packet remains inspectable and bounded"
+      ],
+      "validation_required": [
+        "confirm packet fields include target files",
+        "confirm prohibited changes are explicit",
+        "confirm rollback instructions are required"
+      ],
+      "visual_review_required": false
+    },
+    {
+      "patch_id": "ROLLBACK-ARCHITECTURE",
+      "title": "Rollback architecture foundation",
+      "target_surface": "shopifixer_auto_foundation",
+      "repo": "/Users/rossstafford/projects/StaffordMediaConsulting/apps/website",
+      "machine": "Mac",
+      "status": "PLANNED",
+      "risk_level": "medium",
+      "owner": "StaffordOS",
+      "created_at": "2026-05-19",
+      "blocked_by": [
+        "rollback architecture is documentation only",
+        "no rollback execution system authorized"
+      ],
+      "depends_on": ["MUTATION-PACKET-STANDARD"],
+      "active_transition_allowed_when": [
+        "MUTATION-PACKET-STANDARD is complete",
+        "rollback remains evidence-based and merchant-safe"
+      ],
+      "validation_required": [
+        "confirm theme backup requirement",
+        "confirm patch diff requirement",
+        "confirm rollback proof requirement"
+      ],
+      "visual_review_required": false
+    },
+    {
+      "patch_id": "VISUAL-QA-BEFORE-AFTER",
+      "title": "Before/after visual QA foundation",
+      "target_surface": "shopifixer_auto_foundation",
+      "repo": "/Users/rossstafford/projects/StaffordMediaConsulting/apps/website",
+      "machine": "Mac",
+      "status": "PLANNED",
+      "risk_level": "medium",
+      "owner": "StaffordOS",
+      "created_at": "2026-05-19",
+      "blocked_by": [
+        "visual diff worker is NOT_IMPLEMENTED",
+        "no screenshot automation or Shopify mutation authorized"
+      ],
+      "depends_on": ["SNAPSHOT-SANDBOX-PIPELINE", "ROLLBACK-ARCHITECTURE"],
+      "active_transition_allowed_when": [
+        "SNAPSHOT-SANDBOX-PIPELINE is complete",
+        "ROLLBACK-ARCHITECTURE is complete",
+        "before/after evidence remains review-only"
+      ],
+      "validation_required": [
+        "confirm screenshot targets are defined",
+        "confirm visual diff does not imply approval",
+        "confirm merchant approval remains required"
+      ],
+      "visual_review_required": true
     }
   ]
 }
