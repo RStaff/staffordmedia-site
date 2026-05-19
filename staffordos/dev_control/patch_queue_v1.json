@@ -195,7 +195,14 @@
       "target_surface": "shopifixer_auto_foundation",
       "repo": "/Users/rossstafford/projects/StaffordMediaConsulting/apps/website",
       "machine": "Mac",
-      "status": "PLANNED",
+      "status": "DONE",
+      "completion_notes": [
+        "mutation packet schema created as docs/json only",
+        "sample Dawn quick-fix packet created as blocked, non-executable example",
+        "validation rules and Codex execution boundaries documented",
+        "no packet execution, Shopify access, automation, UI, route, or live mutation exists yet"
+      ],
+      "completed_at": "2026-05-19",
       "risk_level": "low",
       "owner": "StaffordOS",
       "created_at": "2026-05-19",
@@ -247,7 +254,13 @@
       "target_surface": "shopifixer_auto_foundation",
       "repo": "/Users/rossstafford/projects/StaffordMediaConsulting/apps/website",
       "machine": "Mac",
-      "status": "PLANNED",
+      "status": "DONE",
+      "completion_notes": [
+        "documentation/proof architecture only — no visual automation implemented.",
+        "before/after proof model, artifact manifest, visual QA rules, merchant approval packet template, and visual diff risk model created",
+        "no screenshots, browser automation, Shopify access, UI, route, or live mutation exists yet"
+      ],
+      "completed_at": "2026-05-19",
       "risk_level": "medium",
       "owner": "StaffordOS",
       "created_at": "2026-05-19",
@@ -267,6 +280,264 @@
         "confirm merchant approval remains required"
       ],
       "visual_review_required": true
+    },
+    {
+      "patch_id": "RESOURCE-GATING-WORKER-ARCHITECTURE",
+      "title": "Resource gating and worker queue architecture",
+      "target_surface": "shopifixer_auto_foundation",
+      "repo": "/Users/rossstafford/projects/StaffordMediaConsulting/apps/website",
+      "machine": "Mac",
+      "status": "DONE",
+      "completion_notes": [
+        "architecture/docs only — no orchestration runtime implemented.",
+        "resource gates, queue topology, worker responsibilities, orchestration boundaries, compute budgeting, and operator escalation rules documented",
+        "no workers, agents, Kubernetes jobs, CI/CD pipelines, Shopify actions, UI, deployment logic, or automation execution exists yet"
+      ],
+      "completed_at": "2026-05-19",
+      "risk_level": "medium",
+      "owner": "StaffordOS",
+      "created_at": "2026-05-19",
+      "blocked_by": [
+        "worker lanes are NOT_IMPLEMENTED",
+        "orchestration runtime is NOT_IMPLEMENTED",
+        "no Shopify access or live mutation authorized"
+      ],
+      "depends_on": [
+        "MUTATION-PACKET-STANDARD",
+        "VISUAL-QA-BEFORE-AFTER",
+        "ROLLBACK-ARCHITECTURE"
+      ],
+      "active_transition_allowed_when": [
+        "implementation slice is separately approved",
+        "worker runtime remains bounded by resource gates",
+        "no autonomous deploy or live mutation is introduced"
+      ],
+      "validation_required": [
+        "confirm no workers are launched",
+        "confirm no automation execution exists",
+        "confirm no Shopify action is performed",
+        "confirm orchestration boundaries require approvals and rollback proof"
+      ],
+      "visual_review_required": false
+    },
+    {
+      "patch_id": "MUTATION-PACKET-VALIDATOR-RUNNER",
+      "title": "Mutation packet validator runner",
+      "target_surface": "shopifixer_auto_foundation",
+      "repo": "/Users/rossstafford/projects/StaffordMediaConsulting/apps/website",
+      "machine": "Mac",
+      "status": "DONE",
+      "completion_notes": [
+        "validation runner implemented for mutation packet safety checks only",
+        "sample Dawn quick-fix packet validated and output artifact written",
+        "no mutation, Shopify execution, Codex execution, agents, queues, UI, routes, or deployment logic added"
+      ],
+      "completed_at": "2026-05-19",
+      "risk_level": "low",
+      "owner": "StaffordOS",
+      "created_at": "2026-05-19",
+      "blocked_by": [
+        "validator does not authorize execution",
+        "approval gates and rollback proof remain required before any sandbox mutation"
+      ],
+      "depends_on": [
+        "MUTATION-PACKET-STANDARD",
+        "RESOURCE-GATING-WORKER-ARCHITECTURE"
+      ],
+      "active_transition_allowed_when": [
+        "packet execution slice is separately approved",
+        "candidate packet passes validator",
+        "execution remains sandbox-only and approval-gated"
+      ],
+      "validation_required": [
+        "node --check runner passes",
+        "runner validates sample packet",
+        "output JSON parses",
+        "confirm no Shopify or Codex execution occurs"
+      ],
+      "visual_review_required": false
+    },
+    {
+      "patch_id": "STAFFORDMEDIA-SITEMAP-ALIGNMENT",
+      "title": "StaffordMedia sitemap and conversion flow alignment",
+      "target_surface": "commercial_alignment",
+      "repo": "/Users/rossstafford/projects/StaffordMediaConsulting/apps/website",
+      "machine": "Mac",
+      "status": "PLANNED",
+      "risk_level": "low",
+      "owner": "StaffordOS",
+      "created_at": "2026-05-19",
+      "blocked_by": [
+        "alignment docs exist; any route/UI changes require separate approved patch"
+      ],
+      "depends_on": [
+        "SHOPIFIXER-SURFACE-APPROVAL",
+        "AUDIT-RESULT-SURFACE-APPROVAL"
+      ],
+      "active_transition_allowed_when": [
+        "required surface approvals are APPROVED or APPROVED_WITH_MODIFICATIONS",
+        "scope remains documentation or approved route-safe edits"
+      ],
+      "validation_required": [
+        "confirm existing routes remain unchanged",
+        "confirm ShopiFixer and Abando product boundaries remain distinct"
+      ],
+      "visual_review_required": false
+    },
+    {
+      "patch_id": "SHOPIFIXER-OFFER-LADDER",
+      "title": "ShopiFixer offer ladder alignment",
+      "target_surface": "commercial_alignment",
+      "repo": "/Users/rossstafford/projects/StaffordMediaConsulting/apps/website",
+      "machine": "Mac",
+      "status": "PLANNED",
+      "risk_level": "medium",
+      "owner": "StaffordOS",
+      "created_at": "2026-05-19",
+      "blocked_by": [
+        "offer ladder is mapped only; pricing and page changes require separate approval"
+      ],
+      "depends_on": [
+        "STAFFORDMEDIA-SITEMAP-ALIGNMENT",
+        "RESOURCE-GATING-WORKER-ARCHITECTURE"
+      ],
+      "active_transition_allowed_when": [
+        "commercial offer language is approved",
+        "resource gates remain aligned to mutation depth"
+      ],
+      "validation_required": [
+        "confirm Free Audit does not imply mutation",
+        "confirm Quick Fix stays bounded and proof-backed",
+        "confirm Abando remains a separate recovery lane"
+      ],
+      "visual_review_required": false
+    },
+    {
+      "patch_id": "PRICING-PAGE-SLICE",
+      "title": "Pricing page slice",
+      "target_surface": "shopifixer_pricing",
+      "repo": "/Users/rossstafford/projects/StaffordMediaConsulting/apps/website",
+      "machine": "Mac",
+      "status": "PLANNED",
+      "risk_level": "medium",
+      "owner": "StaffordOS",
+      "created_at": "2026-05-19",
+      "blocked_by": [
+        "pricing page edits are not authorized by this alignment slice"
+      ],
+      "depends_on": [
+        "SHOPIFIXER-OFFER-LADDER",
+        "AUDIT-RESULT-SURFACE-APPROVAL"
+      ],
+      "active_transition_allowed_when": [
+        "pricing copy and offer scope are approved",
+        "audit-result to pricing handoff remains canonical"
+      ],
+      "validation_required": [
+        "confirm no checkout destination drift",
+        "confirm store-specific audit context remains required"
+      ],
+      "visual_review_required": true
+    },
+    {
+      "patch_id": "BEFORE-AFTER-CONVERSION-SURFACE",
+      "title": "Before/after conversion surface",
+      "target_surface": "shopifixer_before_after_proof",
+      "repo": "/Users/rossstafford/projects/StaffordMediaConsulting/apps/website",
+      "machine": "Mac",
+      "status": "PLANNED",
+      "risk_level": "high",
+      "owner": "StaffordOS",
+      "created_at": "2026-05-19",
+      "blocked_by": [
+        "before/after proof is architecture only; no UI surface is authorized yet",
+        "homepage hierarchy lock and ShopiFixer approval remain required"
+      ],
+      "depends_on": [
+        "VISUAL-QA-BEFORE-AFTER",
+        "MUTATION-PACKET-VALIDATOR-RUNNER",
+        "SHOPIFIXER-SURFACE-APPROVAL",
+        "HOMEPAGE-HIERARCHY-LOCK"
+      ],
+      "active_transition_allowed_when": [
+        "required visual approvals are APPROVED or APPROVED_WITH_MODIFICATIONS",
+        "merchant-facing before/after proof language is approved",
+        "no live mutation or deployment is introduced"
+      ],
+      "validation_required": [
+        "confirm proof does not imply approval",
+        "confirm rollback safety is visible",
+        "confirm existing homepage and ShopiFixer visuals are preserved"
+      ],
+      "visual_review_required": true
+    },
+    {
+      "patch_id": "ABANDO-CTA-DESTINATION-DECISION",
+      "title": "Abando CTA destination decision",
+      "target_surface": "abando_recovery_path",
+      "repo": "/Users/rossstafford/projects/StaffordMediaConsulting/apps/website",
+      "machine": "Mac",
+      "status": "PLANNED",
+      "risk_level": "medium",
+      "owner": "StaffordOS",
+      "created_at": "2026-05-19",
+      "blocked_by": [
+        "Abando CTA destination requires Ross decision before route or CTA edits"
+      ],
+      "depends_on": [
+        "RECOVERY-DEMO-VISUAL-APPROVAL",
+        "PATCH-ABANDO-CTA-ALIGNMENT"
+      ],
+      "active_transition_allowed_when": [
+        "RECOVERY-DEMO-VISUAL-APPROVAL is APPROVED or APPROVED_WITH_MODIFICATIONS",
+        "Ross confirms whether CTA should point to /abando, /recovery-demo, or another approved destination"
+      ],
+      "validation_required": [
+        "confirm recovery demo runtime state",
+        "confirm Abando remains distinct from ShopiFixer audit",
+        "confirm no CTA target changes occur without explicit approval"
+      ],
+      "visual_review_required": true
+    },
+    {
+      "patch_id": "MERCHANT-LIFECYCLE-STATE-ENGINE",
+      "title": "Merchant lifecycle state engine",
+      "target_surface": "staffordos_lifecycle",
+      "repo": "/Users/rossstafford/projects/StaffordMediaConsulting/apps/website",
+      "machine": "Mac",
+      "status": "DONE",
+      "completion_notes": [
+        "canonical lifecycle state architecture created as docs/json only",
+        "merchant state manifest template, transition rules, artifact dependencies, and operator visibility model documented",
+        "no databases, APIs, UI, workers, Shopify execution, deployment automation, or runtime state engine implemented"
+      ],
+      "completed_at": "2026-05-19",
+      "risk_level": "medium",
+      "owner": "StaffordOS",
+      "created_at": "2026-05-19",
+      "blocked_by": [
+        "lifecycle persistence is NOT_IMPLEMENTED",
+        "operator UI is NOT_IMPLEMENTED",
+        "automation and Shopify execution remain unauthorized"
+      ],
+      "depends_on": [
+        "STAFFORDMEDIA-SITEMAP-ALIGNMENT",
+        "MUTATION-PACKET-VALIDATOR-RUNNER",
+        "VISUAL-QA-BEFORE-AFTER",
+        "RESOURCE-GATING-WORKER-ARCHITECTURE"
+      ],
+      "active_transition_allowed_when": [
+        "future implementation slice is separately approved",
+        "state transitions remain artifact-gated",
+        "deployment and Abando activation remain approval-gated"
+      ],
+      "validation_required": [
+        "confirm lifecycle manifest JSON parses",
+        "confirm no database or API is created",
+        "confirm no automation or Shopify execution occurs",
+        "confirm future automation routes through lifecycle transitions"
+      ],
+      "visual_review_required": false
     }
   ]
 }

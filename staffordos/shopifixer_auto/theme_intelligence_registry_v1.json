@@ -19,8 +19,56 @@
         "sections/header.liquid",
         "sections/featured-collection.liquid",
         "snippets/buy-buttons.liquid",
+        "snippets/progress-bar.liquid",
         "assets/base.css",
+        "assets/section-main-product.css",
         "assets/global.js"
+      ],
+      "recovered_memory": {
+        "source": "staffordos/shopifixer_auto/dawn_mutation_memory_v1.md",
+        "playbook": "staffordos/shopifixer_auto/dawn_mutation_playbook_v1.json",
+        "merchant_context": "No Kings Athletics dev-store evidence recovered from local files and shell history.",
+        "source_path": "/Users/rossstafford/Documents/New project",
+        "evidence_status": "RECOVERED_EVIDENCE_ONLY"
+      },
+      "known_file_targets": [
+        {
+          "path": "config/settings_data.json",
+          "zone": "theme identity and settings",
+          "safe_mutation_zone": "read-only classification unless editing a confirmed duplicate theme"
+        },
+        {
+          "path": "templates/product.json",
+          "zone": "product page block order and settings",
+          "safe_mutation_zone": "reorder existing product blocks or adjust existing block settings in a duplicate theme"
+        },
+        {
+          "path": "sections/main-product.liquid",
+          "zone": "product page renderer",
+          "safe_mutation_zone": "additive rendering of approved snippets or product-page trust copy; preserve product form behavior"
+        },
+        {
+          "path": "snippets/buy-buttons.liquid",
+          "zone": "add-to-cart and dynamic checkout",
+          "safe_mutation_zone": "copy/class-level CTA clarity only after screenshots; no form logic rewrite"
+        },
+        {
+          "path": "snippets/progress-bar.liquid",
+          "zone": "recovered inert progress UI artifact",
+          "safe_mutation_zone": "preserve as evidence or render only after explicit approval and before/after screenshots"
+        },
+        {
+          "path": "assets/section-main-product.css",
+          "zone": "product page CSS",
+          "safe_mutation_zone": "scoped spacing, hierarchy, and CTA visibility changes only"
+        }
+      ],
+      "safe_mutation_zones": [
+        "duplicate-theme product page block ordering",
+        "existing Dawn product page settings",
+        "inert snippet preservation",
+        "scoped product page CSS",
+        "CTA visibility and wording without product form logic changes"
       ],
       "common_conversion_issues": [
         "weak above-the-fold product value clarity",

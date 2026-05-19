@@ -20,6 +20,7 @@
     "postbuild": "mkdir -p .next/standalone/.next && rm -rf .next/standalone/.next/static .next/standalone/public && cp -R .next/static .next/standalone/.next/static && cp -R public .next/standalone/public",
     "staffordos:preflight": "bash staffordos/bin/staffordos preflight",
     "staffordos:promote": "bash staffordos/bin/staffordos promote",
+    "shopifixer:auto:validate-packet": "node staffordos/shopifixer_auto/runners/validate_mutation_packet_v1.mjs",
     "integrity-check": "node staffordos/integrity/integrity_check_v1.mjs",
     "integrity-check:v2": "node staffordos/integrity/integrity_check_v2.mjs"
   },
@@ -34,6 +35,7 @@
     "@eslint/eslintrc": "^3",
     "@next/eslint-plugin-next": "^15.0.0",
     "@playwright/test": "^1.55.1",
+    "@tailwindcss/oxide-darwin-arm64": "^4.3.0",
     "@tailwindcss/postcss": "^4.1.13",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.0",
@@ -80,5 +82,8 @@
     "**/*.{css,md,json}": [
       "prettier --write"
     ]
+  },
+  "optionalDependencies": {
+    "@next/swc-darwin-arm64": "^15.5.18"
   }
 }

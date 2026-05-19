@@ -1,0 +1,22 @@
+# Resource Gate Model v1
+
+Status: ARCHITECTURE_ONLY_NOT_IMPLEMENTED
+
+Purpose: define resource and approval gates for future ShopiFixer Auto work. This document does not authorize workers, Shopify access, live mutation, or deployment.
+
+## Gates
+
+| Gate                  | Allowed compute                                                                                                     | Allowed mutation depth        | Screenshot limits                                                                                                       | Codex budget guidance                                                                                  | Approval requirements                                                                                                                  | Concurrency limits                                                                      |
+| --------------------- | ------------------------------------------------------------------------------------------------------------------- | ----------------------------- | ----------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
+| FREE_AUDIT            | Lightweight storefront review, provided artifacts, public page inspection, and static theme signals when available. | LEVEL_0_AUDIT_ONLY            | Up to 3 proof targets when screenshots are later implemented. No after screenshots because no mutation occurs.          | No mutation packet execution. Codex may summarize findings only.                                       | Merchant permission to inspect public or provided evidence. Ross approval required before any StaffordOS-controlled patch is proposed. | Many audits may queue, but each merchant stays isolated. No mutation queues are opened. |
+| QUICK_FIX             | Bounded sandbox work on one small issue in a duplicate theme concept.                                               | LEVEL_1_QUICK_FIX             | Before and after screenshots for the target surface on desktop and mobile, plus one focused detail capture when needed. | Low budget. Exact files only, small diff, short time box, stop on ambiguity.                           | Ross approval before execution. Merchant approval before launch. Rollback reference required.                                          | Low concurrency per merchant. One active mutation packet per merchant.                  |
+| GUIDED_TRANSFORMATION | Multi-step sandbox work on a focused purchase path or template area.                                                | LEVEL_2_GUIDED_TRANSFORMATION | Full before and after set for required proof surfaces on desktop and mobile. Diff proof required.                       | Medium budget. Packet must name files, prohibited files, expected diff, QA checks, and rollback proof. | Ross approval before execution and before merchant proof. Merchant approval before launch.                                             | Single active transformation per merchant. No parallel file mutation packets.           |
+| HIGH_RISK_REDESIGN    | Design review and planning only unless separately approved as a human-led project.                                  | LEVEL_3_HIGH_RISK_REDESIGN    | Screenshot plan required before any implementation slice. Broad visual proof required if later approved.                | No autonomous Codex execution. Codex may draft scoped proposals or review packets only.                | Ross approval, merchant written approval, explicit scope, rollback test, and staged review required.                                   | No autonomous concurrency. Human-controlled sequencing only.                            |
+
+## Hard Rules
+
+- Default to `FREE_AUDIT` when merchant approval, theme identity, or rollback evidence is missing.
+- Mutation depth may not exceed the selected resource gate.
+- Screenshot limits are ceilings, not requirements to capture proof before screenshot automation exists.
+- Compute budget is a stop condition. Running out of budget blocks execution rather than expanding scope.
+- A resource gate is not permission to mutate a Shopify theme.
