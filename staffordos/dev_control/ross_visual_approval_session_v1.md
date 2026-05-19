@@ -39,6 +39,16 @@ Allowed approval statuses:
 
 Activation rule: no patch may move to `ACTIVE` unless every required visual approval dependency is `APPROVED` or `APPROVED_WITH_MODIFICATIONS` in `surface_registry_v1.json` and this session record.
 
+## Which Control Layer Owns This Approval?
+
+| Approval type                  | Owning control layer                                      | Notes                                                                                                                                                         |
+| ------------------------------ | --------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Homepage approval              | StaffordOS Dev Control                                    | Applies to `/`, public route hierarchy, and StaffordMedia visual truth.                                                                                       |
+| ShopiFixer surface approval    | StaffordOS Dev Control                                    | Applies to `/shopifixer` as a public StaffordMedia route.                                                                                                     |
+| ShopiFixer mutation approval   | ShopiFixer Internal Dev Control                           | Applies to merchant transformation packets, local sandbox proof, rollback evidence, and merchant approval packets; StaffordOS still governs activation gates. |
+| Abando recovery proof approval | Abando Recovery Control                                   | Applies to recovery proof readiness, recovery message proof, and recovery product behavior. StaffordOS governs public route or CTA changes.                   |
+| Recovery demo visual approval  | StaffordOS Dev Control with Abando Recovery Control input | Applies to `/recovery-demo` as a StaffordMedia-hosted proof surface that depends on Abando recovery readiness.                                                |
+
 ## Approval Matrix
 
 | Surface          | Status  | Safe? | Runtime URL                           | Route owner                      |

@@ -538,6 +538,47 @@
         "confirm future automation routes through lifecycle transitions"
       ],
       "visual_review_required": false
+    },
+    {
+      "patch_id": "LOCAL-SNAPSHOT-SANDBOX-RUNNER",
+      "title": "First local snapshot sandbox runner",
+      "target_surface": "shopifixer_auto_foundation",
+      "repo": "/Users/rossstafford/projects/StaffordMediaConsulting/apps/website",
+      "machine": "Mac",
+      "status": "DONE",
+      "completion_notes": [
+        "local-only snapshot sandbox runner implemented",
+        "dummy Dawn fixture copied into a timestamped local sandbox and snapshot manifest written",
+        "validation output created for dummy fixture only",
+        "no Shopify CLI, Shopify API, live merchant mutation, Codex execution, public route edit, or deployment logic added"
+      ],
+      "completed_at": "2026-05-19",
+      "risk_level": "medium",
+      "owner": "StaffordOS",
+      "created_at": "2026-05-19",
+      "blocked_by": [
+        "runner does not execute mutation packets",
+        "runner does not create before/after visual proof by itself",
+        "merchant approval and Ross approval remain required before merchant-facing proof or launch"
+      ],
+      "depends_on": [
+        "SNAPSHOT-SANDBOX-PIPELINE",
+        "MERCHANT-LIFECYCLE-STATE-ENGINE",
+        "MUTATION-PACKET-VALIDATOR-RUNNER"
+      ],
+      "active_transition_allowed_when": [
+        "source is a local theme path",
+        "sandbox copy remains local-only",
+        "no live Shopify access or public conversion surface change is introduced"
+      ],
+      "validation_required": [
+        "node --check runner passes",
+        "runner creates local sandbox copy from dummy fixture only",
+        "manifest JSON parses",
+        "validation output JSON parses",
+        "confirm no Shopify, Codex, route, or deployment execution occurs"
+      ],
+      "visual_review_required": false
     }
   ]
 }
