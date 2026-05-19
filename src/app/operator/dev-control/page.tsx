@@ -1,5 +1,6 @@
 import { readFile } from "node:fs/promises";
 import path from "node:path";
+import OperatorShell from "@/components/operator/OperatorShell";
 
 export const dynamic = "force-dynamic";
 
@@ -205,21 +206,12 @@ export default async function DevControlPage() {
   );
 
   return (
-    <main className="min-h-screen bg-slate-950 px-4 py-8 text-slate-100 md:px-8">
-      <div className="mx-auto max-w-7xl space-y-5">
-        <header className="rounded-lg border border-slate-800 bg-slate-950/80 p-5">
-          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-amber-200">StaffordOS</p>
-          <div className="mt-3 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
-            <div>
-              <h1 className="text-2xl font-semibold tracking-tight text-white md:text-3xl">Dev Control</h1>
-              <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-400">
-                Read-only view of dev_control truth artifacts. This page does not execute patches or change repo state.
-              </p>
-            </div>
-            <Badge value="READ ONLY" />
-          </div>
-        </header>
-
+    <OperatorShell
+      activeId="dev-control"
+      title="Dev Control"
+      description="Read-only view of dev_control truth artifacts. This page does not execute patches or change repo state."
+    >
+      <div className="space-y-5">
         <Section title="Runtime Surfaces">
           <div className="grid gap-3">
             {surfaceRegistry.surfaces.map((surface) => (
@@ -343,6 +335,6 @@ export default async function DevControlPage() {
           </div>
         </Section>
       </div>
-    </main>
+    </OperatorShell>
   );
 }
