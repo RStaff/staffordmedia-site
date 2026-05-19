@@ -1,0 +1,88 @@
+{
+  "version": "patch_queue_v1",
+  "purpose": "Single-source patch coordination for controlled StaffordOS iteration.",
+  "allowed_statuses": [
+    "PLANNED",
+    "ACTIVE",
+    "BLOCKED",
+    "APPROVED",
+    "QUARANTINED",
+    "DONE"
+  ],
+  "patches": [
+    {
+      "patch_id": "PATCH-ABANDO-CTA-ALIGNMENT",
+      "title": "Abando CTA alignment",
+      "target_surface": "abando_recovery_demo",
+      "repo": "/Users/rossstafford/projects/StaffordMediaConsulting/apps/website",
+      "machine": "Mac",
+      "status": "PLANNED",
+      "risk_level": "medium",
+      "owner": "StaffordOS",
+      "created_at": "2026-05-19",
+      "blocked_by": [],
+      "validation_required": [
+        "inspect route owner",
+        "verify CTA targets",
+        "run build or integrity gate"
+      ],
+      "visual_review_required": true
+    },
+    {
+      "patch_id": "PATCH-BEFORE-AFTER-EMBODIMENT",
+      "title": "Before/After embodiment flow",
+      "target_surface": "staffordmedia_homepage",
+      "repo": "/Users/rossstafford/projects/StaffordMediaConsulting/apps/website",
+      "machine": "Mac",
+      "status": "PLANNED",
+      "risk_level": "high",
+      "owner": "StaffordOS",
+      "created_at": "2026-05-19",
+      "blocked_by": [
+        "approved homepage visual truth must be mapped before edits"
+      ],
+      "validation_required": [
+        "inspect current homepage",
+        "compare against approved screenshots",
+        "run visual review"
+      ],
+      "visual_review_required": true
+    },
+    {
+      "patch_id": "PATCH-RECOVERY-DEMO-POLISH",
+      "title": "Recovery demo polish",
+      "target_surface": "abando_recovery_demo",
+      "repo": "/Users/rossstafford/projects/StaffordMediaConsulting/apps/website",
+      "machine": "Mac",
+      "status": "PLANNED",
+      "risk_level": "medium",
+      "owner": "StaffordOS",
+      "created_at": "2026-05-19",
+      "blocked_by": [],
+      "validation_required": [
+        "inspect recovery demo route",
+        "verify Abando/ShopiFixer boundary",
+        "run visual review"
+      ],
+      "visual_review_required": true
+    },
+    {
+      "patch_id": "PATCH-AUDIT-RESULT-REFINEMENT",
+      "title": "Audit-result refinement",
+      "target_surface": "shopifixer_audit_result",
+      "repo": "/Users/rossstafford/projects/StaffordMediaConsulting/apps/website",
+      "machine": "Mac",
+      "status": "PLANNED",
+      "risk_level": "medium",
+      "owner": "StaffordOS",
+      "created_at": "2026-05-19",
+      "blocked_by": [],
+      "validation_required": [
+        "inspect canonical audit payload",
+        "verify pricing path",
+        "run integrity check"
+      ],
+      "visual_review_required": true
+    }
+  ]
+}

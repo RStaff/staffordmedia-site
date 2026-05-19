@@ -1,0 +1,71 @@
+{
+  "version": "surface_registry_v1",
+  "purpose": "Canonical surface truth for controlled StaffordOS development iteration.",
+  "surfaces": [
+    {
+      "surface_id": "staffordmedia_homepage",
+      "name": "StaffordMedia homepage",
+      "repo": "/Users/rossstafford/projects/StaffordMediaConsulting/apps/website",
+      "machine_owner": "Mac",
+      "route": "/",
+      "route_owner_file": "src/app/page.tsx",
+      "status": "APPROVED",
+      "canonical_truth": "Approved StaffordMedia decision layer. Routes merchants toward ShopiFixer diagnosis/fix or Abando recovery proof without blending the products.",
+      "approved_by_ross": true,
+      "deployment_status": "canonical",
+      "notes": "No redesign during implementation patches. Existing visual approval overrides generated layout doctrine."
+    },
+    {
+      "surface_id": "shopifixer_canonical_surface",
+      "name": "ShopiFixer canonical surface",
+      "repo": "/Users/rossstafford/projects/StaffordMediaConsulting/apps/website",
+      "machine_owner": "Mac",
+      "route": "/shopifixer",
+      "route_owner_file": "src/app/shopifixer/page.tsx",
+      "status": "APPROVED",
+      "canonical_truth": "Service-led ShopiFixer audit entry surface. Diagnose and fix flow stays distinct from Abando recovery/install flows.",
+      "approved_by_ross": true,
+      "deployment_status": "canonical",
+      "notes": "Do not replace with drift-generated ShopiFixer pages from cart-agent."
+    },
+    {
+      "surface_id": "abando_recovery_demo",
+      "name": "Abando recovery demo",
+      "repo": "/Users/rossstafford/projects/StaffordMediaConsulting/apps/website",
+      "machine_owner": "Mac",
+      "route": "/recovery-demo",
+      "route_owner_file": "src/app/recovery-demo/page.tsx",
+      "status": "PLANNED",
+      "canonical_truth": "StaffordMedia-owned proof path for Abando recovery value. Recovery proof must not become a ShopiFixer onboarding surface.",
+      "approved_by_ross": false,
+      "deployment_status": "active_surface",
+      "notes": "Eligible for polish only after inspecting current visual truth and preserving product boundaries."
+    },
+    {
+      "surface_id": "shopifixer_audit_result",
+      "name": "audit-result",
+      "repo": "/Users/rossstafford/projects/StaffordMediaConsulting/apps/website",
+      "machine_owner": "Mac",
+      "route": "/audit-result",
+      "route_owner_file": "src/app/audit-result/page.tsx",
+      "status": "PLANNED",
+      "canonical_truth": "Full ShopiFixer review surface tied to the canonical audit payload and pricing path.",
+      "approved_by_ross": false,
+      "deployment_status": "active_surface",
+      "notes": "Refinement must preserve canonical payload, diagnosis, and revenue path."
+    },
+    {
+      "surface_id": "drift_shopifixer_page",
+      "name": "Drift ShopiFixer page",
+      "repo": "/Users/rossstafford/projects/cart-agent/abando-frontend",
+      "machine_owner": "homeserver2",
+      "route": "/shopifixer",
+      "route_owner_file": "/Users/rossstafford/projects/cart-agent/abando-frontend/app/shopifixer/page.tsx",
+      "status": "QUARANTINED",
+      "canonical_truth": "Non-canonical drift surface generated in the Abando/cart-agent topology. It must not replace the approved StaffordMedia ShopiFixer surface.",
+      "approved_by_ross": false,
+      "deployment_status": "quarantined",
+      "notes": "Keep as evidence until topology cleanup is intentional. Do not edit or link to it from StaffordMedia."
+    }
+  ]
+}
