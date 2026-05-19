@@ -1,0 +1,61 @@
+# Worktree Classification v1
+
+Date: 2026-05-19
+
+Purpose: classify every modified or untracked file from `git status --short --untracked-files=all` before any StaffordOS patch.
+
+## Classification Rules Applied
+
+- `APPROVED_EXISTING_WORK`: explicit approval evidence or preserved approved copy.
+- `DEPENDENCY_REPAIR_NOISE`: package/cache changes consistent with dependency or local toolchain repair.
+- `NEEDS_REVIEW`: potentially valid work that must be reviewed before promotion.
+- `DRIFT_RISK`: active source/runtime behavior changed without bound visual approval.
+- `DO_NOT_TOUCH`: backup or evidence artifact that should not be edited during implementation patches.
+
+## Files
+
+| Status | File                                                    | Classification          | Reason                                                                                                                                                                                                         |
+| ------ | ------------------------------------------------------- | ----------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| M      | `apps/website/.eslintcache`                             | DEPENDENCY_REPAIR_NOISE | Local lint cache mutation; not product surface source.                                                                                                                                                         |
+| M      | `package-lock.json`                                     | DEPENDENCY_REPAIR_NOISE | Lockfile changed with dependency repair/toolchain updates.                                                                                                                                                     |
+| M      | `package.json`                                          | DEPENDENCY_REPAIR_NOISE | Adds platform/toolchain optional dependencies; review before commit, but not UI surface work.                                                                                                                  |
+| M      | `src/app/layout.tsx`                                    | APPROVED_EXISTING_WORK  | Global `/shopifixer_inject.js` include removed to stabilize lint/build and prevent unauthorized body-level UI injection. No product surface source was otherwise changed.                                      |
+| M      | `src/app/page.tsx`                                      | NEEDS_REVIEW            | Homepage route changed; homepage is approved but current uncommitted changes are not yet bound to Ross approval.                                                                                               |
+| M      | `src/app/recovery-demo/page.tsx`                        | DRIFT_RISK              | Abando planned surface changed and now depends on proof runtime at port 8081; Ross visual approval unknown.                                                                                                    |
+| M      | `src/components/site/HomeHero.tsx`                      | NEEDS_REVIEW            | Homepage hero content/layout changed; requires visual truth comparison.                                                                                                                                        |
+| M      | `src/components/site/PainSection.tsx`                   | NEEDS_REVIEW            | Homepage copy/CTA changed; requires Ross review.                                                                                                                                                               |
+| M      | `src/components/site/ProductSplit.tsx`                  | NEEDS_REVIEW            | Homepage product split and Abando CTA copy changed; requires destination approval.                                                                                                                             |
+| M      | `src/components/site/SystemFlow.tsx`                    | NEEDS_REVIEW            | Homepage flow copy changed, although currently removed from `src/app/page.tsx`.                                                                                                                                |
+| M      | `staffordos/dev_control/patch_queue_v1.json`            | APPROVED_EXISTING_WORK  | StaffordOS control artifact updated for this binding task; no UI patch.                                                                                                                                        |
+| M      | `staffordos/dev_control/surface_registry_v1.json`       | APPROVED_EXISTING_WORK  | StaffordOS control artifact updated with runtime binding fields; no UI patch.                                                                                                                                  |
+| ??     | `output/visual_qa/hero_logo_deep_qa.png`                | NEEDS_REVIEW            | Visual QA evidence output; preserve for review.                                                                                                                                                                |
+| ??     | `output/visual_qa/hero_logo_deep_qa_report.json`        | NEEDS_REVIEW            | Visual QA evidence output; preserve for review.                                                                                                                                                                |
+| ??     | `output/visual_qa/homepage_hero_latest.png`             | NEEDS_REVIEW            | Visual QA evidence output; preserve for review.                                                                                                                                                                |
+| ??     | `output/visual_qa/homepage_hero_visual_qa_latest.json`  | NEEDS_REVIEW            | Visual QA evidence output; preserve for review.                                                                                                                                                                |
+| ??     | `public/brand/no_padding_shopifixer_logo.png`           | NEEDS_REVIEW            | New brand asset used by modified homepage hero; requires asset approval.                                                                                                                                       |
+| ??     | `public/brand/pad_remove_trans_shopifixer-logo.png`     | NEEDS_REVIEW            | New brand asset; requires asset approval.                                                                                                                                                                      |
+| ??     | `public/shopifixer_inject.js`                           | DRIFT_RISK              | New global body injection script that appends progress UI, a pricing CTA, and `/shopifixer_progress.js`; not authorized and no longer included from layout. Preserve as evidence; do not delete in this patch. |
+| ??     | `public/shopifixer_progress.js`                         | DRIFT_RISK              | New public runtime script; not authorized.                                                                                                                                                                     |
+| ??     | `src/app/page.tsx.pre_fix_backup`                       | DO_NOT_TOUCH            | Backup/evidence artifact, not active source.                                                                                                                                                                   |
+| ??     | `src/components/site/HomeHero.tsx.backup_approved_copy` | APPROVED_EXISTING_WORK  | Preserved approved homepage copy reference.                                                                                                                                                                    |
+| ??     | `src/components/site/HomeHero.tsx.backup_slice_6_3`     | DO_NOT_TOUCH            | Backup/evidence artifact, not active source.                                                                                                                                                                   |
+| ??     | `src/components/site/PainSection.tsx.backup_slice_6_3`  | DO_NOT_TOUCH            | Backup/evidence artifact, not active source.                                                                                                                                                                   |
+| ??     | `src/components/site/ProductSplit.tsx.backup_slice_6_3` | DO_NOT_TOUCH            | Backup/evidence artifact, not active source.                                                                                                                                                                   |
+| ??     | `src/components/site/SystemFlow.tsx.backup_slice_6_3`   | DO_NOT_TOUCH            | Backup/evidence artifact, not active source.                                                                                                                                                                   |
+| ??     | `staffordos/dev_control/runtime_surface_binding_v1.md`  | APPROVED_EXISTING_WORK  | StaffordOS control artifact created for this binding task; no UI patch.                                                                                                                                        |
+| ??     | `staffordos/dev_control/worktree_classification_v1.md`  | APPROVED_EXISTING_WORK  | StaffordOS control artifact created for this classification task; no UI patch.                                                                                                                                 |
+| ??     | `staffordos/runtime_sync/runtime_sync_agent_v1.sh`      | NEEDS_REVIEW            | StaffordOS runtime control utility; untracked and should be reviewed before promotion.                                                                                                                         |
+| ??     | `staffordos/runtime_sync/runtime_sync_agent_v2.sh`      | NEEDS_REVIEW            | StaffordOS runtime control utility; untracked and should be reviewed before promotion.                                                                                                                         |
+| ??     | `staffordos/runtime_sync/runtime_sync_agent_v3.sh`      | NEEDS_REVIEW            | StaffordOS runtime control utility; untracked and should be reviewed before promotion.                                                                                                                         |
+| ??     | `staffordos/visual_qa/hero_logo_deep_qa_v1.mjs`         | NEEDS_REVIEW            | Visual QA utility; untracked and should be reviewed before promotion.                                                                                                                                          |
+| ??     | `staffordos/visual_qa/visual_qa_homepage_v1.mjs`        | NEEDS_REVIEW            | Visual QA utility; untracked and should be reviewed before promotion.                                                                                                                                          |
+| ??     | `staffordos/visual_qa/website_ui_qa_gate_v1.sh`         | NEEDS_REVIEW            | Visual QA gate; untracked and should be reviewed before promotion.                                                                                                                                             |
+| ??     | `staffordos/visual_qa/website_ui_qa_gate_v2.sh`         | NEEDS_REVIEW            | Visual QA gate; untracked and should be reviewed before promotion.                                                                                                                                             |
+
+## Patch Authorization
+
+No UI patch is authorized from this classification.
+
+Abando CTA alignment remains `BLOCKED` until the approved destination is confirmed by Ross visual review.
+
+Homepage modifications remain `NEEDS_REVIEW` and must not be promoted as approved surface truth without Ross confirmation.
