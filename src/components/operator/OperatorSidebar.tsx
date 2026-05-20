@@ -33,8 +33,9 @@ const NAV_ITEMS: OperatorNavItem[] = [
   {
     id: "merchant-lifecycle",
     label: "Merchant Lifecycle",
-    description: "Lifecycle state model and future merchant state board.",
-    status: "PLANNED",
+    description: "Read-only merchant workflow board.",
+    href: "/operator/lifecycle-board",
+    status: "AVAILABLE",
   },
   {
     id: "patch-queue",
@@ -48,6 +49,13 @@ const NAV_ITEMS: OperatorNavItem[] = [
     label: "Visual QA",
     description: "Before/after proof review surface.",
     status: "PLANNED",
+  },
+  {
+    id: "execution-review",
+    label: "Execution Review",
+    description: "Pre-execution fulfillment cockpit.",
+    href: "/operator/execution-review",
+    status: "AVAILABLE",
   },
   {
     id: "shopifixer-fulfillment",

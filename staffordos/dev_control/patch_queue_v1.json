@@ -829,6 +829,236 @@
         "confirm no APIs, workers, Shopify actions, runtime mutation, orchestration execution, or public conversion flow edits occur"
       ],
       "visual_review_required": false
+    },
+    {
+      "patch_id": "MERCHANT-FULFILLMENT-INITIALIZATION",
+      "title": "Canonical merchant intake initialization",
+      "target_surface": "staffordos_lifecycle_runtime",
+      "repo": "/Users/rossstafford/projects/StaffordMediaConsulting/apps/website",
+      "machine": "Mac",
+      "status": "DONE",
+      "completion_notes": [
+        "file-backed lifecycle/runtime initialization only — no automation or Shopify execution implemented",
+        "merchant intake model, schema, initialization rules, onboarding state machine, ownership boundary, and sample intake created",
+        "merchant runtime state runner created and executed against the sample intake",
+        "sample runtime artifact created with STAFFORDOS_RUNTIME ownership, LEAD_CAPTURED state, valid next transitions, replayable=true, and rollback_required=true",
+        "no APIs, databases, workers, agents, Shopify actions, browser automation, polling, websockets, deployment, UI, or public surface edits added"
+      ],
+      "completed_at": "2026-05-19",
+      "risk_level": "low",
+      "owner": "StaffordOS",
+      "created_at": "2026-05-19",
+      "blocked_by": [
+        "intake initialization does not authorize fulfillment execution",
+        "Shopify access remains NOT_IMPLEMENTED",
+        "merchant mutation, proof generation, worker orchestration, and deployment remain blocked until separate approved slices"
+      ],
+      "depends_on": [
+        "MERCHANT-LIFECYCLE-STATE-ENGINE",
+        "CANONICAL-RUNTIME-STATE-REGISTRY",
+        "STAFFORDOS-OPERATOR-SHELL"
+      ],
+      "active_transition_allowed_when": [
+        "future fulfillment execution slice is separately approved",
+        "merchant lifecycle transition remains legal",
+        "ownership boundary remains explicit",
+        "rollback and approval gates remain explicit"
+      ],
+      "validation_required": [
+        "node --check lifecycle intake runner passes",
+        "runner executes against sample merchant intake",
+        "intake schema JSON parses",
+        "generated runtime state JSON parses",
+        "generated state records valid allowed transitions",
+        "generated state records ownership boundary and rollback requirement",
+        "confirm no Shopify, automation, worker, agent, deployment, UI, or public surface mutation occurs"
+      ],
+      "visual_review_required": false
+    },
+    {
+      "patch_id": "EXECUTION-TASK-REGISTRY",
+      "title": "Execution task registry",
+      "target_surface": "staffordos_execution",
+      "repo": "/Users/rossstafford/projects/StaffordMediaConsulting/apps/website",
+      "machine": "Mac",
+      "status": "DONE",
+      "completion_notes": [
+        "file-backed execution governance only — no Codex/API execution implemented",
+        "execution task model, schema, state machine, approval rules, boundary rules, resource gates, registry design, and sample task created",
+        "execution task registrar created and executed against the sample task",
+        "sample registered task artifact created with STAFFORDOS_RUNTIME ownership, approval pending state, rollback_required=true, replayable=true, and allowed_executor=MANUAL_CODEX_OPERATOR",
+        "no Codex API calls, OpenAI API calls, agents, workers, automation, queues, deployment, Shopify actions, browser automation, runtime mutation, UI, or public surface edits added"
+      ],
+      "completed_at": "2026-05-19",
+      "risk_level": "low",
+      "owner": "StaffordOS",
+      "created_at": "2026-05-19",
+      "blocked_by": [
+        "registered tasks do not execute work",
+        "AUTO_CODEX, AUTO_AGENT, and AUTO_WORKER remain unsupported",
+        "future executor invocation requires a separate approved slice"
+      ],
+      "depends_on": [
+        "MERCHANT-FULFILLMENT-INITIALIZATION",
+        "CANONICAL-RUNTIME-STATE-REGISTRY",
+        "STAFFORDOS-OPERATOR-SHELL"
+      ],
+      "active_transition_allowed_when": [
+        "future executor slice is separately approved",
+        "allowed executor remains bounded",
+        "approval, resource, rollback, replayability, and runtime ownership gates remain explicit"
+      ],
+      "validation_required": [
+        "node --check execution task registrar passes",
+        "registrar executes against sample task",
+        "execution schema JSON parses",
+        "generated task artifact JSON parses",
+        "approval rules validate",
+        "runtime ownership validates",
+        "generated task records rollback_required=true",
+        "generated task records replayable=true",
+        "generated task records allowed_executor=MANUAL_CODEX_OPERATOR",
+        "confirm no Codex/API execution, workers, agents, automation, deployment, Shopify action, runtime mutation, UI, or public surface edit occurs"
+      ],
+      "visual_review_required": false
+    },
+    {
+      "patch_id": "MERCHANT-LIFECYCLE-KANBAN-BOARD",
+      "title": "Merchant Lifecycle Kanban Board",
+      "target_surface": "staffordos_operator",
+      "repo": "/Users/rossstafford/projects/StaffordMediaConsulting/apps/website",
+      "machine": "Mac",
+      "status": "DONE",
+      "completion_notes": [
+        "read-only /operator/lifecycle-board route created",
+        "lifecycle board components created for canonical workflow visibility",
+        "board reads runtime registry, runtime event ledger, execution task registry, lifecycle artifacts, and patch queue truth without mutating state",
+        "board renders lifecycle columns with calm empty states and runtime cards showing merchant, store, lifecycle, risk, rollback readiness, replayability, mutation depth, approval state, and runtime owner",
+        "route rendered successfully over local dev server",
+        "no APIs, databases, websockets, polling, workers, orchestration execution, Shopify actions, runtime mutation, lifecycle mutation, execution mutation, deployments, agents, browser automation, or public surface edits added"
+      ],
+      "completed_at": "2026-05-19",
+      "risk_level": "low",
+      "owner": "StaffordOS",
+      "created_at": "2026-05-19",
+      "blocked_by": [
+        "board is read-only operational visibility",
+        "drag/drop persistence is NOT_IMPLEMENTED",
+        "state transition controls require a separate approved slice"
+      ],
+      "depends_on": [
+        "STAFFORDOS-OPERATOR-SHELL",
+        "CANONICAL-RUNTIME-STATE-REGISTRY",
+        "EXECUTION-TASK-REGISTRY",
+        "MERCHANT-FULFILLMENT-INITIALIZATION"
+      ],
+      "active_transition_allowed_when": [
+        "future mutation controls are separately approved",
+        "lifecycle state remains canonical runtime truth",
+        "operator UI does not infer execution authority"
+      ],
+      "validation_required": [
+        "npx tsc --noEmit --pretty false passes",
+        "/operator/lifecycle-board route renders successfully",
+        "board reads canonical runtime truth only",
+        "board groups merchants by canonical lifecycle and readiness state",
+        "runtime cards render safely",
+        "confirm no runtime mutation, lifecycle mutation, execution mutation, automation, workers, agents, Shopify actions, deployments, APIs, websockets, polling, browser automation, UI public surface edits, or public route edits occur"
+      ],
+      "visual_review_required": false
+    },
+    {
+      "patch_id": "FULFILLMENT-FLOW-ATTACHMENT",
+      "title": "Execution flow attachment",
+      "target_surface": "staffordos_fulfillment",
+      "repo": "/Users/rossstafford/projects/StaffordMediaConsulting/apps/website",
+      "machine": "Mac",
+      "status": "DONE",
+      "completion_notes": [
+        "deterministic fulfillment linkage only — no execution automation implemented",
+        "fulfillment model, attachment schema, transition rules, packet attachment rules, QA/proof attachment rules, approval attachment rules, runtime/task linkage rules, visibility rules, and sample attachment request created",
+        "fulfillment attachment runner created and executed using existing sample runtime, execution task, mutation packet, and validation/proof artifacts only",
+        "registered attachment artifact created with runtime state, execution task, mutation packet, QA/proof, approval state, rollback requirement, replayability, mutation depth, risk, fulfillment state, transitions, runtime owner, and surface origin",
+        "no Codex execution, OpenAI API execution, automation, workers, agents, Shopify actions, deployments, orchestration loops, queues, browser automation, runtime mutation, lifecycle mutation, execution mutation, or UI/public surface edits added"
+      ],
+      "completed_at": "2026-05-19",
+      "risk_level": "low",
+      "owner": "StaffordOS",
+      "created_at": "2026-05-19",
+      "blocked_by": [
+        "attachment does not authorize execution",
+        "approval remains BLOCKED_PENDING_APPROVAL",
+        "future fulfillment execution requires a separate approved slice"
+      ],
+      "depends_on": [
+        "MERCHANT-FULFILLMENT-INITIALIZATION",
+        "EXECUTION-TASK-REGISTRY",
+        "MUTATION-PACKET-STANDARD",
+        "VISUAL-QA-BEFORE-AFTER"
+      ],
+      "active_transition_allowed_when": [
+        "future execution slice is separately approved",
+        "runtime ownership, lifecycle legality, rollback, replayability, packet compatibility, approval compatibility, and proof references remain valid",
+        "attachment remains linkage only and does not mutate source-of-truth artifacts"
+      ],
+      "validation_required": [
+        "node --check fulfillment attachment runner passes",
+        "runner executes using existing sample runtime/task/packet/proof artifacts only",
+        "fulfillment schema JSON parses",
+        "attachment artifact JSON parses",
+        "references resolve correctly",
+        "generated attachment records replayable=true",
+        "generated attachment records rollback_required=true",
+        "approval compatibility validates",
+        "lifecycle legality validates",
+        "confirm no Codex execution, OpenAI API execution, automation, workers, agents, Shopify actions, deployment, UI, public surface edit, or runtime mutation occurs"
+      ],
+      "visual_review_required": false
+    },
+    {
+      "patch_id": "FULFILLMENT-EXECUTION-REVIEW-SURFACE",
+      "title": "Fulfillment Execution Review Surface",
+      "target_surface": "staffordos_operator",
+      "repo": "/Users/rossstafford/projects/StaffordMediaConsulting/apps/website",
+      "machine": "Mac",
+      "status": "DONE",
+      "completion_notes": [
+        "read-only /operator/execution-review route created",
+        "execution review components created to resolve runtime state, execution task, mutation packet, QA/proof, approval, rollback, and replayability from canonical artifacts",
+        "review surface displays labels READ ONLY, NO EXECUTION ACTIVE, NO SHOPIFY MUTATION, and MANUAL EXECUTION REQUIRED",
+        "execution review surface design notes created",
+        "route rendered successfully over local dev server",
+        "no Codex execution, OpenAI API execution, automation, workers, agents, deployment, Shopify actions, browser automation, runtime mutation, lifecycle mutation, approval mutation, drag/drop persistence, APIs, databases, polling, websockets, or public surface edits added"
+      ],
+      "completed_at": "2026-05-19",
+      "risk_level": "low",
+      "owner": "StaffordOS",
+      "created_at": "2026-05-19",
+      "blocked_by": [
+        "surface is read-only pre-execution review",
+        "manual execution remains required",
+        "future mutation or execution controls require a separate approved slice"
+      ],
+      "depends_on": [
+        "FULFILLMENT-FLOW-ATTACHMENT",
+        "EXECUTION-TASK-REGISTRY",
+        "MERCHANT-LIFECYCLE-KANBAN-BOARD",
+        "CANONICAL-RUNTIME-STATE-REGISTRY"
+      ],
+      "active_transition_allowed_when": [
+        "future execution controls are separately approved",
+        "review surface remains read-only",
+        "approval, rollback, replayability, and runtime ownership remain explicit"
+      ],
+      "validation_required": [
+        "npx tsc --noEmit --pretty false passes",
+        "/operator/execution-review route renders successfully",
+        "board reads canonical artifacts only",
+        "board resolves fulfillment attachments",
+        "board resolves runtime/task/packet/proof linkage",
+        "confirm no state mutation, Codex execution, OpenAI API execution, automation, workers, agents, Shopify actions, deployment, APIs, databases, polling, websockets, browser automation, or public surface edits occur"
+      ],
+      "visual_review_required": false
     }
   ]
 }
