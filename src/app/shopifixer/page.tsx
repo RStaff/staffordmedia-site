@@ -5,7 +5,9 @@ import AuditBenefitsRow from "@/components/shopifixer/AuditBenefitsRow";
 import AuditFormCard from "@/components/shopifixer/AuditFormCard";
 import AuditHero from "@/components/shopifixer/AuditHero";
 import AuditNextStep from "@/components/shopifixer/AuditNextStep";
-import AuditReadPreview from "@/components/shopifixer/AuditReadPreview";
+import AuditSignalSummary from "@/components/shopifixer/AuditSignalSummary";
+import SystemProgressRail from "@/components/commerce/SystemProgressRail";
+import RuntimeContinuityStrip from "@/components/commerce/RuntimeContinuityStrip";
 
 export const metadata = {
   title: "ShopiFixer — Stafford Media Consulting™",
@@ -32,6 +34,16 @@ function getFixAuditUrl() {
     : `${configured.replace(/\/$/, "")}/api/fix-audit`;
 }
 
+function isSafeValidationMode() {
+  return [process.env.SAFE_VALIDATION_MODE, process.env.SHOPIFIXER_SAFE_VALIDATION_MODE]
+    .some((value) => String(value || "").trim().toLowerCase() === "true");
+}
+
+function buildSafeValidationEmail(store: string) {
+  const token = store.replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "store";
+  return `validation+${token}@staffordmedia.ai`;
+}
+
 async function submitAudit(formData: FormData) {
   "use server";
 
@@ -42,15 +54,27 @@ async function submitAudit(formData: FormData) {
     throw new Error("INVALID_AUDIT_REQUEST");
   }
 
+  const safeValidationMode = isSafeValidationMode();
+  const auditEmail = safeValidationMode ? buildSafeValidationEmail(storeUrl) : email;
+
   const response = await fetch(getFixAuditUrl(), {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
+      ...(safeValidationMode ? { "X-ShopiFixer-Validation-Mode": "true" } : {}),
     },
     body: JSON.stringify({
       storeUrl,
-      email,
+      email: auditEmail,
+      ...(safeValidationMode
+        ? {
+            safe_validation_mode: true,
+            suppress_email: true,
+            suppress_outreach: true,
+            source: "internal_validation",
+          }
+        : {}),
     }),
     cache: "no-store",
   });
@@ -78,15 +102,23 @@ async function submitAudit(formData: FormData) {
 export default function ShopifixerPage() {
   return (
     <main>
+      <SystemProgressRail currentStage="diagnose" stateLabel="Diagnose" />
+      <RuntimeContinuityStrip
+        items={[
+          { label: "Now", value: "Find the clearest issue." },
+          { label: "Next", value: "Review the first fix path." },
+          { label: "Safe", value: "No store changes from the audit." },
+        ]}
+      />
       <section className="section-pad">
         <div className="site-shell">
-          <div className="premium-panel p-6 md:p-10">
+          <div className="premium-panel p-5 md:p-8 lg:p-10">
             <AuditHero />
             <AuditBenefitsRow />
 
-            <div className="mt-10 grid gap-6 lg:grid-cols-[minmax(0,1.15fr)_minmax(320px,0.85fr)]">
+            <div className="mt-8 grid gap-5 lg:mt-10 lg:grid-cols-[minmax(0,1.15fr)_minmax(320px,0.85fr)] lg:gap-6">
               <AuditFormCard action={submitAudit} />
-              <AuditReadPreview />
+              <AuditSignalSummary />
             </div>
 
             <AuditNextStep />

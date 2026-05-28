@@ -14,6 +14,7 @@ function getAnchor(issue: string): "header" | "product" | "cart" | "checkout" | 
   if (/product|offer|merch/i.test(issue)) return "product";
   if (/cart|recovery/i.test(issue)) return "cart";
   if (/checkout|shipping|payment/i.test(issue)) return "checkout";
+  if (/email capture|newsletter|popup|exit.intent/i.test(issue)) return "general";
   return "general";
 }
 
@@ -28,6 +29,10 @@ function buildNote(issue: string): string {
 
   if (/checkout/i.test(issue)) {
     return "This read suggests friction is showing up close to purchase, where reassurance and continuity matter most.";
+  }
+
+  if (/email capture|newsletter|popup|exit.intent/i.test(issue)) {
+    return "This signal may depend on timing, device, region, or scripts, so it should be confirmed before a specific change is recommended.";
   }
 
   return "This annotation is derived from the surfaced audit issues and highlights where the clearest conversion signal is likely concentrated.";

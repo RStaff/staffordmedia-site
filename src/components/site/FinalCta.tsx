@@ -10,8 +10,8 @@ export default function FinalCta() {
             Start with the audit. Then decide how far to scale.
           </h2>
           <p className="body-md mx-auto mt-5 max-w-2xl">
-            Use ShopiFixer to get the clearest read on your store. If the path is worth pushing further, Abando is
-            there as the recovery system that follows.
+            Use ShopiFixer to get the clearest read on your store. Use Abando independently for recovery, or connect both
+            when diagnosis, fix, and recovery belong in the same commerce loop.
           </p>
           <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-slate-400">
             The sooner the issue is clear, the sooner you can stop guessing and start testing the right fix.

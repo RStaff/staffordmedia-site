@@ -5,7 +5,7 @@ const cards = [
   {
     label: "1. Diagnose",
     title: "ShopiFixer",
-    body: "See the clearest conversion issue first.",
+    body: "Find the clearest issue before changing everything.",
     accent: "text-[var(--smc-shopifixer-green)]",
     type: "shopifixer",
   },
@@ -19,7 +19,7 @@ const cards = [
   {
     label: "3. Recover",
     title: "Abando",
-    body: "Recover lost revenue automatically from the shoppers who still leave.",
+    body: "Recover shoppers who still leave through standalone or complementary recovery infrastructure.",
     accent: "text-[var(--smc-shopifixer-violet)]",
     type: "abando",
   },
@@ -32,7 +32,7 @@ export default function SystemFlow() {
         <div className="max-w-3xl">
           <p className="eyebrow text-slate-400">The system</p>
           <h2 className="mt-4 text-4xl font-semibold tracking-tight text-white">
-            One system from diagnosis to revenue recovery.
+            One operating model across diagnosis, fix, and recovery.
           </h2>
         </div>
         <div className="mt-10 grid gap-5 lg:grid-cols-3">

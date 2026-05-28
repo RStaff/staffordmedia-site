@@ -36,8 +36,38 @@ function hasSupportingSignal(signals?: SupportingSignals) {
 
   return Boolean(
     (signals.structured_audit_signals && signals.structured_audit_signals.length > 0) ||
-      (signals.technology_signal_state && signals.technology_signal_state.trim() !== "") ||
-      (signals.screenshot_url && signals.screenshot_url.trim() !== ""),
+      (signals.technology_signal_state && signals.technology_signal_state.trim() !== ""),
+  );
+}
+
+function getSignalDomain(value: string) {
+  if (/email capture|newsletter|popup|exit.intent/i.test(value)) return "capture";
+  if (/cart recovery|abandon|recovery/i.test(value)) return "recovery";
+  if (/checkout|shipping|payment|cart|cost/i.test(value)) return "checkout";
+  if (/mobile|scan|scroll|readability/i.test(value)) return "mobile";
+  if (/product|offer|details|merch/i.test(value)) return "product";
+  if (/visual|hierarchy|competing|priority/i.test(value)) return "hierarchy";
+  if (/trust|review|policy|support/i.test(value)) return "trust";
+  return "general";
+}
+
+function hasIssueActionMismatch(payload: AuditPayload) {
+  const issueDomain = getSignalDomain(`${payload.top_issue} ${payload.issues[0] || ""}`);
+  const actionDomain = getSignalDomain(payload.recommended_action || "");
+
+  if (issueDomain === "general" || actionDomain === "general") return false;
+  if (issueDomain === actionDomain) return false;
+  if (issueDomain === "recovery" && actionDomain === "checkout") return false;
+
+  return true;
+}
+
+function hasRepeatedBenchmarkPattern(payload: AuditPayload) {
+  const issueText = [payload.top_issue, ...payload.issues].join(" ");
+
+  return (
+    /missing cart recovery path/i.test(issueText) &&
+    /add shipping cost preview/i.test(payload.recommended_action || "")
   );
 }
 
@@ -59,8 +89,22 @@ export function buildAuditConfidence(
   const issueCount = payload.issues.length;
   const supportPresent = hasSupportingSignal(supportingSignals);
   const { score_band_label, score_band_tone } = getScoreBand(payload.audit_score);
+  const mismatchPresent = hasIssueActionMismatch(payload);
+  const repeatedBenchmarkPattern = hasRepeatedBenchmarkPattern(payload);
 
-  if (issueCount >= 2 && supportPresent) {
+  if (mismatchPresent) {
+    return {
+      confidence_label: "low",
+      confidence_reason:
+        "The surfaced issue and recommended action do not fully align, so this should stay directional until operator review.",
+      operator_read: buildOperatorRead(payload),
+      score_band_label,
+      score_band_tone,
+      revenue_window_label: "Estimated 30-day revenue opportunity",
+    };
+  }
+
+  if (issueCount >= 2 && supportPresent && !repeatedBenchmarkPattern) {
     return {
       confidence_label: "high",
       confidence_reason: "Multiple surfaced issues line up with supporting review context for this store.",
@@ -74,7 +118,9 @@ export function buildAuditConfidence(
   if (issueCount >= 1) {
     return {
       confidence_label: "medium",
-      confidence_reason: "The core audit payload is solid, with limited supporting context beyond the top surfaced issues.",
+      confidence_reason: repeatedBenchmarkPattern
+        ? "The audit payload is usable, but the issue pattern is common enough that it should stay directional."
+        : "The core audit payload is solid, with limited supporting context beyond the top surfaced issues.",
       operator_read: buildOperatorRead(payload),
       score_band_label,
       score_band_tone,

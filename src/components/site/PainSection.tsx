@@ -16,10 +16,10 @@ export default function PainSection() {
             <div>
               <p className="eyebrow text-slate-400">The problem</p>
               <h2 className="mt-4 text-4xl font-semibold tracking-tight text-white">
-                Most stores don’t have a traffic problem. They have a conversion leak.
+                Most stores do not need more guesses. They need the clearest revenue leak fixed first.
               </h2>
               <p className="body-md mt-5">
-                You’re getting visitors and interest, but revenue stalls because the real issue isn’t obvious.
+                Your store may already have enough traffic. The fastest win is finding where buying intent breaks down.
               </p>
             </div>
             <div className="grid gap-4 sm:grid-cols-2">
@@ -32,7 +32,7 @@ export default function PainSection() {
           </div>
           <div className="mt-8">
             <Link href="/shopifixer" className="smc-button smc-button-primary">
-              Run Audit on Your Store
+              Find My Revenue Leak
             </Link>
           </div>
         </div>

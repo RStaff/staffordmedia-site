@@ -3,7 +3,7 @@ import Link from "next/link";
 export const metadata = {
   title: "Abando — Stafford Media Consulting™",
   description:
-    "Abando helps ecommerce brands prove, measure, and improve recovered revenue through AI-assisted recovery flows.",
+    "Abando helps ecommerce brands review and operate recovery paths for shoppers who leave with buying intent.",
 };
 
 export default function AbandoPage() {
@@ -16,12 +16,12 @@ export default function AbandoPage() {
           </p>
 
           <h1 className="mt-4 max-w-3xl text-4xl font-semibold tracking-tight text-white">
-            Prove, measure, and improve recovered revenue.
+            Review and operate recovery paths after shoppers leave.
           </h1>
 
           <p className="mt-5 max-w-3xl text-base leading-8 text-slate-300">
-            Abando is the recovery engine that scales after the highest-priority conversion issue is clear. It helps bring shoppers back,
-            measure return activity, attribute recovered revenue, and improve recovery performance over time.
+            Abando is standalone recovery infrastructure for shoppers who leave with buying intent. It can run as its own
+            product or complement ShopiFixer inside the broader diagnose, fix, and recover commerce loop.
           </p>
 
           <div className="mt-8 grid gap-4 md:grid-cols-3">
@@ -42,7 +42,7 @@ export default function AbandoPage() {
             <div className="rounded-2xl border border-slate-800 bg-slate-950/60 p-5">
               <p className="text-sm font-semibold text-white">3. Attribute revenue</p>
               <p className="mt-2 text-sm leading-6 text-slate-400">
-                Connect recovery activity to revenue so performance can improve.
+                Connect recovery activity to the return path so performance can be reviewed.
               </p>
             </div>
           </div>
@@ -59,7 +59,7 @@ export default function AbandoPage() {
               href="/shopifixer"
               className="rounded-full border border-slate-600 px-5 py-3 text-sm font-semibold text-white transition hover:border-violet-300 hover:text-violet-200"
             >
-              Diagnose with ShopiFixer first
+              View ShopiFixer Diagnosis
             </Link>
           </div>
         </section>

@@ -6,6 +6,11 @@ export type AuditPayload = {
   recommended_action: string;
   issues: string[];
   generated_at: string;
+  issue_explanation?: string;
+  directional_impact?: string;
+  scoped_next_step?: string;
+  downstream_recovery_recommendation?: string;
+  confidence_level?: "HIGH" | "MEDIUM" | "LOW" | "INSUFFICIENT_SIGNAL";
 };
 
 export function assertValidPayload(payload: unknown): AuditPayload {
@@ -40,6 +45,29 @@ export function assertValidPayload(payload: unknown): AuditPayload {
   }
 
   if (typeof candidate.generated_at !== "string" || candidate.generated_at.trim() === "") {
+    throw new Error("INVALID_AUDIT_PAYLOAD");
+  }
+
+  for (const optionalField of [
+    "issue_explanation",
+    "directional_impact",
+    "scoped_next_step",
+    "downstream_recovery_recommendation",
+  ]) {
+    const value = candidate[optionalField];
+
+    if (value !== undefined && typeof value !== "string") {
+      throw new Error("INVALID_AUDIT_PAYLOAD");
+    }
+  }
+
+  if (
+    candidate.confidence_level !== undefined &&
+    candidate.confidence_level !== "HIGH" &&
+    candidate.confidence_level !== "MEDIUM" &&
+    candidate.confidence_level !== "LOW" &&
+    candidate.confidence_level !== "INSUFFICIENT_SIGNAL"
+  ) {
     throw new Error("INVALID_AUDIT_PAYLOAD");
   }
 

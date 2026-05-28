@@ -1,7 +1,7 @@
 const proofBullets = [
   "Engine-backed audit outputs tied to the same live result flow.",
   "Real example store paths, not static deck language.",
-  "Diagnosis first, then recovery if scaling makes sense.",
+  "Separate diagnosis, implementation, and recovery proof boundaries.",
 ];
 
 export default function ProofSection() {

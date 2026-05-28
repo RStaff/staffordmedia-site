@@ -40,8 +40,22 @@ function buildOutreachPayload(input: ShopifixerOutreachInput): ShopifixerOutreac
   };
 }
 
+function isSafeValidationMode() {
+  return [process.env.SAFE_VALIDATION_MODE, process.env.SHOPIFIXER_SAFE_VALIDATION_MODE]
+    .some((value) => String(value || "").trim().toLowerCase() === "true");
+}
+
 export async function triggerShopifixerOutreach(input: ShopifixerOutreachInput) {
   const normalizedPayload = buildOutreachPayload(input);
+
+  if (isSafeValidationMode()) {
+    console.log("[shopifixer-outreach] suppressed by safe validation mode", {
+      store_domain: normalizedPayload.store_domain,
+      source: normalizedPayload.source,
+    });
+    return { ok: true, mode: "safe_validation_noop" as const };
+  }
+
   const webhookUrl = String(process.env.SHOPIFIXER_OUTREACH_WEBHOOK_URL || "").trim();
 
   if (!webhookUrl) {
