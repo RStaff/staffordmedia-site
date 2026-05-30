@@ -6,8 +6,15 @@ import { buildAuditConfidence } from "../../../../lib/buildAuditConfidence";
 import SystemProgressRail from "@/components/commerce/SystemProgressRail";
 import RuntimeContinuityStrip from "@/components/commerce/RuntimeContinuityStrip";
 import { buildShopiFixerMerchantTrustProfile } from "@/lib/shopifixerMerchantTrust";
+import type { Metadata } from "next";
 
 export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+  title: "ShopiFixer Audit Result - Stafford Media Consulting",
+  description:
+    "ShopiFixer storefront audit summary with a scoped issue, confidence boundary, and next-step review.",
+};
 
 type PageProps = {
   searchParams?: Promise<{ store?: string }>;

@@ -4,8 +4,15 @@ import { assertValidPayload } from "@/lib/auditPayload";
 import SystemProgressRail from "@/components/commerce/SystemProgressRail";
 import RuntimeContinuityStrip from "@/components/commerce/RuntimeContinuityStrip";
 import { buildShopiFixerMerchantTrustProfile } from "@/lib/shopifixerMerchantTrust";
+import type { Metadata } from "next";
 
 export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+  title: "ShopiFixer Fix Pricing - Stafford Media Consulting",
+  description:
+    "Flat-fee ShopiFixer scope review for a focused storefront fix, with approval boundaries and proof expectations.",
+};
 
 type PageProps = {
   searchParams?: Promise<{ store?: string }>;
