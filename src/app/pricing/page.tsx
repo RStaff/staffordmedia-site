@@ -1,7 +1,9 @@
 import Link from "next/link";
-import { AuditPayload, assertValidPayload } from "@/lib/auditPayload";
+import type { AuditPayload } from "@/lib/auditPayload";
+import { assertValidPayload } from "@/lib/auditPayload";
 import SystemProgressRail from "@/components/commerce/SystemProgressRail";
 import RuntimeContinuityStrip from "@/components/commerce/RuntimeContinuityStrip";
+import { buildShopiFixerMerchantTrustProfile } from "@/lib/shopifixerMerchantTrust";
 
 export const dynamic = "force-dynamic";
 
@@ -171,6 +173,8 @@ export default async function PricingPage({ searchParams }: PageProps) {
       );
   }
 
+  const trustProfile = buildShopiFixerMerchantTrustProfile(payload);
+
   return (
     <main className="min-h-screen bg-slate-950 px-5 py-8 text-slate-100 md:px-6 md:py-10">
       <SystemProgressRail currentStage="approve" stateLabel="Awaiting authorization" className="px-0 pt-0" />
@@ -188,10 +192,10 @@ export default async function PricingPage({ searchParams }: PageProps) {
     <div>
       <p className="text-[11px] font-semibold uppercase tracking-[0.3em] text-cyan-300">Focused Storefront Fix</p>
       <h1 className="mt-3 max-w-3xl text-3xl font-semibold tracking-tight text-white md:text-4xl">
-        Start the focused fix for your store.
+        {trustProfile.pricingHeadline}
       </h1>
       <p className="mt-4 max-w-2xl text-base leading-8 text-slate-300">
-        A focused expert pass tied to the issue your audit surfaced. Scope is confirmed before anything launches.
+        {trustProfile.pricingSubcopy}
       </p>
 
       <div className="mt-5 inline-flex items-center gap-3 rounded-xl border border-white/12 bg-slate-950 px-4 py-2 text-sm text-slate-200">
@@ -206,12 +210,17 @@ export default async function PricingPage({ searchParams }: PageProps) {
         </div>
         <div className="rounded-2xl border border-slate-800 bg-slate-950/45 p-4">
           <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-500">Top issue</p>
-          <p className="mt-2 text-sm font-medium text-slate-100">{payload.top_issue}</p>
+          <p className="mt-2 text-sm font-medium text-slate-100">{trustProfile.issueTitle}</p>
         </div>
         <div className="rounded-2xl border border-slate-800 bg-slate-950/45 p-4">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-500">Estimated 30-day opportunity</p>
+          <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-500">Audit estimate</p>
           <p className="mt-2 text-sm font-medium text-slate-100">{payload.estimated_revenue_loss}</p>
         </div>
+      </div>
+      <div className="mt-4 rounded-2xl border border-amber-400/20 bg-amber-950/10 p-4">
+        <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-amber-200">{trustProfile.proposedFixTitle}</p>
+        <p className="mt-2 text-sm leading-6 text-slate-200">{trustProfile.proposedFixSummary}</p>
+        <p className="mt-3 text-xs leading-5 text-slate-400">{trustProfile.confidenceDisclosure}</p>
       </div>
     </div>
 
@@ -230,10 +239,9 @@ export default async function PricingPage({ searchParams }: PageProps) {
       <div className="mt-5 space-y-3 rounded-2xl border border-slate-800 bg-slate-900/70 p-4">
         <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-500">Included</p>
         <ul className="space-y-2 text-sm leading-6 text-slate-200">
-          <li>Audit-based scope confirmation</li>
-          <li>Focused fix preparation</li>
-          <li>Review before launch</li>
-          <li>Proof when visible changes apply</li>
+          {trustProfile.deliverables.map((deliverable) => (
+            <li key={deliverable}>{deliverable}</li>
+          ))}
         </ul>
       </div>
       <p className="mt-4 text-sm leading-6 text-slate-400">
@@ -258,6 +266,32 @@ export default async function PricingPage({ searchParams }: PageProps) {
     </div>
   </div>
 </section>
+
+        <section className="grid gap-4 md:grid-cols-2">
+          <div className="rounded-3xl border border-slate-800 bg-slate-900/75 p-5 shadow-lg shadow-black/10 md:p-6">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-cyan-300">Timeline</p>
+            <h2 className="mt-4 text-2xl font-semibold tracking-tight text-white">Clear checkpoints before launch.</h2>
+            <div className="mt-5 space-y-4">
+              {trustProfile.timeline.map((item) => (
+                <div key={item.question} className="border-l border-cyan-400/25 pl-4">
+                  <p className="text-sm font-semibold text-white">{item.question}</p>
+                  <p className="mt-1 text-sm leading-6 text-slate-400">{item.answer}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="rounded-3xl border border-slate-800 bg-slate-900/75 p-5 shadow-lg shadow-black/10 md:p-6">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-cyan-300">Boundaries</p>
+            <h2 className="mt-4 text-2xl font-semibold tracking-tight text-white">Focused work, no broad promises.</h2>
+            <ul className="mt-5 space-y-3 text-sm leading-6 text-slate-300">
+              {trustProfile.exclusions.map((exclusion) => (
+                <li key={exclusion}>{exclusion}</li>
+              ))}
+            </ul>
+            <p className="mt-4 text-sm leading-6 text-slate-400">{trustProfile.proofBoundary}</p>
+          </div>
+        </section>
 
         <details className="rounded-3xl border border-slate-800 bg-slate-900/75 p-5 shadow-lg shadow-black/10 md:p-6">
   <summary className="cursor-pointer text-[11px] font-semibold uppercase tracking-[0.24em] text-cyan-300">
@@ -296,6 +330,19 @@ export default async function PricingPage({ searchParams }: PageProps) {
   </div>
   </div>
 </details>
+        <details className="rounded-3xl border border-slate-800 bg-slate-900/75 p-5 shadow-lg shadow-black/10 md:p-6">
+          <summary className="cursor-pointer text-[11px] font-semibold uppercase tracking-[0.24em] text-cyan-300">
+            Common questions
+          </summary>
+          <div className="mt-5 grid gap-3 md:grid-cols-2">
+            {trustProfile.objectionAnswers.map((item) => (
+              <div key={item.question} className="rounded-2xl border border-slate-800 bg-slate-950/45 p-4">
+                <p className="text-sm font-semibold text-white">{item.question}</p>
+                <p className="mt-2 text-sm leading-6 text-slate-400">{item.answer}</p>
+              </div>
+            ))}
+          </div>
+        </details>
       </div>
     </main>
   );

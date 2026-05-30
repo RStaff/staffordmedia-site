@@ -48,7 +48,7 @@ function normalizeStore(value: string) {
 
 function evidenceImageForStore(store: string) {
   const normalized = normalizeStore(store);
-  return localEvidenceImageByStore[normalized] || "/shopifixer-proof/elkeyecoffee-com.png";
+  return localEvidenceImageByStore[normalized] || "";
 }
 
 export function buildPlaceholderEvidencePacket(input: {

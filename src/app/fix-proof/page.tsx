@@ -37,12 +37,14 @@ export default async function FixProofPage({ searchParams }: PageProps) {
   const proofReady = packet?.proof_state === "ready" || packet?.proof_state === "delivered";
   const evidenceStore = packet?.store_url || store;
   const screenshotUrl = evidenceStore ? getStorefrontScreenshot(evidenceStore) : null;
-  const evidencePacket = buildPlaceholderEvidencePacket({
-    packetId: packet?.packet_id || params.packet || null,
-    store: evidenceStore || "Store confirmation required",
-    evidenceState: proofReady ? "captured" : "awaiting_review",
-  });
-  const desktopEvidence = primaryEvidenceSurface(evidencePacket, "desktop");
+  const evidencePacket = proofReady
+    ? buildPlaceholderEvidencePacket({
+        packetId: packet?.packet_id || params.packet || null,
+        store: evidenceStore || "Store confirmation required",
+        evidenceState: "captured",
+      })
+    : null;
+  const desktopEvidence = evidencePacket ? primaryEvidenceSurface(evidencePacket, "desktop") : null;
 
   return (
     <main className="min-h-screen bg-slate-950 px-5 py-8 text-slate-100 md:px-6 md:py-10">
@@ -50,7 +52,7 @@ export default async function FixProofPage({ searchParams }: PageProps) {
       <RuntimeContinuityStrip
         className="px-0"
         items={[
-          { label: "Now", value: proofReady ? "Visible updates ready." : "Changed-state proof unavailable." },
+          { label: "Now", value: proofReady ? "Visible updates ready." : "Proof pending." },
           { label: "Next", value: proofReady ? "Review changed state." : "Return to approval path." },
           { label: "Safe", value: "Completion needs confirmation." },
         ]}
@@ -59,36 +61,42 @@ export default async function FixProofPage({ searchParams }: PageProps) {
         <section className="rounded-[28px] border border-slate-800 bg-[radial-gradient(circle_at_top_left,rgba(34,211,238,0.12),transparent_32%),linear-gradient(180deg,rgba(15,23,42,0.98),rgba(2,6,23,0.94))] p-6 shadow-xl shadow-black/25 md:p-8">
           <p className="text-[11px] font-semibold uppercase tracking-[0.3em] text-cyan-300">Fix Proof</p>
           <h1 className="mt-3 max-w-3xl text-3xl font-semibold tracking-tight text-white md:text-4xl">
-            {proofReady ? "Review visible implementation proof." : "Changed-state evidence appears after approval."}
+            {proofReady ? "Review visible implementation proof." : "Proof is pending until the scoped fix is approved."}
           </h1>
           <p className="mt-4 max-w-3xl text-base leading-8 text-slate-300">
-            Updated buying-path evidence stays tied to the approved fix.
+            Storefront evidence must stay tied to the approved store and scoped fix. If proof is not attached, this page shows a pending state instead of another merchant's evidence.
           </p>
 
           <div className="mt-5 rounded-2xl border border-cyan-400/20 bg-cyan-950/10 p-4 md:p-5">
             <p className="text-sm font-semibold text-cyan-100">Every storefront change is reviewed before launch.</p>
             <p className="mt-2 text-sm leading-6 text-slate-300">
-              {proofReady ? "Visible implementation proof is ready for review." : "No storefront change proof exists before approval."}
+              {proofReady ? "Visible implementation proof is ready for review." : "No before/after proof is shown until it is attached to this merchant and this packet."}
             </p>
           </div>
         </section>
 
         <BrowserEvidenceFrame
-          title={proofReady ? "Updated buying-path evidence." : "Changed-state evidence is not available yet."}
-          subtitle="Review the updated buying path before completion."
+          title={proofReady ? "Updated buying-path evidence." : "Current storefront reference only."}
+          subtitle={
+            proofReady
+              ? "Review the updated buying path before completion."
+              : "This is not changed-state proof. It is a store-specific reference while proof remains pending."
+          }
           screenshotUrl={screenshotUrl}
           state={proofReady ? "Proof attached" : null}
           callouts={[
             {
-              label: "Original buying path",
-              note: "Original storefront reference remains visible.",
+              label: proofReady ? "Original buying path" : "Store-specific reference",
+              note: proofReady
+                ? "Original storefront reference remains visible."
+                : "The screenshot source is tied to the requested store, not a different merchant.",
               tone: "cyan",
             },
             {
-              label: "Updated storefront path",
+              label: proofReady ? "Updated storefront path" : "Proof pending",
               note: proofReady
                 ? "Updated storefront evidence is attached."
-                : "Implementation proof appears only after approval.",
+                : "Before/after evidence appears only after the scoped fix is approved and proof is attached.",
               tone: "cyan",
             },
             {
@@ -99,7 +107,7 @@ export default async function FixProofPage({ searchParams }: PageProps) {
           ]}
         />
 
-        {desktopEvidence ? (
+        {evidencePacket && desktopEvidence ? (
           <EvidenceViewport
             packet={evidencePacket}
             surface={desktopEvidence}
@@ -107,7 +115,15 @@ export default async function FixProofPage({ searchParams }: PageProps) {
             copy="Original and updated references stay connected."
             showState={false}
           />
-        ) : null}
+        ) : (
+          <section className="rounded-3xl border border-amber-400/20 bg-amber-950/10 p-5 shadow-lg shadow-black/5 md:p-6">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-amber-200">Proof pending</p>
+            <h2 className="mt-3 text-2xl font-semibold tracking-tight text-white">No changed-state proof is attached yet.</h2>
+            <p className="mt-3 max-w-3xl text-sm leading-7 text-slate-300">
+              The proof package will show only merchant-specific before/after evidence, changed surface notes, and approval boundaries. It will not show placeholder proof from another store.
+            </p>
+          </section>
+        )}
 
         <section className="grid gap-4 md:grid-cols-4">
           {[

@@ -5,6 +5,7 @@ import { assertValidPayload } from "@/lib/auditPayload";
 import { buildAuditConfidence } from "../../../../lib/buildAuditConfidence";
 import SystemProgressRail from "@/components/commerce/SystemProgressRail";
 import RuntimeContinuityStrip from "@/components/commerce/RuntimeContinuityStrip";
+import { buildShopiFixerMerchantTrustProfile } from "@/lib/shopifixerMerchantTrust";
 
 export const dynamic = "force-dynamic";
 
@@ -165,6 +166,7 @@ export default async function ShopifixerSummaryResultPage({ searchParams }: Page
   const auditConfidence = buildAuditConfidence(payload, {
     structured_audit_signals: payload.issues,
   });
+  const trustProfile = buildShopiFixerMerchantTrustProfile(payload);
 
   return (
     <main className="min-h-screen bg-slate-950 px-5 py-8 text-slate-100 md:px-6 md:py-10">
@@ -181,10 +183,10 @@ export default async function ShopifixerSummaryResultPage({ searchParams }: Page
         <section className="rounded-[28px] border border-slate-800 bg-[radial-gradient(circle_at_top_left,rgba(34,211,238,0.12),transparent_32%),linear-gradient(180deg,rgba(15,23,42,0.98),rgba(2,6,23,0.94))] p-6 shadow-xl shadow-black/25 md:p-8">
           <p className="text-[11px] font-semibold uppercase tracking-[0.3em] text-cyan-300">ShopiFixer Summary</p>
           <h1 className="mt-3 text-3xl font-semibold tracking-tight text-white md:text-4xl">
-            You’re likely losing {payload.estimated_revenue_loss} from one fixable issue.
+            {trustProfile.resultHeadline}
           </h1>
           <p className="mt-4 max-w-3xl text-base leading-8 text-slate-300">
-            We found the pressure point. The review shows where buyer momentum starts to weaken.
+            {trustProfile.resultSubcopy}
           </p>
 
           <div className="mt-5 grid gap-3 md:grid-cols-4 md:gap-4">
@@ -196,8 +198,8 @@ export default async function ShopifixerSummaryResultPage({ searchParams }: Page
           <div className="mt-5 grid gap-3 md:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] md:gap-4">
             <div className="rounded-2xl border border-slate-800 bg-slate-950/45 p-4">
               <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-500">How confident is this?</p>
-              <p className="mt-2 text-lg font-semibold capitalize text-white">{auditConfidence.confidence_label}</p>
-              <p className="mt-3 text-sm leading-6 text-slate-300">{auditConfidence.confidence_reason}</p>
+              <p className="mt-2 text-lg font-semibold text-white">{trustProfile.confidenceLabel}</p>
+              <p className="mt-3 text-sm leading-6 text-slate-300">{trustProfile.confidenceDisclosure}</p>
             </div>
             <div className="rounded-2xl border border-slate-800 bg-slate-950/45 p-4">
               <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-500">Full audit sent</p>
@@ -213,17 +215,20 @@ export default async function ShopifixerSummaryResultPage({ searchParams }: Page
           <div className="mt-5 grid gap-3 md:grid-cols-2 md:gap-4">
             <div className="rounded-2xl border border-slate-800 bg-slate-950/45 p-5">
               <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-500">Strongest Signal</p>
-              <p className="mt-3 text-xl font-semibold text-white">{payload.top_issue}</p>
+              <p className="mt-3 text-xl font-semibold text-white">{trustProfile.issueTitle}</p>
             </div>
             <div className="rounded-2xl border border-slate-800 bg-slate-950/45 p-5">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-500">Buyer pressure</p>
-              <p className="mt-3 text-xl font-semibold text-white">Where attention shifts and what to review first</p>
+              <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-500">{trustProfile.proposedFixTitle}</p>
+              <p className="mt-3 text-xl font-semibold text-white">{trustProfile.proposedFixSummary}</p>
             </div>
           </div>
 
           <div className="mt-6 rounded-2xl border border-cyan-900/30 bg-cyan-950/20 p-4 md:p-5">
             <p className="text-sm leading-7 text-slate-200">
               Your full storefront audit was sent to your inbox.
+            </p>
+            <p className="mt-2 text-sm leading-7 text-slate-300">
+              {auditConfidence.confidence_reason}
             </p>
           </div>
 
