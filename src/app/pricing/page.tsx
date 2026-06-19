@@ -5,6 +5,7 @@ import SystemProgressRail from "@/components/commerce/SystemProgressRail";
 import RuntimeContinuityStrip from "@/components/commerce/RuntimeContinuityStrip";
 import { buildShopiFixerMerchantTrustProfile } from "@/lib/shopifixerMerchantTrust";
 import type { Metadata } from "next";
+import PacketCheckoutButton from "./PacketCheckoutButton";
 
 export const dynamic = "force-dynamic";
 
@@ -38,17 +39,6 @@ function getFixAuditUrl(store: string) {
   return `${base}?store=${encodeURIComponent(store)}`;
 }
 
-function getCheckoutUrl() {
-  const fallback = "https://buy.stripe.com/00w5kEe4sanJaHB15j00001";
-  const configured = String(process.env.NEXT_PUBLIC_SHOPIFIXER_FIX_CHECKOUT_URL || "").trim();
-
-  if (!configured || /REPLACE_WITH_YOUR_LINK|placeholder/i.test(configured)) {
-    return fallback;
-  }
-
-  return configured;
-}
-
 async function fetchAuditPayload(store: string): Promise<AuditPayload> {
   const response = await fetch(getFixAuditUrl(store), {
     method: "GET",
@@ -71,7 +61,6 @@ async function fetchAuditPayload(store: string): Promise<AuditPayload> {
 export default async function PricingPage({ searchParams }: PageProps) {
   const params = (await searchParams) || {};
   const store = cleanStoreDomain(params.store || "");
-  const checkoutHref = getCheckoutUrl();
 
   if (!store) {
     return (
@@ -256,12 +245,7 @@ export default async function PricingPage({ searchParams }: PageProps) {
       </p>
 
       <div className="mt-5 flex flex-wrap gap-3 md:gap-4">
-        <a
-          href={checkoutHref}
-          className="rounded-full bg-cyan-400 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-cyan-300"
-        >
-          Start My Fix
-        </a>
+        <PacketCheckoutButton storeDomain={payload.store_domain} />
 
         <a
           className="rounded-full border border-slate-600 px-5 py-3 text-sm font-semibold text-white transition hover:border-cyan-300 hover:text-cyan-200"
