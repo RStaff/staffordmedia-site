@@ -95,6 +95,7 @@ function withStore(path: string, store: string) {
 function publicProofLabel(value?: string) {
   if (value === "ready" || value === "delivered") return "Proof ready";
   if (value === "blocked") return "Review needed";
+  if (value === "not_started") return "Payment received";
   return "Not available yet";
 }
 
@@ -115,6 +116,7 @@ type PacketShape = {
   currentLifecycleState?: string;
   proof_state?: string;
   proofState?: string;
+  proofStatus?: string;
   merchant_next_action?: string;
   merchantNextAction?: string;
 };
@@ -169,16 +171,20 @@ export default async function FixStatusPage({ searchParams }: PageProps) {
         store_url: string;
       })
     : null;
+  const normalizedProofStatus =
+    packetData?.proof_state ||
+    packetData?.proofState ||
+    packetData?.proof_status ||
+    packetData?.proofStatus ||
+    (packetData?.status === "payment_received" ? "not_started" : undefined);
   const state =
     (packetData?.current_lifecycle_state ||
       packetData?.currentLifecycleState ||
       (packetData?.status === "payment_received" ? "payment_verified" : "")) as MinimumLifecycleState | "" || "packet_missing";
   const copy = stateCopy(state);
   const proofAvailable =
-    packetData?.proof_state === "ready" ||
-    packetData?.proof_state === "delivered" ||
-    packetData?.proofState === "ready" ||
-    packetData?.proofState === "delivered";
+    normalizedProofStatus === "ready" ||
+    normalizedProofStatus === "delivered";
 
   return (
     <main className="min-h-screen bg-slate-950 px-5 py-8 text-slate-100 md:px-6 md:py-10">
@@ -214,7 +220,7 @@ export default async function FixStatusPage({ searchParams }: PageProps) {
             <div className="rounded-2xl border border-slate-800 bg-slate-950/45 p-4">
               <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-500">Review</p>
               <p className="mt-2 text-sm font-medium text-slate-100">
-                {publicProofLabel(packetData?.proof_state || packetData?.proofState)}
+                {publicProofLabel(normalizedProofStatus)}
               </p>
             </div>
             <div className="rounded-2xl border border-slate-800 bg-slate-950/45 p-4">
