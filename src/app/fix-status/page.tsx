@@ -9,7 +9,14 @@ export const metadata = {
 };
 
 type PageProps = {
-  searchParams?: Promise<{ store?: string; state?: string; packet?: string }>;
+  searchParams?: Promise<{
+    store?: string;
+    state?: string;
+    packet?: string;
+    packet_id?: string;
+    session_id?: string;
+    reservation_id?: string;
+  }>;
 };
 
 function cleanStoreDomain(value: string) {
@@ -91,14 +98,87 @@ function publicProofLabel(value?: string) {
   return "Not available yet";
 }
 
+type PacketShape = {
+  packet_id?: string;
+  packetId?: string;
+  store_url?: string;
+  store_domain?: string;
+  reservation_id?: string;
+  reservationId?: string;
+  payment_reference?: string;
+  status?: string;
+  execution_status?: string;
+  proof_status?: string;
+  completion_status?: string;
+  current_lifecycle_state?: string;
+  lifecycle_state?: string;
+  currentLifecycleState?: string;
+  proof_state?: string;
+  proofState?: string;
+  merchant_next_action?: string;
+  merchantNextAction?: string;
+};
+
+function resolvePacketApiBase() {
+  const raw = String(process.env.NEXT_PUBLIC_SHOPIFIXER_CHECKOUT_API_BASE || process.env.NEXT_PUBLIC_ABANDO_URL || "https://pay.abando.ai").trim();
+  return raw.replace(/\/+$/, "");
+}
+
+async function fetchLivePacket(packetId: string): Promise<PacketShape | null> {
+  if (!packetId) return null;
+
+  try {
+    const response = await fetch(`${resolvePacketApiBase()}/api/packets/${encodeURIComponent(packetId)}`, {
+      cache: "no-store",
+      headers: {
+        Accept: "application/json",
+      },
+    });
+
+    if (!response.ok) return null;
+
+    const json = await response.json();
+    const packet = json?.packet || json;
+    return packet && typeof packet === "object" ? (packet as PacketShape) : null;
+  } catch {
+    return null;
+  }
+}
+
 export default async function FixStatusPage({ searchParams }: PageProps) {
   const params = (await searchParams) || {};
+  const packetId = String(params.packet_id || params.packet || "").trim();
+  const sessionId = String(params.session_id || "").trim();
+  const reservationId = String(params.reservation_id || "").trim();
   const store = cleanStoreDomain(params.store || "");
-  const packetResult = await lookupPacket({ packetId: params.packet || "", store });
-  const packet = packetResult.status === "found" ? packetResult.packet : null;
-  const state = packet ? packet.current_lifecycle_state : "packet_missing";
+
+  const livePacket = packetId ? await fetchLivePacket(packetId) : null;
+  const fallbackPacketResult = livePacket ? null : await lookupPacket({ packetId, store });
+  const fallbackPacket = fallbackPacketResult?.status === "found" ? fallbackPacketResult.packet : null;
+  const packet = livePacket || fallbackPacket;
+  const packetData = packet as (PacketShape & { current_lifecycle_state?: MinimumLifecycleState; currentLifecycleState?: MinimumLifecycleState }) | null;
+  const resolvedStore = cleanStoreDomain(packetData?.store_url || packetData?.store_domain || store || "");
+  const resolvedReservationId = String(packetData?.reservation_id || packetData?.reservationId || reservationId || "").trim();
+  const resolvedPaymentReference = String(packetData?.payment_reference || sessionId || "").trim();
+  const packetForLinks = packetData
+    ? ({
+        packet_id: String(packetData.packet_id || packetData.packetId || packetId || ""),
+        store_url: resolvedStore || store,
+      } as {
+        packet_id: string;
+        store_url: string;
+      })
+    : null;
+  const state =
+    (packetData?.current_lifecycle_state ||
+      packetData?.currentLifecycleState ||
+      (packetData?.status === "payment_received" ? "payment_verified" : "")) as MinimumLifecycleState | "" || "packet_missing";
   const copy = stateCopy(state);
-  const proofAvailable = packet?.proof_state === "ready" || packet?.proof_state === "delivered";
+  const proofAvailable =
+    packetData?.proof_state === "ready" ||
+    packetData?.proof_state === "delivered" ||
+    packetData?.proofState === "ready" ||
+    packetData?.proofState === "delivered";
 
   return (
     <main className="min-h-screen bg-slate-950 px-5 py-8 text-slate-100 md:px-6 md:py-10">
@@ -129,18 +209,18 @@ export default async function FixStatusPage({ searchParams }: PageProps) {
           <div className="mt-5 grid gap-3 md:grid-cols-3 md:gap-4">
             <div className="rounded-2xl border border-slate-800 bg-slate-950/45 p-4">
               <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-500">Store</p>
-              <p className="mt-2 text-sm font-medium text-slate-100">{packet?.store_url || store || "Store confirmation required"}</p>
+              <p className="mt-2 text-sm font-medium text-slate-100">{resolvedStore || "Store confirmation required"}</p>
             </div>
             <div className="rounded-2xl border border-slate-800 bg-slate-950/45 p-4">
               <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-500">Review</p>
               <p className="mt-2 text-sm font-medium text-slate-100">
-                {publicProofLabel(packet?.proof_state)}
+                {publicProofLabel(packetData?.proof_state || packetData?.proofState)}
               </p>
             </div>
             <div className="rounded-2xl border border-slate-800 bg-slate-950/45 p-4">
               <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-500">Next action</p>
               <p className="mt-2 text-sm font-medium text-slate-100">
-                {packet ? "Open the next step." : "Use the store-specific link."}
+                {packet ? (packetData?.merchant_next_action || packetData?.merchantNextAction || "Open the next step.") : "Use the store-specific link."}
               </p>
             </div>
           </div>
@@ -154,7 +234,7 @@ export default async function FixStatusPage({ searchParams }: PageProps) {
           <div>
             <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-cyan-300">Review discipline</p>
             <p className="mt-4 text-sm leading-7 text-slate-300">The review stays connected while the experience stays simple.</p>
-            {params.state && !packet ? (
+            {(params.state || packetId || sessionId || resolvedReservationId || resolvedPaymentReference) && !packet ? (
               <p className="mt-4 text-sm leading-7 text-slate-300">
                 Your fix request is not linked to this view.
               </p>
@@ -176,11 +256,11 @@ export default async function FixStatusPage({ searchParams }: PageProps) {
             <Link
               href={
                 proofAvailable
-                  ? packet
-                    ? packetHref("/fix-proof", packet)
+                  ? packetForLinks
+                    ? packetHref("/fix-proof", packetForLinks as Parameters<typeof packetHref>[1])
                     : withStore("/fix-proof", store)
-                  : packet
-                    ? packetHref("/fix-review", packet)
+                  : packetForLinks
+                    ? packetHref("/fix-review", packetForLinks as Parameters<typeof packetHref>[1])
                     : withStore("/fix-review", store)
               }
               className="rounded-full bg-cyan-400 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-cyan-300"
@@ -188,7 +268,7 @@ export default async function FixStatusPage({ searchParams }: PageProps) {
               {proofAvailable ? "Open Proof Review" : "Return to Approval Review"}
             </Link>
             <Link
-              href={packet ? packetHref("/fix-review", packet) : withStore("/fix-review", store)}
+              href={packetForLinks ? packetHref("/fix-review", packetForLinks as Parameters<typeof packetHref>[1]) : withStore("/fix-review", store)}
               className="rounded-full border border-slate-600 px-5 py-3 text-sm font-semibold text-white transition hover:border-cyan-300 hover:text-cyan-200"
             >
               Back to Fix Review
