@@ -177,6 +177,7 @@ export default async function FixStatusPage({ searchParams }: PageProps) {
     packetData?.proof_status ||
     packetData?.proofStatus ||
     (packetData?.status === "payment_received" ? "not_started" : undefined);
+  const hasContinuityContext = Boolean(packetData || packetId || sessionId || resolvedReservationId || resolvedPaymentReference);
   const state =
     (packetData?.current_lifecycle_state ||
       packetData?.currentLifecycleState ||
@@ -192,7 +193,7 @@ export default async function FixStatusPage({ searchParams }: PageProps) {
       <RuntimeContinuityStrip
         className="px-0"
         items={[
-          { label: "Now", value: packet ? copy.label : "Request unavailable." },
+          { label: "Now", value: hasContinuityContext ? copy.label : "Request unavailable." },
           { label: "Next", value: "Open the next safe step." },
           { label: "Safe", value: "You approve before launch." },
         ]}
@@ -240,7 +241,7 @@ export default async function FixStatusPage({ searchParams }: PageProps) {
           <div>
             <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-cyan-300">Review discipline</p>
             <p className="mt-4 text-sm leading-7 text-slate-300">The review stays connected while the experience stays simple.</p>
-            {(params.state || packetId || sessionId || resolvedReservationId || resolvedPaymentReference) && !packet ? (
+            {!hasContinuityContext ? (
               <p className="mt-4 text-sm leading-7 text-slate-300">
                 Your fix request is not linked to this view.
               </p>
