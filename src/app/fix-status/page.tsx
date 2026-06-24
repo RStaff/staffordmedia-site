@@ -181,7 +181,7 @@ export default async function FixStatusPage({ searchParams }: PageProps) {
   const state =
     (packetData?.current_lifecycle_state ||
       packetData?.currentLifecycleState ||
-      (packetData?.status === "payment_received" ? "payment_verified" : "")) as MinimumLifecycleState | "" || "packet_missing";
+      (packetData?.status === "payment_received" || hasContinuityContext ? "payment_verified" : "")) as MinimumLifecycleState | "" || "packet_missing";
   const copy = stateCopy(state);
   const hasContinuityState = state !== "packet_missing";
   const proofAvailable =
