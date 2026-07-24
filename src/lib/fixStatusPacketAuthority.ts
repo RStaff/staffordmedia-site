@@ -8,7 +8,8 @@ export type FixStatusMerchantState =
   | "WEBHOOK_PENDING"
   | "PAID_OR_PAYMENT_RECEIVED"
   | "EXECUTION_PENDING"
-  | "PROOF_READY_OR_COMPLETED"
+  | "PROOF_READY"
+  | "COMPLETED"
   | "SERVICE_UNAVAILABLE"
   | "STATUS_REVIEW";
 
@@ -153,8 +154,12 @@ export function mapPacketToMerchantState(packet: PacketAuthorityPacket): FixStat
   const proofStatus = normalizeStatus(packet.proof_status || packet.proofStatus);
   const completionStatus = normalizeStatus(packet.completion_status || packet.completionStatus);
 
-  if (proofStatus === "ready" || proofStatus === "delivered" || completionStatus === "complete") {
-    return "PROOF_READY_OR_COMPLETED";
+  if (completionStatus === "complete") {
+    return "COMPLETED";
+  }
+
+  if (proofStatus === "ready" || proofStatus === "delivered") {
+    return "PROOF_READY";
   }
 
   if (status === "payment_received" || status === "paid") {
@@ -324,7 +329,7 @@ export function getFixStatusCopy(state: FixStatusMerchantState) {
       return {
         label: "Checking status",
         headline: "Checking your fix request.",
-        body: "Packet authority is being checked before any status is shown.",
+        body: "Your secure status link is being checked before any progress is shown.",
       };
     case "INVALID_REQUEST":
       return {
@@ -336,13 +341,13 @@ export function getFixStatusCopy(state: FixStatusMerchantState) {
       return {
         label: "Request not verified",
         headline: "We could not verify this fix request.",
-        body: "This link does not match an active ShopiFixer packet.",
+        body: "This link does not match an active ShopiFixer request.",
       };
     case "SERVICE_UNAVAILABLE":
       return {
         label: "Status unavailable",
         headline: "Status is temporarily unavailable.",
-        body: "Packet authority could not be reached. Try the same link again shortly.",
+        body: "The status source could not be reached. Try the same link again shortly.",
       };
     case "UNPAID":
       return {
@@ -354,31 +359,37 @@ export function getFixStatusCopy(state: FixStatusMerchantState) {
       return {
         label: "Verification pending",
         headline: "Payment verification is still catching up.",
-        body: "Keep this page open while packet authority receives the payment confirmation.",
+        body: "Keep this page open while payment confirmation is recorded.",
       };
     case "EXECUTION_PENDING":
       return {
         label: "Payment received",
         headline: "Payment is confirmed. Your fix is queued.",
-        body: "The packet is ready for the next controlled execution step.",
+        body: "Your request is ready for the next fix step.",
       };
     case "PAID_OR_PAYMENT_RECEIVED":
       return {
         label: "Payment received",
         headline: "Your fix request is verified.",
-        body: "Your ShopiFixer packet is connected and ready for the next governed step.",
+        body: "Your ShopiFixer request is connected and ready for the next update.",
       };
-    case "PROOF_READY_OR_COMPLETED":
+    case "PROOF_READY":
       return {
         label: "Proof ready",
         headline: "Before-and-after review is ready.",
-        body: "Review the visible proof tied to this packet.",
+        body: "Review the visible before-and-after proof for this request.",
+      };
+    case "COMPLETED":
+      return {
+        label: "Work complete",
+        headline: "Your requested fix is complete.",
+        body: "The completed work and proof are ready for review.",
       };
     default:
       return {
         label: "Reviewing status",
         headline: "We are reviewing this status.",
-        body: "Packet authority returned a state that needs operator review before we show the next step.",
+        body: "We need another status check before showing the next step.",
       };
   }
 }
@@ -390,7 +401,11 @@ export function publicProofLabel(packet: PacketAuthorityPacket | null) {
   const completionStatus = normalizeStatus(packet.completion_status || packet.completionStatus);
   const status = normalizeStatus(packet.status);
 
-  if (proofStatus === "ready" || proofStatus === "delivered" || completionStatus === "complete") {
+  if (completionStatus === "complete") {
+    return "Complete";
+  }
+
+  if (proofStatus === "ready" || proofStatus === "delivered") {
     return "Proof ready";
   }
 
@@ -408,8 +423,9 @@ export function publicProofLabel(packet: PacketAuthorityPacket | null) {
 export function displayPacketReference(packet: PacketAuthorityPacket | null) {
   const packetId = packet ? normalizePacketId(packet) : "";
   if (!packetId) return "Not verified";
-  if (packetId.length <= 18) return packetId;
-  return `${packetId.slice(0, 10)}...${packetId.slice(-6)}`;
+  const publicReference = packetId.replace(/^packet[_:-]?/i, "");
+  if (publicReference.length <= 18) return publicReference;
+  return `${publicReference.slice(0, 10)}...${publicReference.slice(-6)}`;
 }
 
 export function packetUpdatedAt(packet: PacketAuthorityPacket | null) {
@@ -426,9 +442,11 @@ export function merchantNextActionForResult(result: FixStatusValidationResult) {
       return "Return to checkout if payment was not completed.";
     case "EXECUTION_PENDING":
     case "PAID_OR_PAYMENT_RECEIVED":
-      return "Watch for the next governed fix update.";
-    case "PROOF_READY_OR_COMPLETED":
-      return "Open the proof review for this packet.";
+      return "Watch for your next fix update.";
+    case "PROOF_READY":
+      return "Open your proof review.";
+    case "COMPLETED":
+      return "Review your completed fix.";
     case "SERVICE_UNAVAILABLE":
       return "Use the same link again after status reconnects.";
     default:

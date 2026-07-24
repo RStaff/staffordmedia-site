@@ -12,7 +12,7 @@ export default function FixStatusLoading() {
         className="px-0"
         items={[
           { label: "Now", value: copy.label },
-          { label: "Next", value: "Wait for packet authority." },
+          { label: "Next", value: "Wait for status verification." },
           { label: "Safe", value: "No status is shown before verification." },
         ]}
       />

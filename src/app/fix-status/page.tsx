@@ -38,7 +38,7 @@ export default async function FixStatusPage({ searchParams }: PageProps) {
   const packet = result.packet;
   const copy = getFixStatusCopy(result.state);
   const resolvedStore = packet ? cleanStoreDomain(packet.store_domain || packet.store_url || "") : "";
-  const proofAvailable = result.state === "PROOF_READY_OR_COMPLETED";
+  const proofAvailable = result.state === "PROOF_READY" || result.state === "COMPLETED";
   const canOpenNextStep = Boolean(packet && result.state !== "UNPAID" && result.state !== "STATUS_REVIEW");
   const primaryHref = proofAvailable
     ? buildContinuityHref("/fix-proof", result)
@@ -58,7 +58,7 @@ export default async function FixStatusPage({ searchParams }: PageProps) {
         items={[
           { label: "Now", value: copy.label },
           { label: "Next", value: merchantNextActionForResult(result) },
-          { label: "Safe", value: "Packet authority is checked first." },
+          { label: "Safe", value: "Status is verified first." },
         ]}
       />
       <div className="mx-auto max-w-5xl space-y-5 md:space-y-7">
@@ -88,7 +88,7 @@ export default async function FixStatusPage({ searchParams }: PageProps) {
               </p>
             </div>
             <div className="rounded-2xl border border-slate-800 bg-slate-950/45 p-4">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-500">Packet</p>
+              <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-500">Reference</p>
               <p className="mt-2 text-sm font-medium text-slate-100">
                 {displayPacketReference(packet)}
               </p>
@@ -96,7 +96,7 @@ export default async function FixStatusPage({ searchParams }: PageProps) {
           </div>
           {lastUpdated ? (
             <p className="mt-4 text-xs text-slate-500">
-              Last packet update: {lastUpdated}
+              Last status update: {lastUpdated}
             </p>
           ) : null}
         </section>
@@ -111,7 +111,7 @@ export default async function FixStatusPage({ searchParams }: PageProps) {
             <p className="mt-4 text-sm leading-7 text-slate-300">The review stays connected while the experience stays simple.</p>
             {!packet ? (
               <p className="mt-4 text-sm leading-7 text-slate-300">
-                This view does not show request progress until packet authority verifies the link.
+                This view does not show request progress until the link is verified.
               </p>
             ) : null}
           </div>

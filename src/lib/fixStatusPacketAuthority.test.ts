@@ -3,7 +3,11 @@ import {
   FIX_STATUS_PACKET_API_BASE_ENV,
   getFixStatusCopy,
   mapPacketToMerchantState,
+  merchantNextActionForResult,
+  publicProofLabel,
+  displayPacketReference,
   validateFixStatusRequest,
+  type FixStatusMerchantState,
   type PacketAuthorityPacket,
 } from "./fixStatusPacketAuthority";
 
@@ -130,12 +134,27 @@ describe("validateFixStatusRequest", () => {
     expect(result.state).toBe("EXECUTION_PENDING");
   });
 
-  it("returns proof ready when proof or completion state proves availability", async () => {
+  it("returns proof ready when proof state proves availability", async () => {
     const result = await validateFixStatusRequest(params(), {
       env,
       fetchImpl: packetResponse({ ...basePacket, status: "payment_received", proof_status: "ready" }),
     });
-    expect(result.state).toBe("PROOF_READY_OR_COMPLETED");
+    expect(result.state).toBe("PROOF_READY");
+    expect(result.state).not.toBe("COMPLETED");
+  });
+
+  it("returns completed only when completion state proves completion", async () => {
+    const result = await validateFixStatusRequest(params(), {
+      env,
+      fetchImpl: packetResponse({
+        ...basePacket,
+        status: "payment_received",
+        proof_status: "ready",
+        completion_status: "complete",
+      }),
+    });
+    expect(result.state).toBe("COMPLETED");
+    expect(result.state).not.toBe("PROOF_READY");
   });
 
   it("renders unknown packet status as review instead of a positive request-open state", async () => {
@@ -176,5 +195,60 @@ describe("validateFixStatusRequest", () => {
 describe("mapPacketToMerchantState", () => {
   it("maps unsupported packet statuses to review", () => {
     expect(mapPacketToMerchantState({ ...basePacket, status: "unexpected" })).toBe("STATUS_REVIEW");
+  });
+
+  it("does not collapse proof-ready and completed lifecycle values", () => {
+    expect(mapPacketToMerchantState({ ...basePacket, status: "payment_received", proof_status: "ready" })).toBe("PROOF_READY");
+    expect(mapPacketToMerchantState({ ...basePacket, status: "payment_received", completion_status: "complete" })).toBe("COMPLETED");
+  });
+
+  it("gives completed requests a distinct supporting label", () => {
+    expect(publicProofLabel({ ...basePacket, proof_status: "ready" })).toBe("Proof ready");
+    expect(publicProofLabel({ ...basePacket, proof_status: "delivered", completion_status: "complete" })).toBe("Complete");
+  });
+});
+
+describe("merchant status copy", () => {
+  const states: FixStatusMerchantState[] = [
+    "LOADING",
+    "INVALID_REQUEST",
+    "NOT_FOUND_OR_MISMATCH",
+    "UNPAID",
+    "WEBHOOK_PENDING",
+    "PAID_OR_PAYMENT_RECEIVED",
+    "EXECUTION_PENDING",
+    "PROOF_READY",
+    "COMPLETED",
+    "SERVICE_UNAVAILABLE",
+    "STATUS_REVIEW",
+  ];
+
+  it("keeps status review merchant-safe", () => {
+    const copy = getFixStatusCopy("STATUS_REVIEW");
+    expect(`${copy.label} ${copy.headline} ${copy.body}`).not.toMatch(/operator|internal|deployment|packet|workflow|provider/i);
+  });
+
+  it("keeps all status copy and default actions free of operator terminology", () => {
+    const blockedTerms = /operator|internal|deployment|packet|workflow|provider|processing internally/i;
+    for (const state of states) {
+      const copy = getFixStatusCopy(state);
+      const action = merchantNextActionForResult({
+        state,
+        reason: "validated",
+        params: {
+          packetId: "packet_test_store_abc123",
+          sessionId: "cs_test_123",
+          store: "test-store.invalid",
+          reservationId: "res_123",
+        },
+        packet: state === "INVALID_REQUEST" || state === "NOT_FOUND_OR_MISMATCH" || state === "SERVICE_UNAVAILABLE" ? null : basePacket,
+      });
+
+      expect(`${copy.label} ${copy.headline} ${copy.body} ${action}`).not.toMatch(blockedTerms);
+    }
+  });
+
+  it("does not show the internal packet prefix in the public reference", () => {
+    expect(displayPacketReference(basePacket)).not.toMatch(/^packet/i);
   });
 });
