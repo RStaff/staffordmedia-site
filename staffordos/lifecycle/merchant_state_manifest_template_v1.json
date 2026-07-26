@@ -1,0 +1,75 @@
+{
+  "version": "merchant_state_manifest_template_v1",
+  "status": "TEMPLATE_ONLY_NOT_IMPLEMENTED",
+  "merchant_id": "",
+  "store_domain": "",
+  "current_state": "LEAD_CAPTURED",
+  "current_owner": "StaffordOS",
+  "mutation_depth": "LEVEL_0_AUDIT_ONLY",
+  "active_packet": {
+    "packet_id": null,
+    "packet_path": null,
+    "validation_status": "NOT_STARTED",
+    "validation_output": null
+  },
+  "active_snapshot": {
+    "snapshot_manifest": null,
+    "before_screenshots": [],
+    "after_screenshots": [],
+    "sandbox_reference": null
+  },
+  "active_proof": {
+    "artifact_manifest": null,
+    "visual_diff_status": "NOT_STARTED",
+    "QA_status": "NOT_STARTED",
+    "merchant_packet": null
+  },
+  "rollback_reference": {
+    "rollback_required": false,
+    "rollback_plan": null,
+    "rollback_proof": null,
+    "rollback_available": false
+  },
+  "approvals": {
+    "ross": {
+      "status": "UNKNOWN",
+      "decided_at": null,
+      "notes": ""
+    },
+    "merchant": {
+      "status": "UNKNOWN",
+      "decided_at": null,
+      "notes": ""
+    },
+    "deployment": {
+      "status": "NOT_REQUESTED",
+      "decided_at": null,
+      "notes": ""
+    }
+  },
+  "deployment_status": {
+    "state": "NOT_READY",
+    "deployment_record": null,
+    "live_theme_mutation_allowed": false
+  },
+  "timestamps": {
+    "lead_captured_at": null,
+    "audit_generated_at": null,
+    "qualified_at": null,
+    "snapshot_ready_at": null,
+    "packet_ready_at": null,
+    "validated_at": null,
+    "proof_ready_at": null,
+    "deployment_ready_at": null,
+    "deployed_at": null,
+    "monitoring_started_at": null,
+    "updated_at": null
+  },
+  "escalation_status": {
+    "state": "NONE",
+    "reason": "",
+    "required_owner": null,
+    "opened_at": null,
+    "resolved_at": null
+  }
+}

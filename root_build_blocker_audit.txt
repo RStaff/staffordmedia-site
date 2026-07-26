@@ -1,0 +1,299 @@
+=== ROOT BUILD BLOCKER AUDIT ===
+PWD: /Users/rossstafford/projects/StaffordMediaConsulting/apps/website
+
+=== TS CONFIG ===
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "strict": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowJs": true,
+    "noEmit": true,
+    "incremental": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
+  },
+  "include": [
+    "next-env.d.ts",
+    ".next/types/**/*.ts",
+    "**/*.ts",
+    "**/*.tsx"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}
+
+=== ROOT SRC/APP LAYOUT ===
+import Header from '../components/Header';
+import './globals.css';
+import React from 'react';
+
+export const metadata = {
+  title: 'Stafford Media Consulting™',
+  description: 'Unlock 4× ROI in 4 days — Abando.ai'
+};
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="en">
+      <body>
+      <HeroBadgeKiller />
+        <Header />
+        <main className="min-h-screen">{children}</main>
+      </body>
+    </html>
+  );
+}
+import HeroBadgeKiller from '@/components/HeroBadgeKiller';
+
+=== ROOT SRC/APP PAGE ===
+"use client";
+import Link from "next/link";
+import AbandoTitle from "@/components/AbandoTitle";
+
+export default function Page() {
+  return (
+    <main className="min-h-hero py-12 lg:py-16">
+      <div className="container-max grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
+        {/* Left column */}
+        <div data-testid="intro" className="order-1 lg:col-start-1">
+          <AbandoTitle />
+          <h1 className="text-white font-extrabold leading-tight tracking-tight text-4xl sm:text-5xl lg:text-6xl mt-4">
+            Unlock 4× ROI in 4 days—<br />no redesigns, no downtime.
+          </h1>
+          <p className="text-white/80 mt-6">
+            Try Abando.ai free: cancel anytime.
+          </p>
+
+          <div className="flex flex-wrap gap-4 mt-6">
+            <Link
+              href="/start"
+              className="inline-flex items-center px-6 py-3 rounded-lg font-semibold"
+              style={{ background: "#FFE169", color: "#0A0F2A" }}
+            >
+              Start Free Trial
+            </Link>
+            <Link
+              href="/demo"
+              className="inline-flex items-center px-6 py-3 rounded-lg font-semibold border border-white/90 text-white hover:bg-white/5"
+            >
+              See Abando.ai In Action
+            </Link>
+          </div>
+        </div>
+
+        {/* Right column (cards) */}
+        <div data-testid="cards" className="order-2 lg:col-start-2 flex flex-col gap-6">
+          <div className="bg-white/5 rounded-2xl p-6 text-white/90">
+            <h3 className="font-semibold text-white mb-3">Who it’s for</h3>
+            <ul className="list-disc pl-5 space-y-2">
+              <li>Ecommerce teams on Shopify, WooCommerce, BigCommerce, or custom carts.</li>
+              <li>Marketers who want higher conversion without redesigns or long projects.</li>
+              <li>Founders who need measurable ROI fast (days, not months).</li>
+            </ul>
+          </div>
+
+          <div className="bg-white/5 rounded-2xl p-6 text-white/90">
+            <h3 className="font-semibold text-white mb-3">What it does</h3>
+            <ul className="list-disc pl-5 space-y-2">
+              <li>AI copilot that speaks in your brand’s voice — not a template.</li>
+              <li>Engages via email, SMS, WhatsApp, push — wherever customers are.</li>
+              <li>Handles objections in real time (price, shipping, trust).</li>
+              <li>Installs with no redesigns, no downtime.</li>
+              <li>Delivers measurable ROI in <strong>4 days — not weeks</strong>.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </main>
+  );
+}
+
+=== ROOT GLOBALS EXISTS? ===
+MISSING: src/app/globals.css
+
+=== COMPONENT FILES ===
+src/components/AbandoTitle.tsx
+src/components/AboutSection.tsx
+src/components/CallToAction.tsx
+src/components/ErrorBoundary.tsx
+src/components/Footer.tsx
+src/components/Header.tsx
+src/components/Header.tsx.bak
+src/components/HeroBadgeKiller.tsx
+src/components/HeroSection.tsx
+src/components/MediaLogos.tsx
+src/components/MediaLogos.tsx.bak
+src/components/Section.tsx
+src/components/ServicesSection.tsx
+src/components/ValueSection.tsx
+
+=== LIB FILES ===
+src/lib/shopifixerProof.ts
+
+=== SEARCH: AbandoTitle ===
+src/app/page.tsx.bak.1758771739346:4:import AbandoTitle from '@/components/AbandoTitle';
+src/app/page.tsx.bak.1758771739346:13:          <AbandoTitle />
+src/app/page.tsx.bak.1758771321946:4:import AbandoTitle from '@/components/AbandoTitle';
+src/app/page.tsx.bak.1758771321946:13:          <AbandoTitle />
+src/app/page.tsx.bak.1758771852720:4:import AbandoTitle from '@/components/AbandoTitle';
+src/app/page.tsx.bak.1758771852720:13:          <AbandoTitle />
+src/app/page.tsx.bak.1758771644191:4:import AbandoTitle from '@/components/AbandoTitle';
+src/app/page.tsx.bak.1758771644191:13:          <AbandoTitle />
+src/app/page.tsx.bak.1758771149613:4:import AbandoTitle from '@/components/AbandoTitle';
+src/app/page.tsx.bak.1758771149613:13:          <AbandoTitle />
+src/app/page.tsx:3:import AbandoTitle from "@/components/AbandoTitle";
+src/app/page.tsx:11:          <AbandoTitle />
+src/components/AbandoTitle.tsx:4:export default function AbandoTitle() {
+./shopifixer_route_owner_audit_real_candidate.txt:78:import AbandoTitle from "@/components/AbandoTitle";
+./shopifixer_route_owner_audit_real_candidate.txt:86:          <AbandoTitle />
+./root_build_blocker_audit.txt:68:import AbandoTitle from "@/components/AbandoTitle";
+./root_build_blocker_audit.txt:76:          <AbandoTitle />
+./root_build_blocker_audit.txt:132:src/components/AbandoTitle.tsx
+./root_build_blocker_audit.txt:150:=== SEARCH: AbandoTitle ===
+./src/app/page.tsx.bak.1758771739346:4:import AbandoTitle from '@/components/AbandoTitle';
+./src/app/page.tsx.bak.1758771739346:13:          <AbandoTitle />
+./src/app/page.tsx.bak.1758771321946:4:import AbandoTitle from '@/components/AbandoTitle';
+./src/app/page.tsx.bak.1758771321946:13:          <AbandoTitle />
+./src/app/page.tsx.bak.1758771852720:4:import AbandoTitle from '@/components/AbandoTitle';
+./src/app/page.tsx.bak.1758771852720:13:          <AbandoTitle />
+./src/app/page.tsx.bak.1758771644191:4:import AbandoTitle from '@/components/AbandoTitle';
+./src/app/page.tsx.bak.1758771644191:13:          <AbandoTitle />
+./src/app/page.tsx.bak.1758771149613:4:import AbandoTitle from '@/components/AbandoTitle';
+./src/app/page.tsx.bak.1758771149613:13:          <AbandoTitle />
+./src/app/page.tsx:3:import AbandoTitle from "@/components/AbandoTitle";
+./src/app/page.tsx:11:          <AbandoTitle />
+./src/components/AbandoTitle.tsx:4:export default function AbandoTitle() {
+
+=== SEARCH: HeroBadgeKiller ===
+src/app/layout.tsx:14:      <HeroBadgeKiller />
+src/app/layout.tsx:21:import HeroBadgeKiller from '@/components/HeroBadgeKiller';
+src/components/HeroBadgeKiller.tsx:26:export default function HeroBadgeKiller() {
+./shopifixer_route_owner_audit_real_candidate.txt:66:      <HeroBadgeKiller />
+./shopifixer_route_owner_audit_real_candidate.txt:73:import HeroBadgeKiller from '@/components/HeroBadgeKiller';
+./root_build_blocker_audit.txt:56:      <HeroBadgeKiller />
+./root_build_blocker_audit.txt:63:import HeroBadgeKiller from '@/components/HeroBadgeKiller';
+./root_build_blocker_audit.txt:139:src/components/HeroBadgeKiller.tsx
+./root_build_blocker_audit.txt:184:=== SEARCH: HeroBadgeKiller ===
+./src/app/layout.tsx:14:      <HeroBadgeKiller />
+./src/app/layout.tsx:21:import HeroBadgeKiller from '@/components/HeroBadgeKiller';
+./src/components/HeroBadgeKiller.tsx:26:export default function HeroBadgeKiller() {
+
+=== SEARCH: globals.css imports ===
+src/app/layout.tsx.bak.1758764604589:2:import './globals.css';
+src/app/layout.tsx:2:import './globals.css';
+./apply-branding-v2.sh:250:import "./globals.css";
+./apply-brand-theme.sh:81:# 4) Brand palette + dark-mode overrides in globals.css
+./apply-brand-theme.sh:83:GCSS="$APP/app/globals.css"
+./fix-tailwind-postcss-v4.sh:7:GLOBALS="$APP/app/globals.css"
+./fix-tailwind-postcss-v4.sh:47:# 4) Ensure globals.css imports Tailwind (v4 uses @import "tailwindcss";)
+./fix-tailwind-postcss-v4.sh:48:say "==> Ensure globals.css imports Tailwind"
+./apply-abando-upgrade.sh:208:import "./globals.css";
+./apply-abando-upgrade.sh:395:# 6) Ensure globals.css has Tailwind (v4) directives
+./apply-abando-upgrade.sh:397:say "==> (6/6) Ensure globals.css contains Tailwind directives"
+./apply-abando-upgrade.sh:399:if ! grep -q "@tailwind" "$APP/app/globals.css" 2>/dev/null; then
+./apply-abando-upgrade.sh:400:  cat > "$APP/app/globals.css" <<'CSS'
+./apply-abando-site.sh:206:import "./globals.css";
+./apply-abando-site.sh:324:say "==> Ensure globals.css has Tailwind (v4) directives"
+./apply-abando-site.sh:326:if ! grep -q "@tailwind" "$APP/app/globals.css" 2>/dev/null; then
+./apply-abando-site.sh:327:  cat > "$APP/app/globals.css" <<'CSS'
+./apply-branding-and-fix.sh:98:import "./globals.css";
+./shopifixer_route_owner_audit_real_candidate.txt:54:import './globals.css';
+./stabilize-repo.sh:100:say "==> 4) Canonical globals.css & layout import"
+./stabilize-repo.sh:101:ensure_file_with "$APP/app/globals.css" ':root{color-scheme:light dark} html,body{margin:0;padding:0}'
+./stabilize-repo.sh:103:mapfile -t DUPS < <(git ls-files | grep -E '(^|/)app/globals\.css$' | grep -v "^$APP/app/globals.css" || true)
+./stabilize-repo.sh:115:    { echo 'import "./globals.css"'; cat "$LAYOUT"; } > "$tmp"
+./stabilize-repo.sh:119:    say "[PLAN] prepend import \"./globals.css\" to $LAYOUT"
+./stabilize-repo.sh:122:say "    ✓ globals.css canonicalized"
+./apply-brand-dark-v2.sh:6:CSS="$APP/globals.css"
+./apply-brand-dark-v2.sh:80:# 4) Brand colors + dark tokens in globals.css (Tailwind v4 friendly)
+./apply-brand-dark-v2.sh:81:say "==> Update globals.css with brand tokens (light/dark)"
+./root_build_blocker_audit.txt:44:import './globals.css';
+./root_build_blocker_audit.txt:129:MISSING: src/app/globals.css
+./root_build_blocker_audit.txt:198:=== SEARCH: globals.css imports ===
+./apps/website/app/layout.tsx.bak.20251003-181931:1:import "./globals.css";
+./apps/website/app/layout.tsx.bak.20251003-182807:1:import "./globals.css";
+./apps/website/app/layout.tsx.bak.layoutfix:1:import "./globals.css";
+./apps/website/app/layout.tsx.bak.20251003-141834:1:import "./globals.css";
+./apps/website/app/layout.tsx:1:import "./globals.css";
+./apps/website/app/layout.tsx.bak.cookiesfix2:1:import "./globals.css";
+./apps/website/app/layout.tsx.bak.20251003-175821:1:import "./globals.css";
+./apps/website/app/layout.tsx.bak.20251003-174738:1:import "./globals.css";
+./apps/website/app/layout.tsx.bak:1:import "./globals.css";
+./apps/website/app/layout.tsx.bak.cookiesfix:1:import "./globals.css";
+./apply-branding-auto.sh:98:import "./globals.css";
+./apply-branding-auto.sh:173:say "Ensure globals.css contains Tailwind directives"
+./apply-branding-auto.sh:175:if ! grep -q "@tailwind" "$APP/app/globals.css" 2>/dev/null; then
+./apply-branding-auto.sh:176:  cat > "$APP/app/globals.css" <<'CSS'
+./src/app/layout.tsx.bak.1758764604589:2:import './globals.css';
+./src/app/layout.tsx:2:import './globals.css';
+
+=== SEARCH: path alias usage ===
+src/app/page.tsx.bak.1758771739346:4:import AbandoTitle from '@/components/AbandoTitle';
+src/app/page.tsx.bak.1758771321946:4:import AbandoTitle from '@/components/AbandoTitle';
+src/app/page.tsx.bak.1758771852720:4:import AbandoTitle from '@/components/AbandoTitle';
+src/app/audit-result/page.tsx:2:import { getShopifixerProof } from "@/lib/shopifixerProof";
+src/app/page.tsx.bak.1758771644191:4:import AbandoTitle from '@/components/AbandoTitle';
+src/app/layout.tsx:21:import HeroBadgeKiller from '@/components/HeroBadgeKiller';
+src/app/page.tsx.bak.1758771149613:4:import AbandoTitle from '@/components/AbandoTitle';
+src/app/page.tsx:3:import AbandoTitle from "@/components/AbandoTitle";
+src/app/page.tsx.bak:3:import Hero from "@/components/Hero";
+src/app/page.tsx.bak:4:import MediaLogos from "@/components/MediaLogos";
+src/app/page.tsx.bak:5:import ProofBlock from "@/components/ProofBlock";
+src/app/page.tsx.bak:6:import FreeTrial from "@/components/FreeTrial";
+./shopifixer_route_owner_audit_real_candidate.txt:73:import HeroBadgeKiller from '@/components/HeroBadgeKiller';
+./shopifixer_route_owner_audit_real_candidate.txt:78:import AbandoTitle from "@/components/AbandoTitle";
+./root_build_blocker_audit.txt:63:import HeroBadgeKiller from '@/components/HeroBadgeKiller';
+./root_build_blocker_audit.txt:68:import AbandoTitle from "@/components/AbandoTitle";
+./root_build_blocker_audit.txt:151:src/app/page.tsx.bak.1758771739346:4:import AbandoTitle from '@/components/AbandoTitle';
+./root_build_blocker_audit.txt:153:src/app/page.tsx.bak.1758771321946:4:import AbandoTitle from '@/components/AbandoTitle';
+./root_build_blocker_audit.txt:155:src/app/page.tsx.bak.1758771852720:4:import AbandoTitle from '@/components/AbandoTitle';
+./root_build_blocker_audit.txt:157:src/app/page.tsx.bak.1758771644191:4:import AbandoTitle from '@/components/AbandoTitle';
+./root_build_blocker_audit.txt:159:src/app/page.tsx.bak.1758771149613:4:import AbandoTitle from '@/components/AbandoTitle';
+./root_build_blocker_audit.txt:161:src/app/page.tsx:3:import AbandoTitle from "@/components/AbandoTitle";
+./root_build_blocker_audit.txt:164:./shopifixer_route_owner_audit_real_candidate.txt:78:import AbandoTitle from "@/components/AbandoTitle";
+./root_build_blocker_audit.txt:166:./root_build_blocker_audit.txt:68:import AbandoTitle from "@/components/AbandoTitle";
+./root_build_blocker_audit.txt:170:./src/app/page.tsx.bak.1758771739346:4:import AbandoTitle from '@/components/AbandoTitle';
+./root_build_blocker_audit.txt:172:./src/app/page.tsx.bak.1758771321946:4:import AbandoTitle from '@/components/AbandoTitle';
+./root_build_blocker_audit.txt:174:./src/app/page.tsx.bak.1758771852720:4:import AbandoTitle from '@/components/AbandoTitle';
+./root_build_blocker_audit.txt:176:./src/app/page.tsx.bak.1758771644191:4:import AbandoTitle from '@/components/AbandoTitle';
+./root_build_blocker_audit.txt:178:./src/app/page.tsx.bak.1758771149613:4:import AbandoTitle from '@/components/AbandoTitle';
+./root_build_blocker_audit.txt:180:./src/app/page.tsx:3:import AbandoTitle from "@/components/AbandoTitle";
+./root_build_blocker_audit.txt:186:src/app/layout.tsx:21:import HeroBadgeKiller from '@/components/HeroBadgeKiller';
+./root_build_blocker_audit.txt:189:./shopifixer_route_owner_audit_real_candidate.txt:73:import HeroBadgeKiller from '@/components/HeroBadgeKiller';
+./root_build_blocker_audit.txt:191:./root_build_blocker_audit.txt:63:import HeroBadgeKiller from '@/components/HeroBadgeKiller';
+./root_build_blocker_audit.txt:195:./src/app/layout.tsx:21:import HeroBadgeKiller from '@/components/HeroBadgeKiller';
+./apps/website/app/about/page.tsx:1:import Section from "@/components/Section";
+./apps/website/app/pricing/page.tsx:1:import Section from "@/components/Section";
+./apps/website/app/pricing/page.tsx.bak:1:import { PRICE_BASIC, PRICE_GROWTH, PRICE_PRO, TRIAL_URL } from "@/lib/config";
+./apps/website/components/Pricing.tsx:3:import { PRICE_BASIC, PRICE_GROWTH, PRICE_PRO, TRIAL_URL } from "@/lib/config";
+./src/app/page.tsx.bak.1758771739346:4:import AbandoTitle from '@/components/AbandoTitle';
+./src/app/page.tsx.bak.1758771321946:4:import AbandoTitle from '@/components/AbandoTitle';
+./src/app/page.tsx.bak.1758771852720:4:import AbandoTitle from '@/components/AbandoTitle';
+./src/app/audit-result/page.tsx:2:import { getShopifixerProof } from "@/lib/shopifixerProof";
+./src/app/page.tsx.bak.1758771644191:4:import AbandoTitle from '@/components/AbandoTitle';
+./src/app/layout.tsx:21:import HeroBadgeKiller from '@/components/HeroBadgeKiller';
+./src/app/page.tsx.bak.1758771149613:4:import AbandoTitle from '@/components/AbandoTitle';
+./src/app/page.tsx:3:import AbandoTitle from "@/components/AbandoTitle";
+./src/app/page.tsx.bak:3:import Hero from "@/components/Hero";
+./src/app/page.tsx.bak:4:import MediaLogos from "@/components/MediaLogos";
+./src/app/page.tsx.bak:5:import ProofBlock from "@/components/ProofBlock";
+./src/app/page.tsx.bak:6:import FreeTrial from "@/components/FreeTrial";
+
+=== DONE ===

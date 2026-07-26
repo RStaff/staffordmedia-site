@@ -1,0 +1,54 @@
+{
+  "version": "theme_snapshot_manifest_template_v1",
+  "status": "TEMPLATE_ONLY_NOT_IMPLEMENTED",
+  "merchant_id": "",
+  "store_domain": "",
+  "theme_id": "",
+  "theme_name": "",
+  "theme_archetype": "",
+  "original_theme_role": "",
+  "duplicate_theme_id": "",
+  "duplicate_theme_name": "",
+  "snapshot_created_at": "",
+  "before_screenshots": [
+    {
+      "id": "",
+      "surface": "",
+      "url": "",
+      "viewport": "",
+      "path": "",
+      "captured_at": ""
+    }
+  ],
+  "after_screenshots": [
+    {
+      "id": "",
+      "surface": "",
+      "url": "",
+      "viewport": "",
+      "path": "",
+      "captured_at": ""
+    }
+  ],
+  "files_changed": [
+    {
+      "path": "",
+      "change_type": "",
+      "mutation_packet_reference": "",
+      "rollback_file_reference": ""
+    }
+  ],
+  "rollback_reference": {
+    "original_theme_id": "",
+    "duplicate_theme_id": "",
+    "patch_diff_path": "",
+    "original_snapshot_path": "",
+    "rollback_instructions_path": "",
+    "rollback_verified": false
+  },
+  "approval_status": {
+    "ross": "UNKNOWN",
+    "merchant": "UNKNOWN"
+  },
+  "deployment_status": "NOT_DEPLOYED"
+}

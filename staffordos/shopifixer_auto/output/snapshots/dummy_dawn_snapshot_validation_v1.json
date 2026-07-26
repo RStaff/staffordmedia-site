@@ -1,0 +1,9 @@
+{
+  "status": "PASS",
+  "source_path": "/Users/rossstafford/projects/StaffordMediaConsulting/apps/website/staffordos/shopifixer_auto/fixtures/dummy_dawn_theme",
+  "sandbox_path": "/Users/rossstafford/projects/StaffordMediaConsulting/apps/website/staffordos/shopifixer_auto/output/sandboxes/2026-05-19T20-53-43Z-dummy-dawn-dummy-dawn-local",
+  "manifest_path": "/Users/rossstafford/projects/StaffordMediaConsulting/apps/website/staffordos/shopifixer_auto/output/snapshots/2026-05-19T20-53-43Z-dummy-dawn-dummy-dawn-local_snapshot_manifest_v1.json",
+  "files_copied": 3,
+  "rollback_reference": "/Users/rossstafford/projects/StaffordMediaConsulting/apps/website/staffordos/shopifixer_auto/fixtures/dummy_dawn_theme",
+  "no_live_mutation_confirmed": true
+}

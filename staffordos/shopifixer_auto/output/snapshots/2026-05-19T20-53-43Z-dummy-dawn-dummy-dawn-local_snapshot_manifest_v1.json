@@ -1,0 +1,29 @@
+{
+  "version": "theme_snapshot_manifest_template_v1",
+  "status": "LOCAL_SNAPSHOT_CREATED",
+  "merchant_id": "dummy-dawn",
+  "store_domain": "dummy-dawn.local",
+  "theme_id": "LOCAL_DUMMY_DAWN",
+  "theme_name": "Dummy Dawn Theme",
+  "theme_archetype": "Dawn",
+  "original_theme_role": "local_source_only",
+  "duplicate_theme_id": "2026-05-19T20-53-43Z-dummy-dawn-dummy-dawn-local",
+  "duplicate_theme_name": "local-sandbox-2026-05-19T20-53-43Z-dummy-dawn-dummy-dawn-local",
+  "snapshot_created_at": "2026-05-19T20:53:43.971Z",
+  "before_screenshots": [],
+  "after_screenshots": [],
+  "files_changed": [],
+  "rollback_reference": {
+    "original_theme_id": "LOCAL_DUMMY_DAWN",
+    "duplicate_theme_id": "2026-05-19T20-53-43Z-dummy-dawn-dummy-dawn-local",
+    "patch_diff_path": "",
+    "original_snapshot_path": "/Users/rossstafford/projects/StaffordMediaConsulting/apps/website/staffordos/shopifixer_auto/fixtures/dummy_dawn_theme",
+    "rollback_instructions_path": "",
+    "rollback_verified": false
+  },
+  "approval_status": {
+    "ross": "UNKNOWN",
+    "merchant": "UNKNOWN"
+  },
+  "deployment_status": "NOT_DEPLOYED"
+}

@@ -8,9 +8,8 @@ export default function AboutPage() {
     <main className="max-w-3xl mx-auto px-6 py-16">
       <h1 className="text-4xl font-bold tracking-tight mb-4">About</h1>
       <p className="text-lg text-gray-300">
-        We help ecommerce teams recover more revenue with Abando.ai —
-        the AI copilot that speaks in your brand’s voice across email, SMS,
-        WhatsApp, and more.
+        We help ecommerce teams diagnose purchase-path hesitation, govern scoped fixes, and recover shoppers through
+        Abando recovery infrastructure.
       </p>
     </main>
   );

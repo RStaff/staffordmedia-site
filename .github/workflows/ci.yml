@@ -1,21 +1,35 @@
 name: CI
+
 on:
   push:
+    branches:
+      - launch/website
+      - surface/**
+      - fix/**
+      - infra/**
+      - ci/**
   pull_request:
-jobs:
-  build-and-test:
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        shell: bash
-    steps:
-      - uses: actions/checkout@v4
+    branches:
+      - launch/website
 
-      - name: Setup Node (22.x)
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Use Node
         uses: actions/setup-node@v4
         with:
-          node-version: 22.x
-          cache: npm
-          
-    cache-dependency-path:
-        _smc_clean/package-lock.json
+          node-version: 20
+
+      - name: Install
+        run: npm install --force --no-package-lock
+
+      - name: Install Linux native CSS binaries
+        run: npm install lightningcss-linux-x64-gnu @tailwindcss/oxide-linux-x64-gnu --no-save --force --no-package-lock
+
+      - name: Build
+        run: npm run build

@@ -1,0 +1,265 @@
+=== AUDIT + REPAIR: PRICING IMPORT CHAIN ONLY ===
+PWD: /Users/rossstafford/projects/StaffordMediaConsulting/apps/website
+
+=== STEP 1: SHOW CURRENT FAILING FILE ===
+import React from "react";
+
+import { PRICE_BASIC, PRICE_GROWTH, PRICE_PRO, TRIAL_URL } from "@/lib/config";
+
+function Tier({ name, price, features }:{ name:string; price:string; features:string[] }) {
+  return (
+    <div className="rounded-2xl bg-slate-900/50 ring-1 ring-white/10 p-8 md:p-10 flex flex-col gap-6">
+      <h3 className="text-xl font-semibold text-white">{name}</h3>
+      <div className="text-4xl font-bold text-blue-400">${price}<span className="text-base text-white/70">/mo</span></div>
+      <ul className="space-y-2 text-white/80 text-sm">
+        {features.map((f,i)=>(
+          <li key={i} className="flex gap-2 items-start">
+            <span className="mt-1 h-1.5 w-1.5 rounded-full bg-blue-400 block" /><span>{f}</span>
+          </li>
+        ))}
+      </ul>
+      <a href={TRIAL_URL} className="mt-auto inline-flex items-center justify-center rounded-lg bg-blue-500 hover:bg-blue-400 transition text-white font-medium px-4 py-2">
+        Start Free Trial
+      </a>
+    </div>
+  );
+}
+export default function Pricing(){
+  return (
+    <div className="w-full max-w-6xl mx-auto px-4 py-12 md:py-16">
+      <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-white mb-8">Choose your plan</h2>
+      <p className="text-white/80 mb-8">Abando™ pays for itself after a single recovered cart. 14-day free trial. Cancel anytime.</p>
+      <div className="grid md:grid-cols-3 gap-6">
+        <Tier name="Basic" price={PRICE_BASIC} features={["Core conversion agent","Email support"]}/>
+        <Tier name="Growth" price={PRICE_GROWTH} features={["All Basic features","Advanced playbooks & integrations","Priority email support"]}/>
+        <Tier name="Pro" price={PRICE_PRO} features={["All Growth features","Dedicated success manager","24/7 priority support"]}/>
+      </div>
+    </div>
+  );
+}
+
+=== STEP 2: FIND CONFIG OWNERS ===
+./apps/website/lib/config.ts
+./apps/website/src/lib/config.ts
+
+=== STEP 3: PATCH tsconfig PATHS FOR BOTH ROOT AND NESTED APPS ===
+PATCHED: tsconfig.json
+PATCHED: apps/website/tsconfig.json
+
+=== STEP 4: CREATE FALLBACK CONFIG OWNERS ONLY IF MISSING ===
+CREATED: src/lib/config.ts
+EXISTS: apps/website/lib/config.ts
+
+=== STEP 5: VERIFY RELEVANT OWNERS ===
+--- src/lib/config.ts ---
+export const PRICE_BASIC = "$99/mo";
+export const PRICE_GROWTH = "$299/mo";
+export const PRICE_PRO = "$999/mo";
+export const TRIAL_URL = "/contact";
+
+--- apps/website/lib/config.ts ---
+export const PRICE_BASIC = 29;
+export const PRICE_GROWTH = 99;
+export const PRICE_PRO = 299;
+export const TRIAL_URL = "/signup";
+
+--- tsconfig.json ---
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "strict": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowJs": true,
+    "noEmit": true,
+    "incremental": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "baseUrl": ".",
+    "paths": {
+      "@/*": [
+        "src/*",
+        "app/*",
+        "components/*",
+        "lib/*"
+      ]
+    }
+  },
+  "include": [
+    "next-env.d.ts",
+    ".next/types/**/*.ts",
+    "**/*.ts",
+    "**/*.tsx"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}
+
+--- apps/website/tsconfig.json ---
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "moduleResolution": "Bundler",
+    "jsx": "preserve",
+    "noEmit": true,
+    "incremental": true,
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "types": [
+      "node",
+      "vitest/globals",
+      "@testing-library/jest-dom"
+    ],
+    "paths": {
+      "@/*": [
+        "src/*",
+        "app/*",
+        "components/*",
+        "lib/*"
+      ]
+    },
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "allowJs": true,
+    "isolatedModules": true
+  },
+  "include": [
+    "next-env.d.ts",
+    ".next/types/**/*.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "app",
+    "components",
+    "src",
+    "tests"
+  ],
+  "exclude": [
+    "node_modules",
+    ".next",
+    "dist"
+  ]
+}
+
+=== STEP 6: REBUILD ===
+
+> website@0.1.0 build
+> next build
+
+   ▲ Next.js 15.5.4
+   - Environments: .env.local
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully in 1039ms
+   Linting and checking validity of types ...
+   Collecting page data ...
+   Generating static pages (0/12) ...
+   Generating static pages (3/12) 
+   Generating static pages (6/12) 
+   Generating static pages (9/12) 
+ ✓ Generating static pages (12/12)
+   Finalizing page optimization ...
+   Collecting build traces ...
+
+Route (app)                                 Size  First Load JS
+┌ ○ /                                    1.22 kB         112 kB
+├ ○ /_not-found                            995 B         103 kB
+├ ○ /about                                 133 B         102 kB
+├ ƒ /audit-result                          168 B         105 kB
+├ ○ /contact                               608 B         103 kB
+├ ƒ /pricing                               133 B         102 kB
+├ ○ /robots.txt                            133 B         102 kB
+├ ○ /services                              168 B         105 kB
+├ ○ /shopifixer                            168 B         105 kB
+└ ○ /sitemap.xml                           133 B         102 kB
++ First Load JS shared by all             102 kB
+  ├ chunks/255-4efeec91c7871d79.js       45.7 kB
+  ├ chunks/4bd1b696-c023c6e3521b1417.js  54.2 kB
+  └ other shared chunks (total)          1.92 kB
+
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+
+
+=== STEP 7: SHOPIFIXER LOOP SMOKE CHECK AFTER BUILD ===
+
+CHECK: http://localhost:3000/shopifixer
+ShopiFixer
+ShopiFixer
+No email capture detected
+ShopiFixer
+ShopiFixer
+
+CHECK: http://localhost:3000/audit-result?store=elkeyecoffee.com
+ShopiFixer
+ShopiFixer
+ShopiFixer
+ShopiFixer
+Up to $10,500 estimated monthly opportunity
+No email capture detected
+ShopiFixer
+Add or strengthen email capture before purchase drop-off
+ShopiFixer
+No email capture detected
+Up to $10,500 estimated monthly opportunity
+Screenshot-backed proof
+ShopiFixer
+ShopiFixer
+ShopiFixer
+Request My First Fixes
+ShopiFixer
+ShopiFixer
+ShopiFixer
+Up to $10,500 estimated monthly opportunity
+
+CHECK: http://localhost:3000/audit-result?store=luckettstore.com
+ShopiFixer
+ShopiFixer
+ShopiFixer
+ShopiFixer
+Up to $8,000 estimated monthly opportunity
+Weak returns reassurance
+ShopiFixer
+Make returns and reassurance clearer before checkout
+ShopiFixer
+Weak returns reassurance
+Up to $8,000 estimated monthly opportunity
+Screenshot-backed proof
+ShopiFixer
+ShopiFixer
+ShopiFixer
+Request My First Fixes
+ShopiFixer
+ShopiFixer
+ShopiFixer
+Up to $8,000 estimated monthly opportunity
+
+CHECK: http://localhost:3000/audit-result?store=dripaccessory.com
+ShopiFixer
+ShopiFixer
+ShopiFixer
+ShopiFixer
+
+=== DONE ===

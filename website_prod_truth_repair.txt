@@ -1,0 +1,72 @@
+=== WEBSITE PROD TRUTH REPAIR ===
+PWD: /Users/rossstafford/projects/StaffordMediaConsulting/apps/website
+BRANCH: launch/website
+REMOTE:
+origin	https://github.com/RStaff/staffordmedia-site.git (fetch)
+origin	https://github.com/RStaff/staffordmedia-site.git (push)
+
+=== 1) VERIFY VERCEL LINKED PROJECT ===
+./.vercel/project.json
+--- ./.vercel/project.json ---
+{"projectId":"prj_GpHwx7nDZnXVFtqYgMhHJpqFgcwJ","orgId":"team_C4P7to3FrowkbQLAyOW6qXpQ","projectName":"website"}
+
+=== 2) GIT STATUS ===
+ M apps/website/tsconfig.json
+ M src/app/layout.tsx
+ M tsconfig.json
+?? bind_result_page_to_engine_payload.txt
+?? dripaccessory_404_truth_audit.txt
+?? fix_updated_at_type_and_resmoke.txt
+?? public/shopifixer-proof/
+?? repair_pricing_import_chain.txt
+?? root_build_blocker_audit.txt
+?? shopifixer_route_owner_audit_real_candidate.txt
+?? src/app/audit-result/
+?? src/app/globals.css
+?? src/app/shopifixer/
+?? src/lib/
+?? website_prod_truth_repair.txt
+
+=== 3) BUILD LOCAL WEBSITE ===
+
+> website@0.1.0 build
+> next build
+
+   ▲ Next.js 15.5.4
+   - Environments: .env.local
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully in 892ms
+   Linting and checking validity of types ...
+   Collecting page data ...
+   Generating static pages (0/12) ...
+   Generating static pages (3/12) 
+   Generating static pages (6/12) 
+   Generating static pages (9/12) 
+ ✓ Generating static pages (12/12)
+   Finalizing page optimization ...
+   Collecting build traces ...
+
+Route (app)                                 Size  First Load JS
+┌ ○ /                                    1.22 kB         112 kB
+├ ○ /_not-found                            995 B         103 kB
+├ ○ /about                                 133 B         102 kB
+├ ƒ /audit-result                          168 B         105 kB
+├ ○ /contact                               608 B         103 kB
+├ ƒ /pricing                               133 B         102 kB
+├ ○ /robots.txt                            133 B         102 kB
+├ ○ /services                              168 B         105 kB
+├ ○ /shopifixer                            168 B         105 kB
+└ ○ /sitemap.xml                           133 B         102 kB
++ First Load JS shared by all             102 kB
+  ├ chunks/255-4efeec91c7871d79.js       45.7 kB
+  ├ chunks/4bd1b696-c023c6e3521b1417.js  54.2 kB
+  └ other shared chunks (total)          1.92 kB
+
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+
+
+=== 4) REDEPLOY ONLY WEBSITE PROJECT TO PROD ===
+https://website-h2asevaf4-ross-projects-1d9d3b7c.vercel.app
