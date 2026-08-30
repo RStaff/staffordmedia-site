@@ -38,8 +38,8 @@ export default function Header() {
           <Link href="/services" className="text-white/80 transition hover:text-white">
             Services
           </Link>
-          <Link href="/contact" className="smc-button smc-button-secondary hidden md:inline-flex">
-            Book Strategy Call
+          <Link href="/services" className="smc-button smc-button-secondary !hidden md:!inline-flex">
+            Automate My Business
           </Link>
         </nav>
       </div>

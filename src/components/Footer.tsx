@@ -23,13 +23,13 @@ export default function Footer() {
               </div>
             </div>
             <p className="mt-3 text-sm leading-7 text-slate-500">
-              Stafford Media Consulting helps ecommerce brands diagnose the clearest issue first, then scale recovery with the right system.
+              Stafford Media Consulting helps businesses improve real workflows with AI automation, business technology, and human-reviewed systems work.
             </p>
           </div>
 
           <div className="flex flex-wrap gap-2.5">
-            <Link href="/shopifixer" className="rounded-full border border-cyan-400/35 bg-cyan-400/10 px-4 py-2.5 text-sm font-semibold text-cyan-100 transition hover:border-cyan-300/60 hover:bg-cyan-400/15">
-              Run ShopiFixer Audit
+            <Link href="/services" className="rounded-full border border-cyan-400/35 bg-cyan-400/10 px-4 py-2.5 text-sm font-semibold text-cyan-100 transition hover:border-cyan-300/60 hover:bg-cyan-400/15">
+              Automate My Business
             </Link>
             <Link href="/contact" className="rounded-full border border-white/12 px-4 py-2.5 text-sm font-semibold text-slate-300 transition hover:border-white/25 hover:text-white">
               Book Strategy Call

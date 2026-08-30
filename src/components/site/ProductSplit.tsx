@@ -14,12 +14,12 @@ export default function ProductSplit() {
             </p>
 
             <p className="mt-1 text-xs font-semibold text-[var(--smc-shopifixer-green)]">
-              Revenue leak detected
+              Example review signal
             </p>
 
             <div className="mt-3 rounded-xl border border-white/10 bg-white/[0.02] px-3 py-2">
               <p className="text-[11px] text-slate-400">Checkout drop-off</p>
-              <p className="text-xl font-semibold text-white">42%</p>
+              <p className="text-xl font-semibold text-white">Review first</p>
             </div>
 
             <div className="mt-3 space-y-2 text-[11px]">
@@ -45,17 +45,17 @@ export default function ProductSplit() {
           </h2>
 
           <p className="mt-4 text-lg text-slate-300">
-            Know exactly what’s costing you revenue — in minutes.
+            A focused product for storefront diagnosis.
           </p>
 
           <p className="mt-4 text-slate-400">
-            ShopiFixer analyzes your store and shows you the single issue most likely to increase your conversions right now — so you can fix the right thing first.
+            ShopiFixer analyzes a storefront and presents a focused issue to review, so the next improvement can be considered with better context.
           </p>
 
           <div className="mt-6 space-y-3 text-sm text-slate-400">
             <p>• Identify where customers drop off in your funnel</p>
             <p>• Get a clear, actionable fix — not a list of guesses</p>
-            <p>• See the potential lift before you make changes</p>
+            <p>• Keep the review bounded before making changes</p>
           </div>
 
           <div className="mt-6 rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3 text-sm text-slate-300">

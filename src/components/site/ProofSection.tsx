@@ -1,7 +1,7 @@
 const proofBullets = [
-  "Engine-backed audit outputs tied to the same live result flow.",
-  "Real example store paths, not static deck language.",
-  "Separate diagnosis, implementation, and recovery proof boundaries.",
+  "Work starts with the actual process, not a generic technology pitch.",
+  "Scope stays focused so the next step can be reviewed clearly.",
+  "Existing product paths remain distinct within the broader portfolio.",
 ];
 
 export default function ProofSection() {
@@ -12,17 +12,16 @@ export default function ProofSection() {
           <div className="grid gap-8 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] lg:items-start">
             <div>
               <p className="eyebrow text-slate-400">Proof</p>
-              <h2 className="mt-4 text-4xl font-semibold tracking-tight text-white">Built on real audit outputs — not theory.</h2>
+              <h2 className="mt-4 text-4xl font-semibold tracking-tight text-white">Practical systems work, grounded in the problem.</h2>
               <p className="body-md mt-5">
-                This system is grounded in real store audits and real conversion paths. The goal is to isolate the
-                clearest issue and show the next move.
+                The right solution depends on the workflow, the people involved, and the constraints of the business. We keep that context visible before choosing a technology path.
               </p>
             </div>
             <div className="grid gap-4">
               <div className="premium-panel-soft p-5">
-                <p className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-500">Example stores</p>
+                <p className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-500">Portfolio products</p>
                 <p className="mt-3 text-base leading-7 text-slate-200">
-                  elkeyecoffee.com · luckettstore.com · dripaccessory.com
+                  CareerOS · ShopiFixer · Abando.ai
                 </p>
               </div>
               <div className="premium-panel-soft p-5">

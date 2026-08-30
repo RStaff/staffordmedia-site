@@ -6,7 +6,7 @@ import HeroBadgeKiller from "@/components/HeroBadgeKiller";
 
 export const metadata = {
   title: "Stafford Media Consulting™",
-  description: "Unlock 4× ROI in 4 days — Abando.ai",
+  description: "AI automation, business technology, and digital transformation from Stafford Media Consulting.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

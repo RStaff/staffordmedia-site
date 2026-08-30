@@ -4,18 +4,16 @@ import HowItWorks from "@/components/site/HowItWorks";
 import PainSection from "@/components/site/PainSection";
 import ProductSplit from "@/components/site/ProductSplit";
 import ProofSection from "@/components/site/ProofSection";
-import SystemProgressRail from "@/components/commerce/SystemProgressRail";
 import RuntimeContinuityStrip from "@/components/commerce/RuntimeContinuityStrip";
 
 export default function HomePage() {
   return (
     <main>
-      <SystemProgressRail currentStage="diagnose" stateLabel="System orientation" />
       <RuntimeContinuityStrip
         items={[
-          { label: "Current", value: "Stafford Media frames the operating system." },
-          { label: "Next", value: "Run ShopiFixer to diagnose the clearest blocker." },
-          { label: "Boundary", value: "Abando remains independent and complementary." },
+          { label: "Focus", value: "Improve the workflows that slow your business down." },
+          { label: "Approach", value: "Start with the clearest business problem." },
+          { label: "Boundary", value: "Products remain distinct and complementary." },
         ]}
       />
       <HomeHero />
