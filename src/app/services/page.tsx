@@ -39,7 +39,7 @@ export default function Services() {
       </div>
 
       <div className="mt-10">
-        <Link href="/contact" className="inline-flex items-center px-6 py-3 rounded-lg font-semibold border border-white/90 text-white hover:bg-white/5">
+        <Link href="/automate" className="inline-flex items-center px-6 py-3 rounded-lg font-semibold border border-white/90 text-white hover:bg-white/5">
           Automate My Business
         </Link>
       </div>

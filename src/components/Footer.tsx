@@ -28,7 +28,7 @@ export default function Footer() {
           </div>
 
           <div className="flex flex-wrap gap-2.5">
-            <Link href="/services" className="rounded-full border border-cyan-400/35 bg-cyan-400/10 px-4 py-2.5 text-sm font-semibold text-cyan-100 transition hover:border-cyan-300/60 hover:bg-cyan-400/15">
+            <Link href="/automate" className="rounded-full border border-cyan-400/35 bg-cyan-400/10 px-4 py-2.5 text-sm font-semibold text-cyan-100 transition hover:border-cyan-300/60 hover:bg-cyan-400/15">
               Automate My Business
             </Link>
             <Link href="/contact" className="rounded-full border border-white/12 px-4 py-2.5 text-sm font-semibold text-slate-300 transition hover:border-white/25 hover:text-white">
@@ -46,6 +46,8 @@ export default function Footer() {
             <Link href="/shopifixer" className="transition hover:text-white">
               ShopiFixer
             </Link>
+            <Link href="/careeros" className="transition hover:text-white">CareerOS</Link>
+            <Link href="/staffordos" className="transition hover:text-white">How We Work</Link>
             <Link href="/contact" className="transition hover:text-white">
               Contact
             </Link>

@@ -1,0 +1,7 @@
+import Link from "next/link";
+
+export const metadata = { title: "CareerOS - Stafford Media Consulting" };
+
+export default function CareerOSPage() {
+  return <main className="mx-auto max-w-5xl px-6 py-16"><p className="eyebrow text-[var(--smc-accent)]">Stafford Media product</p><h1 className="mt-4 text-4xl font-extrabold text-white md:text-5xl">CareerOS</h1><p className="body-lg mt-5 max-w-3xl">CareerOS is an AI-enabled career operating system being developed and tested to help people organize career evidence, understand opportunities, evaluate fit and gaps, and make human-approved next decisions.</p><div className="mt-10 grid gap-6 md:grid-cols-2"><section className="premium-panel-soft p-6 md:p-8"><h2 className="text-2xl font-semibold text-white">A bounded product</h2><p className="mt-3 text-slate-400">CareerOS keeps a person in control. It works from reviewed career information and explains uncertainty rather than promising employment outcomes.</p></section><section className="premium-panel-soft p-6 md:p-8"><h2 className="text-2xl font-semibold text-white">Private beta</h2><p className="mt-3 text-slate-400">CareerOS is currently a private beta. Access is invitation-only and the application is separate from this public product explanation.</p></section></div><div className="mt-10 flex flex-wrap gap-4"><Link href="/contact" className="smc-button smc-button-primary">Discuss CareerOS</Link><Link href="/" className="smc-button smc-button-secondary">Back to Stafford Media</Link></div></main>;
+}

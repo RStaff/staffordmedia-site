@@ -19,7 +19,7 @@ export default function HomeHero() {
           </p>
 
           <div className="mt-10 flex flex-wrap gap-4">
-            <Link href="/services" className="smc-button smc-button-primary">
+            <Link href="/automate" className="smc-button smc-button-primary">
               Automate My Business
             </Link>
             <Link href="/contact" className="smc-button smc-button-secondary">

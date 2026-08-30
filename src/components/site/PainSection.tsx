@@ -31,7 +31,7 @@ export default function PainSection() {
             </div>
           </div>
           <div className="mt-8">
-            <Link href="/services" className="smc-button smc-button-primary">
+            <Link href="/automate" className="smc-button smc-button-primary">
               Automate My Business
             </Link>
           </div>
