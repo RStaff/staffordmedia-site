@@ -34,6 +34,9 @@ export const automationSystems = [
 ] as const;
 
 export const automationWorkflowTextMaxLength = 500;
+export const automationIntakeStorageKey = "staffordmedia.automation-intake.v1";
+
+const automationIntakeStorageSchema = "staffordmedia.automation_intake.v1";
 
 export type AutomationIntakeSearchParams = Record<
   string,
@@ -65,9 +68,17 @@ function recognizedValues(
 
 function boundedText(value: string | string[] | undefined) {
   const first = valuesOf(value)[0] || "";
-  return first
-    .replace(/[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]/g, "")
+  const cleaned = first.replace(
+    /[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]/g,
+    "",
+  );
+  return Array.from(cleaned)
+    .filter((character) => {
+      const codePoint = character.codePointAt(0) || 0;
+      return codePoint < 0xd800 || codePoint > 0xdfff;
+    })
     .slice(0, automationWorkflowTextMaxLength)
+    .join("")
     .trim();
 }
 
@@ -137,4 +148,91 @@ export function buildAutomationMailto(
   const subject = encodeURIComponent("Stafford Media automation brief");
   const body = encodeURIComponent(formatAutomationBrief(brief));
   return `mailto:${email}?subject=${subject}&body=${body}`;
+}
+
+type AutomationIntakeStorage = Pick<
+  Storage,
+  "getItem" | "setItem" | "removeItem"
+>;
+
+function canonicalStoredBrief(brief: AutomationBrief) {
+  return {
+    schema: automationIntakeStorageSchema,
+    improvements: brief.improvements,
+    businessType: brief.businessType,
+    systems: brief.systems,
+    currentWorkflow: brief.currentWorkflow,
+    desiredWorkflow: brief.desiredWorkflow,
+  };
+}
+
+export function storeAutomationBrief(
+  storage: AutomationIntakeStorage,
+  brief: AutomationBrief,
+) {
+  if (!brief.hasContent) {
+    storage.removeItem(automationIntakeStorageKey);
+    return;
+  }
+  storage.setItem(
+    automationIntakeStorageKey,
+    JSON.stringify(canonicalStoredBrief(brief)),
+  );
+}
+
+export function readAutomationBrief(storage: AutomationIntakeStorage) {
+  const raw = storage.getItem(automationIntakeStorageKey);
+  if (!raw) return null;
+
+  try {
+    const stored: unknown = JSON.parse(raw);
+    if (!stored || typeof stored !== "object" || Array.isArray(stored)) {
+      return null;
+    }
+
+    const record = stored as Record<string, unknown>;
+    const expectedKeys = [
+      "businessType",
+      "currentWorkflow",
+      "desiredWorkflow",
+      "improvements",
+      "schema",
+      "systems",
+    ];
+    if (
+      Object.keys(record).sort().join("|") !== expectedKeys.join("|") ||
+      record.schema !== automationIntakeStorageSchema ||
+      !Array.isArray(record.improvements) ||
+      !record.improvements.every((value) => typeof value === "string") ||
+      !(record.businessType === null || typeof record.businessType === "string") ||
+      !Array.isArray(record.systems) ||
+      !record.systems.every((value) => typeof value === "string") ||
+      typeof record.currentWorkflow !== "string" ||
+      typeof record.desiredWorkflow !== "string"
+    ) {
+      return null;
+    }
+
+    const brief = parseAutomationBrief({
+      improvement: record.improvements as string[],
+      businessType: (record.businessType as string | null) || undefined,
+      system: record.systems as string[],
+      currentWorkflow: record.currentWorkflow as string,
+      desiredWorkflow: record.desiredWorkflow as string,
+    });
+
+    if (
+      !brief.hasContent ||
+      JSON.stringify(canonicalStoredBrief(brief)) !== JSON.stringify(record)
+    ) {
+      return null;
+    }
+    return brief;
+  } catch {
+    return null;
+  }
+}
+
+export function clearAutomationBrief(storage: AutomationIntakeStorage) {
+  storage.removeItem(automationIntakeStorageKey);
 }

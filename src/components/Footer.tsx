@@ -46,7 +46,7 @@ export default function Footer() {
             <Link href="/shopifixer" className="transition hover:text-white">
               ShopiFixer
             </Link>
-            <Link href="/careeros" className="transition hover:text-white">CareerOS</Link>
+            <Link href="/staffordnext" className="transition hover:text-white">StaffordNext</Link>
             <Link href="/staffordos" className="transition hover:text-white">How We Work</Link>
             <Link href="/contact" className="transition hover:text-white">
               Contact

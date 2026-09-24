@@ -21,7 +21,7 @@ export default function ProofSection() {
               <div className="premium-panel-soft p-5">
                 <p className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-500">Portfolio products</p>
                 <p className="mt-3 text-base leading-7 text-slate-200">
-                  CareerOS · ShopiFixer · Abando.ai
+                  StaffordNext · ShopiFixer · Abando.ai
                 </p>
               </div>
               <div className="premium-panel-soft p-5">

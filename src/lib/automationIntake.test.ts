@@ -2,20 +2,31 @@
 
 import { readFileSync } from "node:fs";
 import * as React from "react";
-import { cleanup, render, screen } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom/vitest";
-import { afterEach, describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import AutomatePage from "@/app/automate/page";
 import {
+  automationIntakeStorageKey,
   automationWorkflowTextMaxLength,
   buildAutomationMailto,
+  clearAutomationBrief,
   formatAutomationBrief,
   parseAutomationBrief,
+  readAutomationBrief,
+  storeAutomationBrief,
 } from "./automationIntake";
 
 globalThis.React = React;
 
-afterEach(cleanup);
+const routerPush = vi.hoisted(() => vi.fn());
+vi.mock("next/navigation", () => ({ useRouter: () => ({ push: routerPush }) }));
+
+afterEach(() => {
+  cleanup();
+  window.sessionStorage.clear();
+  routerPush.mockClear();
+});
 
 describe("automation intake", () => {
   it("routes the homepage automation CTA directly to the intake", () => {
@@ -60,6 +71,18 @@ describe("automation intake", () => {
     expect(brief.desiredWorkflow).toHaveLength(500);
   });
 
+  it("truncates workflow text by Unicode code point without malformed encoding", () => {
+    const brief = parseAutomationBrief({
+      currentWorkflow: `${"a".repeat(499)}😀extra`,
+      desiredWorkflow: `${"😀".repeat(501)}`,
+    });
+
+    expect(Array.from(brief.currentWorkflow)).toHaveLength(500);
+    expect(brief.currentWorkflow.endsWith("😀")).toBe(true);
+    expect(Array.from(brief.desiredWorkflow)).toHaveLength(500);
+    expect(() => buildAutomationMailto("hello@staffordmedia.ai", brief)).not.toThrow();
+  });
+
   it("renders both workflow textareas with the shared maximum", () => {
     render(React.createElement(AutomatePage));
 
@@ -69,6 +92,41 @@ describe("automation intake", () => {
     expect(
       screen.getByRole("textbox", { name: "What should happen instead?" }),
     ).toHaveAttribute("maxLength", "500");
+  });
+
+  it("stores normalized intake in same-tab state and navigates without a query", () => {
+    render(React.createElement(AutomatePage));
+
+    fireEvent.click(screen.getByRole("checkbox", { name: "Lead response" }));
+    fireEvent.change(screen.getByRole("textbox", { name: "What happens today?" }), {
+      target: { value: "Manual follow-up" },
+    });
+    fireEvent.submit(screen.getByRole("button", { name: "Continue to Contact" }).closest("form")!);
+
+    expect(routerPush).toHaveBeenCalledWith("/contact");
+    expect(routerPush.mock.calls[0][0]).not.toContain("?");
+    expect(readAutomationBrief(window.sessionStorage)).toMatchObject({
+      improvements: ["Lead response"],
+      currentWorkflow: "Manual follow-up",
+    });
+  });
+
+  it("revalidates stored intake and clears it explicitly", () => {
+    const brief = parseAutomationBrief({ desiredWorkflow: "Reviewed response" });
+    storeAutomationBrief(window.sessionStorage, brief);
+
+    expect(readAutomationBrief(window.sessionStorage)).toEqual(brief);
+    clearAutomationBrief(window.sessionStorage);
+    expect(window.sessionStorage.getItem(automationIntakeStorageKey)).toBeNull();
+  });
+
+  it("rejects malformed or noncanonical session data", () => {
+    window.sessionStorage.setItem(
+      automationIntakeStorageKey,
+      JSON.stringify({ schema: "wrong", desiredWorkflow: "javascript:alert(1)" }),
+    );
+
+    expect(readAutomationBrief(window.sessionStorage)).toBeNull();
   });
 
   it("safely encodes the brief into a mailto action", () => {
