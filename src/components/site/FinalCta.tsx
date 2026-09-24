@@ -16,7 +16,7 @@ export default function FinalCta() {
             No automated diagnosis or outcome is promised before the problem and scope are understood.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-4">
-            <Link href="/services" className="smc-button smc-button-primary">
+            <Link href="/automate" className="smc-button smc-button-primary">
               Automate My Business
             </Link>
             <Link href="/contact" className="smc-button smc-button-secondary">
