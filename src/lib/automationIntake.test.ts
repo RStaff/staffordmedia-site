@@ -343,7 +343,7 @@ describe("automation intake", () => {
     }
   });
 
-  it("renders the preview and restores the retained form for adjustment", () => {
+  it("submitting valid answers displays the preview", () => {
     render(React.createElement(AutomatePage));
     fireEvent.click(screen.getByRole("radio", { name: "Home Services" }));
     fireEvent.click(screen.getByRole("checkbox", { name: "Missed-call follow-up" }));
@@ -353,9 +353,28 @@ describe("automation intake", () => {
     expect(screen.getByRole("heading", { name: "Human-control requirements" })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "What we would confirm during assessment" })).toBeInTheDocument();
     expect(routerPush).not.toHaveBeenCalled();
+  });
+
+  it("moves focus to the primary preview heading", () => {
+    render(React.createElement(AutomatePage));
+    fireEvent.click(screen.getByRole("checkbox", { name: "Lead response" }));
+    fireEvent.click(screen.getByRole("button", { name: "Show My Opportunity" }));
+
+    expect(
+      screen.getByRole("heading", { name: "Inquiry acknowledgement and callback queue" }),
+    ).toHaveFocus();
+  });
+
+  it("restores the retained form and usable focus for adjustment", () => {
+    render(React.createElement(AutomatePage));
+    fireEvent.click(screen.getByRole("checkbox", { name: "Missed-call follow-up" }));
+    fireEvent.click(screen.getByRole("button", { name: "Show My Opportunity" }));
 
     fireEvent.click(screen.getByRole("button", { name: "Adjust My Answers" }));
     expect(screen.getByRole("checkbox", { name: "Missed-call follow-up" })).toBeChecked();
+    expect(
+      screen.getByRole("heading", { name: "What are you trying to improve?" }),
+    ).toHaveFocus();
     expect(window.location.search).toBe("");
   });
 });
