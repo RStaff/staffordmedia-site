@@ -33,6 +33,8 @@ export const automationSystems = [
   "Other",
 ] as const;
 
+export const automationWorkflowTextMaxLength = 500;
+
 export type AutomationIntakeSearchParams = Record<
   string,
   string | string[] | undefined
@@ -65,7 +67,7 @@ function boundedText(value: string | string[] | undefined) {
   const first = valuesOf(value)[0] || "";
   return first
     .replace(/[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]/g, "")
-    .slice(0, 2_000)
+    .slice(0, automationWorkflowTextMaxLength)
     .trim();
 }
 

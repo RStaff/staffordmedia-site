@@ -1,10 +1,21 @@
+// @vitest-environment jsdom
+
 import { readFileSync } from "node:fs";
-import { describe, expect, it } from "vitest";
+import * as React from "react";
+import { cleanup, render, screen } from "@testing-library/react";
+import "@testing-library/jest-dom/vitest";
+import { afterEach, describe, expect, it } from "vitest";
+import AutomatePage from "@/app/automate/page";
 import {
+  automationWorkflowTextMaxLength,
   buildAutomationMailto,
   formatAutomationBrief,
   parseAutomationBrief,
 } from "./automationIntake";
+
+globalThis.React = React;
+
+afterEach(cleanup);
 
 describe("automation intake", () => {
   it("routes the homepage automation CTA directly to the intake", () => {
@@ -37,6 +48,27 @@ describe("automation intake", () => {
 
     expect(brief.improvements).toEqual(["Lead response", "Reporting"]);
     expect(brief.systems).toEqual(["CRM", "Email"]);
+  });
+
+  it("bounds each workflow field at the shared maximum", () => {
+    const brief = parseAutomationBrief({
+      currentWorkflow: "c".repeat(automationWorkflowTextMaxLength + 25),
+      desiredWorkflow: "d".repeat(automationWorkflowTextMaxLength + 25),
+    });
+
+    expect(brief.currentWorkflow).toHaveLength(500);
+    expect(brief.desiredWorkflow).toHaveLength(500);
+  });
+
+  it("renders both workflow textareas with the shared maximum", () => {
+    render(React.createElement(AutomatePage));
+
+    expect(
+      screen.getByRole("textbox", { name: "What happens today?" }),
+    ).toHaveAttribute("maxLength", "500");
+    expect(
+      screen.getByRole("textbox", { name: "What should happen instead?" }),
+    ).toHaveAttribute("maxLength", "500");
   });
 
   it("safely encodes the brief into a mailto action", () => {
