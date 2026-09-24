@@ -2,12 +2,14 @@
 
 import { readFileSync } from "node:fs";
 import * as React from "react";
+import { renderToStaticMarkup } from "react-dom/server";
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom/vitest";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import AutomatePage from "@/app/automate/page";
 import {
   automationIntakeStorageKey,
+  automationMailtoUriMaxLength,
   automationWorkflowTextMaxLength,
   buildAutomationMailto,
   clearAutomationBrief,
@@ -95,6 +97,15 @@ describe("automation intake", () => {
     ).toHaveAttribute("maxLength", "500");
   });
 
+  it("renders a non-GET form with intake unavailable before hydration", () => {
+    const markup = renderToStaticMarkup(React.createElement(AutomatePage));
+
+    expect(markup).toMatch(/<form[^>]*action="\/automate"/);
+    expect(markup).toMatch(/<form[^>]*method="post"/);
+    expect(markup).not.toMatch(/<form[^>]*method="get"/);
+    expect(markup).toMatch(/<fieldset[^>]*disabled=""/);
+  });
+
   it("stores normalized intake in same-tab state and navigates without a query", () => {
     render(React.createElement(AutomatePage));
 
@@ -112,7 +123,7 @@ describe("automation intake", () => {
     });
   });
 
-  it("continues to contact when session storage rejects the draft", () => {
+  it("fails closed when session storage rejects the draft", () => {
     vi.spyOn(Storage.prototype, "setItem").mockImplementation(() => {
       throw new DOMException("denied", "SecurityError");
     });
@@ -123,10 +134,11 @@ describe("automation intake", () => {
 
     fireEvent.submit(screen.getByRole("button", { name: "Continue to Contact" }).closest("form")!);
 
-    expect(routerPush).toHaveBeenCalledWith("/contact");
+    expect(routerPush).not.toHaveBeenCalled();
+    expect(screen.getByRole("alert")).toHaveTextContent("Nothing was submitted");
   });
 
-  it("keeps intake out of the URL when session storage is unavailable", () => {
+  it("fails closed without exposing intake when session storage is unavailable", () => {
     vi.spyOn(window, "sessionStorage", "get").mockImplementation(() => {
       throw new DOMException("unavailable", "SecurityError");
     });
@@ -137,9 +149,21 @@ describe("automation intake", () => {
 
     fireEvent.submit(screen.getByRole("button", { name: "Continue to Contact" }).closest("form")!);
 
-    expect(routerPush).toHaveBeenCalledWith("/contact");
-    expect(routerPush.mock.calls[0][0]).not.toContain("Private workflow details");
-    expect(routerPush.mock.calls[0][0]).not.toContain("?");
+    expect(routerPush).not.toHaveBeenCalled();
+    expect(window.location.search).toBe("");
+    expect(screen.getByRole("alert")).toHaveTextContent("Nothing was submitted");
+  });
+
+  it("fails closed when private navigation is unavailable", () => {
+    routerPush.mockImplementationOnce(() => {
+      throw new Error("navigation unavailable");
+    });
+    render(React.createElement(AutomatePage));
+
+    fireEvent.submit(screen.getByRole("button", { name: "Continue to Contact" }).closest("form")!);
+
+    expect(routerPush).toHaveBeenCalledTimes(1);
+    expect(screen.getByRole("alert")).toHaveTextContent("Nothing was submitted");
   });
 
   it("revalidates stored intake and clears it explicitly", () => {
@@ -160,17 +184,17 @@ describe("automation intake", () => {
     expect(readAutomationBrief(window.sessionStorage)).toBeNull();
   });
 
-  it("safely encodes the brief into a mailto action", () => {
+  it("keeps workflow descriptions out of the bounded mailto action", () => {
     const brief = parseAutomationBrief({
-      currentWorkflow: "Manual handoff & review",
-      desiredWorkflow: "Confirm <script>alert(1)</script>",
+      currentWorkflow: "CURRENT_WORKFLOW_UNIQUE_SENTINEL",
+      desiredWorkflow: "DESIRED_WORKFLOW_UNIQUE_SENTINEL",
     });
     const mailto = buildAutomationMailto("hello@staffordmedia.ai", brief);
 
     expect(mailto).toMatch(/^mailto:hello@staffordmedia\.ai\?/);
-    expect(mailto).toContain("Manual%20handoff%20%26%20review");
-    expect(mailto).toContain("%3Cscript%3Ealert(1)%3C%2Fscript%3E");
-    expect(mailto).not.toContain("<script>");
+    expect(decodeURIComponent(mailto || "")).not.toContain("CURRENT_WORKFLOW_UNIQUE_SENTINEL");
+    expect(decodeURIComponent(mailto || "")).not.toContain("DESIRED_WORKFLOW_UNIQUE_SENTINEL");
+    expect(mailto?.length).toBeLessThanOrEqual(automationMailtoUriMaxLength);
   });
 
   it("ignores missing, unknown, and unrecognized values", () => {
@@ -217,11 +241,15 @@ describe("automation intake", () => {
     expect(buildAutomationMailto(email, brief)).toBeNull();
   });
 
-  it("accepts one normal address and Unicode brief content", () => {
-    const brief = parseAutomationBrief({ desiredWorkflow: "Reviewed response 😀" });
+  it("bounds the mailto for worst-case validated Unicode brief content", () => {
+    const brief = parseAutomationBrief({
+      currentWorkflow: "😀".repeat(automationWorkflowTextMaxLength),
+      desiredWorkflow: "😀".repeat(automationWorkflowTextMaxLength),
+    });
     const mailto = buildAutomationMailto("hello+strategy@staffordmedia.ai", brief);
 
     expect(mailto).toMatch(/^mailto:hello\+strategy@staffordmedia\.ai\?/);
-    expect(mailto).toContain(encodeURIComponent("Reviewed response 😀"));
+    expect(mailto?.length).toBeLessThanOrEqual(automationMailtoUriMaxLength);
+    expect(mailto).not.toContain(encodeURIComponent("😀"));
   });
 });

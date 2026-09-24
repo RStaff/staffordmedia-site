@@ -34,6 +34,7 @@ export const automationSystems = [
 ] as const;
 
 export const automationWorkflowTextMaxLength = 500;
+export const automationMailtoUriMaxLength = 512;
 export const automationIntakeStorageKey = "staffordmedia.automation-intake.v1";
 
 const automationIntakeStorageSchema = "staffordmedia.automation_intake.v1";
@@ -171,13 +172,10 @@ export function buildAutomationMailto(
   ) {
     return null;
   }
-  if (!brief.hasContent) {
-    return `mailto:${email}`;
-  }
-
-  const subject = encodeURIComponent("Stafford Media automation brief");
-  const body = encodeURIComponent(formatAutomationBrief(brief));
-  return `mailto:${email}?subject=${subject}&body=${body}`;
+  const mailto = brief.hasContent
+    ? `mailto:${email}?subject=${encodeURIComponent("Stafford Media automation brief")}&body=${encodeURIComponent("I have an automation brief ready to paste into this email.")}`
+    : `mailto:${email}`;
+  return mailto.length <= automationMailtoUriMaxLength ? mailto : null;
 }
 
 type AutomationIntakeStorage = Pick<

@@ -171,6 +171,11 @@ export default function ContactPage() {
             Your brief is copied for you to paste into Calendly; it is not sent automatically.
           </p>
         ) : null}
+        {brief && mailto ? (
+          <p className="mt-2 text-sm text-gray-600">
+            The email link contains coordination text only. Use Copy Brief, then paste the brief into your email if desired.
+          </p>
+        ) : null}
       </div>
     </main>
   );
