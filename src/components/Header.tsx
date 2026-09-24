@@ -2,8 +2,19 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
+import { useEffect, useRef } from "react";
 
 export default function Header() {
+  const pathname = usePathname();
+  const productsRef = useRef<HTMLDetailsElement>(null);
+
+  function closeProducts() {
+    if (productsRef.current) productsRef.current.open = false;
+  }
+
+  useEffect(closeProducts, [pathname]);
+
   return (
     <header className="sticky top-0 z-50 border-b border-white/10 bg-slate-950/82 backdrop-blur-xl">
       <div
@@ -29,17 +40,25 @@ export default function Header() {
           <Link href="/" className="text-white/80 transition hover:text-white">
             Home
           </Link>
-          <Link href="/shopifixer" className="text-white/80 transition hover:text-white">
-            ShopiFixer
-          </Link>
-          <Link href="/abando" className="text-white/80 transition hover:text-white">
-            Abando
-          </Link>
           <Link href="/services" className="text-white/80 transition hover:text-white">
             Services
           </Link>
-          <Link href="/contact" className="smc-button smc-button-secondary hidden md:inline-flex">
-            Book Strategy Call
+          <details
+            ref={productsRef}
+            className="relative text-white/80"
+          >
+            <summary className="cursor-pointer list-none transition hover:text-white">Products</summary>
+            <div className="absolute right-0 top-8 z-10 grid min-w-44 gap-1 rounded-xl border border-white/10 bg-slate-950 p-2 shadow-2xl">
+              <Link onClick={closeProducts} href="/staffordnext" className="rounded-lg px-3 py-2 transition hover:bg-white/10 hover:text-white">StaffordNext</Link>
+              <Link onClick={closeProducts} href="/shopifixer" className="rounded-lg px-3 py-2 transition hover:bg-white/10 hover:text-white">ShopiFixer</Link>
+              <Link onClick={closeProducts} href="/abando" className="rounded-lg px-3 py-2 transition hover:bg-white/10 hover:text-white">Abando.ai</Link>
+            </div>
+          </details>
+          <Link href="/staffordos" className="hidden text-white/80 transition hover:text-white xl:inline">
+            How We Work
+          </Link>
+          <Link href="/automate" className="smc-button smc-button-secondary !hidden md:!inline-flex">
+            Automate My Business
           </Link>
         </nav>
       </div>

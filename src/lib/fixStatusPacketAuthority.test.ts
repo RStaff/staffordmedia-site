@@ -11,8 +11,13 @@ import {
   type PacketAuthorityPacket,
 } from "./fixStatusPacketAuthority";
 
-const env = {
+const env: NodeJS.ProcessEnv = {
+  NODE_ENV: "test",
   [FIX_STATUS_PACKET_API_BASE_ENV]: "https://cart-agent-api-test.onrender.com",
+};
+
+const emptyEnv: NodeJS.ProcessEnv = {
+  NODE_ENV: "test",
 };
 
 const basePacket: PacketAuthorityPacket = {
@@ -177,7 +182,7 @@ describe("validateFixStatusRequest", () => {
 
   it("does not fall back to production when API origin is absent", async () => {
     const fetchImpl = packetResponse(basePacket);
-    const result = await validateFixStatusRequest(params(), { env: {}, fetchImpl });
+    const result = await validateFixStatusRequest(params(), { env: emptyEnv, fetchImpl });
     expect(result.state).toBe("SERVICE_UNAVAILABLE");
     expect(result.reason).toBe("missing_api_origin");
     expect(fetchImpl).not.toHaveBeenCalled();

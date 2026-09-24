@@ -1,10 +1,10 @@
 import Link from "next/link";
 
 const painPoints = [
-  "High add-to-cart, low checkout completion",
-  "Drop-offs during shipping or pricing steps",
-  "Returning visitors who never convert",
-  "No clear signal on what to fix first",
+  "We are missing calls or leads",
+  "Follow-up is inconsistent",
+  "Staff copy information between systems",
+  "Reporting takes too much manual work",
 ];
 
 export default function PainSection() {
@@ -16,10 +16,10 @@ export default function PainSection() {
             <div>
               <p className="eyebrow text-slate-400">The problem</p>
               <h2 className="mt-4 text-4xl font-semibold tracking-tight text-white">
-                Most stores do not need more guesses. They need the clearest revenue leak fixed first.
+                The right automation starts with a real business problem.
               </h2>
               <p className="body-md mt-5">
-                Your store may already have enough traffic. The fastest win is finding where buying intent breaks down.
+                We begin by understanding the work your team repeats, the handoffs that slow it down, and the follow-up that is hard to maintain.
               </p>
             </div>
             <div className="grid gap-4 sm:grid-cols-2">
@@ -31,8 +31,8 @@ export default function PainSection() {
             </div>
           </div>
           <div className="mt-8">
-            <Link href="/shopifixer" className="smc-button smc-button-primary">
-              Find My Revenue Leak
+            <Link href="/automate" className="smc-button smc-button-primary">
+              Automate My Business
             </Link>
           </div>
         </div>

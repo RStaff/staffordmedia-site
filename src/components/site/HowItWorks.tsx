@@ -1,8 +1,8 @@
 const steps = [
-  "Submit your store",
-  "Get a real audit with your top issue",
-  "See the next fix worth testing",
-  "Activate recovery once the path is clear",
+  "Describe the work that is slowing the business down",
+  "Clarify the people, process, and systems involved",
+  "Choose a focused improvement worth discussing",
+  "Review the next step before implementation",
 ];
 
 export default function HowItWorks() {
@@ -11,7 +11,7 @@ export default function HowItWorks() {
       <div className="site-shell">
         <div className="max-w-3xl">
           <p className="eyebrow text-slate-400">How it works</p>
-          <h2 className="mt-4 text-4xl font-semibold tracking-tight text-white">From audit to revenue — in one flow.</h2>
+          <h2 className="mt-4 text-4xl font-semibold tracking-tight text-white">From business problem to practical next step.</h2>
         </div>
         <div className="mt-10 grid gap-5 lg:grid-cols-4">
           {steps.map((step, index) => (

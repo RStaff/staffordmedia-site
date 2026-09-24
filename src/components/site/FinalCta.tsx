@@ -7,18 +7,17 @@ export default function FinalCta() {
         <div className="premium-panel p-6 text-center md:p-10">
           <p className="eyebrow text-[var(--smc-accent)]">Next step</p>
           <h2 className="mt-4 text-4xl font-semibold tracking-tight text-white">
-            Start with the audit. Then decide how far to scale.
+            Tell us what you want to improve.
           </h2>
           <p className="body-md mx-auto mt-5 max-w-2xl">
-            Use ShopiFixer to get the clearest read on your store. Use Abando independently for recovery, or connect both
-            when diagnosis, fix, and recovery belong in the same commerce loop.
+            Start with a business problem, workflow, or follow-up challenge. We can discuss whether a focused technology or automation path makes sense.
           </p>
           <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-slate-400">
-            The sooner the issue is clear, the sooner you can stop guessing and start testing the right fix.
+            No automated diagnosis or outcome is promised before the problem and scope are understood.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-4">
-            <Link href="/shopifixer" className="smc-button smc-button-primary">
-              Run ShopiFixer Audit
+            <Link href="/automate" className="smc-button smc-button-primary">
+              Automate My Business
             </Link>
             <Link href="/contact" className="smc-button smc-button-secondary">
               Book Strategy Call
