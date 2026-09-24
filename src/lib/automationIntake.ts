@@ -138,7 +138,37 @@ export function buildAutomationMailto(
   brief: AutomationBrief,
 ) {
   const email = contactEmail?.trim() || "";
-  if (!/^[^\s@<>]+@[^\s@<>]+\.[^\s@<>]+$/.test(email)) {
+  const addressParts = email.split("@");
+  const localPart = addressParts[0] || "";
+  const domain = addressParts[1] || "";
+  const domainLabels = domain.split(".");
+  const validLocalPart =
+    localPart.length > 0 &&
+    localPart.length <= 64 &&
+    !localPart.startsWith(".") &&
+    !localPart.endsWith(".") &&
+    !localPart.includes("..") &&
+    /^[A-Za-z0-9.!$'*+\-=_^`{|}~]+$/.test(localPart);
+  const validDomain =
+    domain.length > 0 &&
+    domain.length <= 253 &&
+    domainLabels.length >= 2 &&
+    domainLabels.every(
+      (label) =>
+        label.length > 0 &&
+        label.length <= 63 &&
+        !label.startsWith("-") &&
+        !label.endsWith("-") &&
+        /^[A-Za-z0-9-]+$/.test(label),
+    );
+
+  if (
+    email.length > 254 ||
+    addressParts.length !== 2 ||
+    /[\u0000-\u001f\u007f\s<>?&#%,;]/.test(email) ||
+    !validLocalPart ||
+    !validDomain
+  ) {
     return null;
   }
   if (!brief.hasContent) {

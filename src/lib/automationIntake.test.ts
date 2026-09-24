@@ -24,6 +24,7 @@ vi.mock("next/navigation", () => ({ useRouter: () => ({ push: routerPush }) }));
 
 afterEach(() => {
   cleanup();
+  vi.restoreAllMocks();
   window.sessionStorage.clear();
   routerPush.mockClear();
 });
@@ -111,6 +112,36 @@ describe("automation intake", () => {
     });
   });
 
+  it("continues to contact when session storage rejects the draft", () => {
+    vi.spyOn(Storage.prototype, "setItem").mockImplementation(() => {
+      throw new DOMException("denied", "SecurityError");
+    });
+    render(React.createElement(AutomatePage));
+    fireEvent.change(screen.getByRole("textbox", { name: "What happens today?" }), {
+      target: { value: "Private workflow details" },
+    });
+
+    fireEvent.submit(screen.getByRole("button", { name: "Continue to Contact" }).closest("form")!);
+
+    expect(routerPush).toHaveBeenCalledWith("/contact");
+  });
+
+  it("keeps intake out of the URL when session storage is unavailable", () => {
+    vi.spyOn(window, "sessionStorage", "get").mockImplementation(() => {
+      throw new DOMException("unavailable", "SecurityError");
+    });
+    render(React.createElement(AutomatePage));
+    fireEvent.change(screen.getByRole("textbox", { name: "What happens today?" }), {
+      target: { value: "Private workflow details" },
+    });
+
+    fireEvent.submit(screen.getByRole("button", { name: "Continue to Contact" }).closest("form")!);
+
+    expect(routerPush).toHaveBeenCalledWith("/contact");
+    expect(routerPush.mock.calls[0][0]).not.toContain("Private workflow details");
+    expect(routerPush.mock.calls[0][0]).not.toContain("?");
+  });
+
   it("revalidates stored intake and clears it explicitly", () => {
     const brief = parseAutomationBrief({ desiredWorkflow: "Reviewed response" });
     storeAutomationBrief(window.sessionStorage, brief);
@@ -164,5 +195,33 @@ describe("automation intake", () => {
     expect(buildAutomationMailto("hello@staffordmedia.ai", brief)).toMatch(
       /^mailto:/,
     );
+  });
+
+  it.each([
+    "hello?bcc=attacker@example.net",
+    "hello#fragment@example.net",
+    "hello&header@example.net",
+    "hello%25@example.net",
+    "hello@example.net\r\nBcc:attacker@example.net",
+    "hello@example.net,attacker@example.net",
+    "hello@example.net;attacker@example.net",
+    "missing-at.example.net",
+    "two@@example.net",
+    ".leading@example.net",
+    "trailing.@example.net",
+    "double..dot@example.net",
+    "hello@-example.net",
+    "hello@example",
+  ])("rejects invalid configured contact address: %s", (email) => {
+    const brief = parseAutomationBrief({ desiredWorkflow: "Reviewed response 😀" });
+    expect(buildAutomationMailto(email, brief)).toBeNull();
+  });
+
+  it("accepts one normal address and Unicode brief content", () => {
+    const brief = parseAutomationBrief({ desiredWorkflow: "Reviewed response 😀" });
+    const mailto = buildAutomationMailto("hello+strategy@staffordmedia.ai", brief);
+
+    expect(mailto).toMatch(/^mailto:hello\+strategy@staffordmedia\.ai\?/);
+    expect(mailto).toContain(encodeURIComponent("Reviewed response 😀"));
   });
 });

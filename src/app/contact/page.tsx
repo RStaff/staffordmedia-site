@@ -49,12 +49,17 @@ export default function ContactPage() {
         `${window.location.pathname}${window.location.hash}`,
       );
     }
-    const storedValue = window.sessionStorage.getItem(automationIntakeStorageKey);
-    const storedBrief = readAutomationBrief(window.sessionStorage);
-    if (!storedBrief && storedValue !== null) {
-      clearAutomationBrief(window.sessionStorage);
+    try {
+      const storage = window.sessionStorage;
+      const storedValue = storage.getItem(automationIntakeStorageKey);
+      const storedBrief = readAutomationBrief(storage);
+      if (!storedBrief && storedValue !== null) {
+        clearAutomationBrief(storage);
+      }
+      setBrief(storedBrief);
+    } catch {
+      setBrief(null);
     }
-    setBrief(storedBrief);
   }, []);
 
   async function copyBriefAndBook() {
@@ -69,7 +74,11 @@ export default function ContactPage() {
   }
 
   function removeBrief() {
-    clearAutomationBrief(window.sessionStorage);
+    try {
+      clearAutomationBrief(window.sessionStorage);
+    } catch {
+      // The visible brief can still be removed when browser storage becomes unavailable.
+    }
     setBrief(null);
   }
 

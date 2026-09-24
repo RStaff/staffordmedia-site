@@ -54,6 +54,26 @@ describe("contact intake handoff", () => {
     );
   });
 
+  it("keeps no-brief contact actions usable when session storage is unavailable", async () => {
+    process.env.NEXT_PUBLIC_CALENDLY_URL = "https://calendly.com/staffordmedia/strategy";
+    process.env.NEXT_PUBLIC_CONTACT_EMAIL = "hello@staffordmedia.ai";
+    vi.spyOn(window, "sessionStorage", "get").mockImplementation(() => {
+      throw new DOMException("unavailable", "SecurityError");
+    });
+
+    render(<ContactPage />);
+
+    expect(await screen.findByRole("link", { name: "Book a Strategy Call" })).toHaveAttribute(
+      "href",
+      "https://calendly.com/staffordmedia/strategy",
+    );
+    expect(screen.getByRole("link", { name: "Email Stafford Media" })).toHaveAttribute(
+      "href",
+      "mailto:hello@staffordmedia.ai",
+    );
+    expect(screen.queryByRole("heading", { name: "Your submitted brief" })).not.toBeInTheDocument();
+  });
+
   it("copies the validated brief before opening Calendly", async () => {
     process.env.NEXT_PUBLIC_CALENDLY_URL = "https://calendly.com/staffordmedia/strategy";
     const brief = parseAutomationBrief({ desiredWorkflow: "A reviewed response" });

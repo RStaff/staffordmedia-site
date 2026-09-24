@@ -25,7 +25,11 @@ export default function AutomatePage() {
       currentWorkflow: String(formData.get("currentWorkflow") || ""),
       desiredWorkflow: String(formData.get("desiredWorkflow") || ""),
     });
-    storeAutomationBrief(window.sessionStorage, brief);
+    try {
+      storeAutomationBrief(window.sessionStorage, brief);
+    } catch {
+      // Storage is optional; keep the navigation private even when the draft cannot persist.
+    }
     router.push("/contact");
   }
 
