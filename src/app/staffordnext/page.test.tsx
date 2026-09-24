@@ -14,6 +14,13 @@ describe("StaffordNext public product page", () => {
     expect(metadata.title).toBe("StaffordNext - Stafford Media Consulting");
     expect(screen.getByRole("heading", { level: 1, name: "StaffordNext" })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Discuss StaffordNext" })).toHaveAttribute("href", "/contact");
+    expect(screen.getByText(/continuously discovers relevant opportunities/i)).toBeInTheDocument();
+    expect(screen.getByText(/verified career evidence/i)).toBeInTheDocument();
+    expect(screen.getByText(/ready-to-review application packages in batches/i)).toBeInTheDocument();
+    expect(screen.getByText(/every application decision and submission under human control/i)).toBeInTheDocument();
+    expect(screen.getByText(/tracks applications, responses, follow-ups, and interviews/i)).toBeInTheDocument();
+    expect(screen.getByText(/learns from real outcomes/i)).toBeInTheDocument();
+    expect(screen.getByText(/no promise of interviews or employment/i)).toBeInTheDocument();
     expect(screen.queryByText(/CareerOS/)).not.toBeInTheDocument();
   });
 });

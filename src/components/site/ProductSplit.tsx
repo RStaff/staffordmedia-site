@@ -11,8 +11,8 @@ export default function ProductSplit() {
             <span className="text-2xl font-semibold text-white">StaffordNext</span>
           </div>
           <h2 className="mt-10 text-3xl font-semibold text-white">StaffordNext</h2>
-          <p className="mt-4 text-lg text-slate-300">A private-beta product for career evidence and opportunity decisions.</p>
-          <p className="mt-4 text-slate-400">StaffordNext helps people organize reviewed experience, understand opportunities, and make human-approved next decisions.</p>
+          <p className="mt-4 text-lg text-slate-300">A private-beta job-search product for evidence-backed opportunity decisions.</p>
+          <p className="mt-4 text-slate-400">StaffordNext finds and prioritizes relevant jobs, prepares review-ready application packages, and learns from outcomes while keeping people in control.</p>
           <div className="mt-6 rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3 text-sm text-slate-300">In development and private beta.</div>
           <Link href="/staffordnext" className="mt-8 inline-flex rounded-xl border border-white/10 px-6 py-3 font-semibold text-white transition hover:border-cyan-300 hover:text-cyan-200">Explore StaffordNext</Link>
         </article>

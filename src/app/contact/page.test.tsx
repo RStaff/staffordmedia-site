@@ -17,6 +17,10 @@ describe("contact intake handoff", () => {
   beforeEach(() => {
     window.sessionStorage.clear();
     window.history.replaceState({}, "", "/contact");
+    Object.defineProperty(navigator, "clipboard", {
+      configurable: true,
+      value: undefined,
+    });
   });
 
   afterEach(() => {
@@ -74,7 +78,55 @@ describe("contact intake handoff", () => {
     fireEvent.click(await screen.findByRole("button", { name: "Copy Brief & Book Strategy Call" }));
 
     await waitFor(() => expect(events).toEqual(["copy", "open"]));
+    expect(screen.getByRole("link", { name: "Book Without Copying" })).toHaveAttribute(
+      "href",
+      "https://calendly.com/staffordmedia/strategy",
+    );
     expect(screen.getByText(/not sent automatically/i)).toBeInTheDocument();
+  });
+
+  it.each(["unavailable", "rejected"])(
+    "keeps a private Calendly fallback when clipboard access is %s",
+    async (clipboardState) => {
+      process.env.NEXT_PUBLIC_CALENDLY_URL = "https://calendly.com/staffordmedia/strategy";
+      storeAutomationBrief(
+        window.sessionStorage,
+        parseAutomationBrief({ currentWorkflow: "Private workflow details" }),
+      );
+      if (clipboardState === "rejected") {
+        Object.defineProperty(navigator, "clipboard", {
+          configurable: true,
+          value: { writeText: vi.fn().mockRejectedValue(new Error("denied")) },
+        });
+      }
+
+      render(<ContactPage />);
+      const fallback = await screen.findByRole("link", { name: "Book Without Copying" });
+
+      expect(fallback).toHaveAttribute(
+        "href",
+        "https://calendly.com/staffordmedia/strategy",
+      );
+      expect(fallback.getAttribute("href")).not.toContain("Private workflow details");
+      expect(fallback.getAttribute("href")).not.toContain("workflow");
+
+      fireEvent.click(screen.getByRole("button", { name: "Copy Brief & Book Strategy Call" }));
+      await waitFor(() => expect(screen.getByRole("alert")).toBeInTheDocument());
+      expect(fallback).toBeInTheDocument();
+    },
+  );
+
+  it.each([
+    "javascript:alert(1)",
+    "http://calendly.com/staffordmedia/strategy",
+    "https://example.com/not-calendly",
+    "not a url",
+  ])("fails closed for invalid Calendly configuration: %s", (configuredUrl) => {
+    process.env.NEXT_PUBLIC_CALENDLY_URL = configuredUrl;
+    render(<ContactPage />);
+
+    expect(screen.queryByRole("link", { name: /Book/ })).not.toBeInTheDocument();
+    expect(screen.getByText("Strategy call link is not configured locally")).toBeInTheDocument();
   });
 
   it("clears the locally stored brief", async () => {

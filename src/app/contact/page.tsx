@@ -14,8 +14,21 @@ export default function ContactPage() {
   const [brief, setBrief] = useState<AutomationBrief | null>(null);
   const [copyError, setCopyError] = useState(false);
   const calendlyUrl = process.env.NEXT_PUBLIC_CALENDLY_URL?.trim();
-  const validCalendlyUrl =
-    calendlyUrl && /^https:\/\//.test(calendlyUrl) ? calendlyUrl : null;
+  let validCalendlyUrl: string | null = null;
+  if (calendlyUrl) {
+    try {
+      const parsedCalendlyUrl = new URL(calendlyUrl);
+      if (
+        parsedCalendlyUrl.protocol === "https:" &&
+        (parsedCalendlyUrl.hostname === "calendly.com" ||
+          parsedCalendlyUrl.hostname.endsWith(".calendly.com"))
+      ) {
+        validCalendlyUrl = calendlyUrl;
+      }
+    } catch {
+      validCalendlyUrl = null;
+    }
+  }
   const mailto = buildAutomationMailto(
     process.env.NEXT_PUBLIC_CONTACT_EMAIL,
     brief || {
@@ -104,13 +117,21 @@ export default function ContactPage() {
         <div className="flex flex-wrap justify-center gap-4">
           {validCalendlyUrl ? (
             brief ? (
-              <button
-                type="button"
-                onClick={copyBriefAndBook}
-                className="rounded bg-blue-600 px-4 py-2 font-semibold text-white hover:bg-blue-700"
-              >
-                Copy Brief &amp; Book Strategy Call
-              </button>
+              <>
+                <button
+                  type="button"
+                  onClick={copyBriefAndBook}
+                  className="rounded bg-blue-600 px-4 py-2 font-semibold text-white hover:bg-blue-700"
+                >
+                  Copy Brief &amp; Book Strategy Call
+                </button>
+                <a
+                  href={validCalendlyUrl}
+                  className="rounded border border-gray-400 px-4 py-2 font-semibold text-gray-800 hover:bg-gray-100"
+                >
+                  Book Without Copying
+                </a>
+              </>
             ) : (
               <a href={validCalendlyUrl} className="rounded bg-blue-600 px-4 py-2 font-semibold text-white hover:bg-blue-700">
                 Book a Strategy Call
@@ -133,7 +154,7 @@ export default function ContactPage() {
         </div>
         {copyError ? (
           <p role="alert" className="mt-4 text-sm text-red-700">
-            The brief could not be copied. Use the email action or copy it manually before booking.
+            The brief could not be copied automatically. Copy it manually, then use the booking link.
           </p>
         ) : null}
         {brief && validCalendlyUrl ? (
