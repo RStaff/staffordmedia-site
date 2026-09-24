@@ -62,12 +62,11 @@ export default function ContactPage() {
     }
   }, []);
 
-  async function copyBriefAndBook() {
-    if (!brief || !validCalendlyUrl) return;
+  async function copyBrief() {
+    if (!brief) return;
     setCopyError(false);
     try {
       await navigator.clipboard.writeText(formatAutomationBrief(brief));
-      window.open(validCalendlyUrl, "_blank", "noopener,noreferrer");
     } catch {
       setCopyError(true);
     }
@@ -124,28 +123,22 @@ export default function ContactPage() {
         ) : null}
 
         <div className="flex flex-wrap justify-center gap-4">
+          {brief ? (
+            <button
+              type="button"
+              onClick={copyBrief}
+              className="rounded bg-blue-600 px-4 py-2 font-semibold text-white hover:bg-blue-700"
+            >
+              Copy Brief
+            </button>
+          ) : null}
           {validCalendlyUrl ? (
-            brief ? (
-              <>
-                <button
-                  type="button"
-                  onClick={copyBriefAndBook}
-                  className="rounded bg-blue-600 px-4 py-2 font-semibold text-white hover:bg-blue-700"
-                >
-                  Copy Brief &amp; Book Strategy Call
-                </button>
-                <a
-                  href={validCalendlyUrl}
-                  className="rounded border border-gray-400 px-4 py-2 font-semibold text-gray-800 hover:bg-gray-100"
-                >
-                  Book Without Copying
-                </a>
-              </>
-            ) : (
-              <a href={validCalendlyUrl} className="rounded bg-blue-600 px-4 py-2 font-semibold text-white hover:bg-blue-700">
-                Book a Strategy Call
-              </a>
-            )
+            <a
+              href={validCalendlyUrl}
+              className="rounded border border-gray-400 px-4 py-2 font-semibold text-gray-800 hover:bg-gray-100"
+            >
+              Book Strategy Call
+            </a>
           ) : (
             <div className="rounded border border-gray-300 bg-gray-100 px-4 py-2 text-sm text-gray-600">
               Strategy call link is not configured locally
@@ -166,9 +159,9 @@ export default function ContactPage() {
             The brief could not be copied automatically. Copy it manually, then use the booking link.
           </p>
         ) : null}
-        {brief && validCalendlyUrl ? (
+        {brief ? (
           <p className="mt-4 text-sm text-gray-600">
-            Your brief is copied for you to paste into Calendly; it is not sent automatically.
+            Copy your brief to paste into an email or booking form; it is not sent automatically.
           </p>
         ) : null}
         {brief && mailto ? (

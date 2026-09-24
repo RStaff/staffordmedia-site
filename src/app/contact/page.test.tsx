@@ -52,6 +52,8 @@ describe("contact intake handoff", () => {
       "href",
       expect.stringMatching(/^mailto:hello@staffordmedia\.ai\?/),
     );
+    expect(screen.getByRole("button", { name: "Copy Brief" })).toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: "Book Strategy Call" })).not.toBeInTheDocument();
   });
 
   it("keeps no-brief contact actions usable when session storage is unavailable", async () => {
@@ -63,7 +65,7 @@ describe("contact intake handoff", () => {
 
     render(<ContactPage />);
 
-    expect(await screen.findByRole("link", { name: "Book a Strategy Call" })).toHaveAttribute(
+    expect(await screen.findByRole("link", { name: "Book Strategy Call" })).toHaveAttribute(
       "href",
       "https://calendly.com/staffordmedia/strategy",
     );
@@ -74,31 +76,24 @@ describe("contact intake handoff", () => {
     expect(screen.queryByRole("heading", { name: "Your submitted brief" })).not.toBeInTheDocument();
   });
 
-  it("copies the validated brief before opening Calendly", async () => {
+  it("offers independent copy and booking controls for a validated brief", async () => {
     process.env.NEXT_PUBLIC_CALENDLY_URL = "https://calendly.com/staffordmedia/strategy";
     const brief = parseAutomationBrief({ desiredWorkflow: "A reviewed response" });
     storeAutomationBrief(window.sessionStorage, brief);
-    const events: string[] = [];
     Object.defineProperty(navigator, "clipboard", {
       configurable: true,
       value: {
         writeText: vi.fn(async (text: string) => {
           expect(text).toBe(formatAutomationBrief(brief));
-          events.push("copy");
         }),
       },
     });
-    vi.spyOn(window, "open").mockImplementation((url) => {
-      expect(url).toBe("https://calendly.com/staffordmedia/strategy");
-      events.push("open");
-      return null;
-    });
 
     render(<ContactPage />);
-    fireEvent.click(await screen.findByRole("button", { name: "Copy Brief & Book Strategy Call" }));
+    fireEvent.click(await screen.findByRole("button", { name: "Copy Brief" }));
 
-    await waitFor(() => expect(events).toEqual(["copy", "open"]));
-    expect(screen.getByRole("link", { name: "Book Without Copying" })).toHaveAttribute(
+    await waitFor(() => expect(navigator.clipboard.writeText).toHaveBeenCalledTimes(1));
+    expect(screen.getByRole("link", { name: "Book Strategy Call" })).toHaveAttribute(
       "href",
       "https://calendly.com/staffordmedia/strategy",
     );
@@ -121,18 +116,18 @@ describe("contact intake handoff", () => {
       }
 
       render(<ContactPage />);
-      const fallback = await screen.findByRole("link", { name: "Book Without Copying" });
+      const bookingLink = await screen.findByRole("link", { name: "Book Strategy Call" });
 
-      expect(fallback).toHaveAttribute(
+      expect(bookingLink).toHaveAttribute(
         "href",
         "https://calendly.com/staffordmedia/strategy",
       );
-      expect(fallback.getAttribute("href")).not.toContain("Private workflow details");
-      expect(fallback.getAttribute("href")).not.toContain("workflow");
+      expect(bookingLink.getAttribute("href")).not.toContain("Private workflow details");
+      expect(bookingLink.getAttribute("href")).not.toContain("workflow");
 
-      fireEvent.click(screen.getByRole("button", { name: "Copy Brief & Book Strategy Call" }));
+      fireEvent.click(screen.getByRole("button", { name: "Copy Brief" }));
       await waitFor(() => expect(screen.getByRole("alert")).toBeInTheDocument());
-      expect(fallback).toBeInTheDocument();
+      expect(bookingLink).toBeInTheDocument();
     },
   );
 
@@ -145,7 +140,7 @@ describe("contact intake handoff", () => {
     process.env.NEXT_PUBLIC_CALENDLY_URL = configuredUrl;
     render(<ContactPage />);
 
-    expect(screen.queryByRole("link", { name: /Book/ })).not.toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: "Book Strategy Call" })).not.toBeInTheDocument();
     expect(screen.getByText("Strategy call link is not configured locally")).toBeInTheDocument();
   });
 
