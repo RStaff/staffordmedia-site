@@ -12,6 +12,7 @@ import {
   automationMailtoUriMaxLength,
   automationWorkflowTextMaxLength,
   buildAutomationMailto,
+  buildAutomationOpportunityPreview,
   clearAutomationBrief,
   formatAutomationBrief,
   parseAutomationBrief,
@@ -113,7 +114,13 @@ describe("automation intake", () => {
     fireEvent.change(screen.getByRole("textbox", { name: "What happens today?" }), {
       target: { value: "Manual follow-up" },
     });
-    fireEvent.submit(screen.getByRole("button", { name: "Continue to Contact" }).closest("form")!);
+    fireEvent.submit(screen.getByRole("button", { name: "Show My Opportunity" }).closest("form")!);
+
+    expect(screen.getByText("Your first automation opportunity")).toBeInTheDocument();
+    expect(routerPush).not.toHaveBeenCalled();
+    expect(window.sessionStorage.getItem(automationIntakeStorageKey)).toBeNull();
+
+    fireEvent.click(screen.getByRole("button", { name: "Discuss This Opportunity" }));
 
     expect(routerPush).toHaveBeenCalledWith("/contact");
     expect(routerPush.mock.calls[0][0]).not.toContain("?");
@@ -132,7 +139,8 @@ describe("automation intake", () => {
       target: { value: "Private workflow details" },
     });
 
-    fireEvent.submit(screen.getByRole("button", { name: "Continue to Contact" }).closest("form")!);
+    fireEvent.submit(screen.getByRole("button", { name: "Show My Opportunity" }).closest("form")!);
+    fireEvent.click(screen.getByRole("button", { name: "Discuss This Opportunity" }));
 
     expect(routerPush).not.toHaveBeenCalled();
     expect(screen.getByRole("alert")).toHaveTextContent("Nothing was submitted");
@@ -147,7 +155,8 @@ describe("automation intake", () => {
       target: { value: "Private workflow details" },
     });
 
-    fireEvent.submit(screen.getByRole("button", { name: "Continue to Contact" }).closest("form")!);
+    fireEvent.submit(screen.getByRole("button", { name: "Show My Opportunity" }).closest("form")!);
+    fireEvent.click(screen.getByRole("button", { name: "Discuss This Opportunity" }));
 
     expect(routerPush).not.toHaveBeenCalled();
     expect(window.location.search).toBe("");
@@ -160,7 +169,9 @@ describe("automation intake", () => {
     });
     render(React.createElement(AutomatePage));
 
-    fireEvent.submit(screen.getByRole("button", { name: "Continue to Contact" }).closest("form")!);
+    fireEvent.click(screen.getByRole("checkbox", { name: "Lead response" }));
+    fireEvent.submit(screen.getByRole("button", { name: "Show My Opportunity" }).closest("form")!);
+    fireEvent.click(screen.getByRole("button", { name: "Discuss This Opportunity" }));
 
     expect(routerPush).toHaveBeenCalledTimes(1);
     expect(screen.getByRole("alert")).toHaveTextContent("Nothing was submitted");
@@ -251,5 +262,100 @@ describe("automation intake", () => {
     expect(mailto).toMatch(/^mailto:hello\+strategy@staffordmedia\.ai\?/);
     expect(mailto?.length).toBeLessThanOrEqual(automationMailtoUriMaxLength);
     expect(mailto).not.toContain(encodeURIComponent("😀"));
+  });
+
+  it("recommends an inquiry and callback queue for home-services lead work", () => {
+    const preview = buildAutomationOpportunityPreview(
+      parseAutomationBrief({
+        improvement: ["Lead response", "Missed-call follow-up"],
+        businessType: "Home Services",
+        system: ["Phone", "Email"],
+      }),
+    );
+
+    expect(preview?.opportunities[0]).toMatchObject({
+      id: "lead-response",
+      title: "Inquiry acknowledgement and callback queue",
+    });
+    expect(preview?.whatWeSee).toContain("inquiries, callbacks, estimates, and field schedules");
+  });
+
+  it("uses materially different professional-services language", () => {
+    const preview = buildAutomationOpportunityPreview(
+      parseAutomationBrief({
+        improvement: "Moving information between systems",
+        businessType: "Professional Services",
+        system: ["CRM", "Accounting / business software"],
+      }),
+    );
+
+    expect(preview?.opportunities[0].id).toBe("system-handoff");
+    expect(preview?.whatWeSee).toContain("professional-service handoffs");
+    expect(preview?.humanControls.join(" ")).toContain("responsible professional");
+    expect(preview?.whatWeSee).not.toContain("field schedules");
+  });
+
+  it("maps ecommerce work to an exception and customer-service queue", () => {
+    const preview = buildAutomationOpportunityPreview(
+      parseAutomationBrief({
+        improvement: "E-commerce workflow",
+        businessType: "E-commerce",
+        system: "E-commerce platform",
+      }),
+    );
+
+    expect(preview?.opportunities[0]).toMatchObject({
+      id: "ecommerce-exceptions",
+      title: "E-commerce exception and customer-service queue",
+    });
+    expect(preview?.humanControls.join(" ")).toContain("Store staff decide");
+  });
+
+  it("provides a bounded fallback for unsupported combinations", () => {
+    const preview = buildAutomationOpportunityPreview(
+      parseAutomationBrief({
+        improvement: "Reporting",
+        businessType: "Other",
+      }),
+    );
+
+    expect(preview?.opportunities).toHaveLength(1);
+    expect(preview?.opportunities[0].id).toBe("workflow-review");
+    expect(preview?.assessmentQuestions).toHaveLength(4);
+    expect(preview?.valueMechanisms.length).toBeLessThanOrEqual(4);
+  });
+
+  it("always preserves human control without ROI, guarantees, or scores", () => {
+    const briefs = [
+      parseAutomationBrief({ improvement: "Lead response", businessType: "Home Services" }),
+      parseAutomationBrief({ improvement: "Customer follow-up", businessType: "Professional Services" }),
+      parseAutomationBrief({ improvement: "Scheduling", businessType: "Automotive / Field Services" }),
+      parseAutomationBrief({ improvement: "E-commerce workflow", businessType: "E-commerce" }),
+      parseAutomationBrief({ improvement: "Something else", businessType: "Other" }),
+    ];
+
+    for (const brief of briefs) {
+      const preview = buildAutomationOpportunityPreview(brief);
+      expect(preview?.humanControls.length).toBeGreaterThan(0);
+      expect(preview?.humanControls.join(" ").toLowerCase()).toMatch(/staff|team member/);
+      expect(JSON.stringify(preview)).not.toMatch(/\bROI\b|guarantee|benchmark|\bscore\b|\d+%/i);
+      expect(preview?.opportunities.length).toBeLessThanOrEqual(3);
+    }
+  });
+
+  it("renders the preview and restores the retained form for adjustment", () => {
+    render(React.createElement(AutomatePage));
+    fireEvent.click(screen.getByRole("radio", { name: "Home Services" }));
+    fireEvent.click(screen.getByRole("checkbox", { name: "Missed-call follow-up" }));
+    fireEvent.click(screen.getByRole("button", { name: "Show My Opportunity" }));
+
+    expect(screen.getByRole("heading", { name: "Inquiry acknowledgement and callback queue" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Human-control requirements" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "What we would confirm during assessment" })).toBeInTheDocument();
+    expect(routerPush).not.toHaveBeenCalled();
+
+    fireEvent.click(screen.getByRole("button", { name: "Adjust My Answers" }));
+    expect(screen.getByRole("checkbox", { name: "Missed-call follow-up" })).toBeChecked();
+    expect(window.location.search).toBe("");
   });
 });
