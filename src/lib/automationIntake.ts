@@ -36,6 +36,27 @@ export const automationSystems = [
 export const automationWorkflowTextMaxLength = 500;
 export const automationMailtoUriMaxLength = 512;
 export const automationIntakeStorageKey = "staffordmedia.automation-intake.v1";
+export const automationBlueprintOfferAuthority = Object.freeze({
+  offerId: "STAFFORDMEDIA_AUTOMATION_OPPORTUNITY_ASSESSMENT_V1",
+  publicName: "Automation Opportunity Blueprint",
+  priceUsd: 750,
+  paymentType: "one_time",
+  quantity: 1,
+  paymentLinks: Object.freeze({
+    preview: Object.freeze({
+      approvedPath: "/test_fZu9AUf8w8fB8zt7tH00003",
+      mode: "test",
+    }),
+    production: Object.freeze({
+      approvedPath: "/cNieVe5xW8fBg1V8xL00002",
+      mode: "live",
+    }),
+  }),
+});
+export const automationBlueprintOfferId = automationBlueprintOfferAuthority.offerId;
+export const automationBlueprintPriceUsd = automationBlueprintOfferAuthority.priceUsd;
+
+const automationBlueprintPaymentHostname = "buy.stripe.com";
 
 const automationIntakeStorageSchema = "staffordmedia.automation_intake.v1";
 
@@ -455,6 +476,63 @@ export function formatAutomationBrief(brief: AutomationBrief) {
   }
 
   return lines.join("\n");
+}
+
+export function parseStripeHostedPaymentLinkUrl(value: unknown) {
+  if (typeof value !== "string" || value !== value.trim() || !value) {
+    return null;
+  }
+
+  try {
+    const url = new URL(value);
+    if (
+      url.protocol !== "https:" ||
+      url.hostname !== automationBlueprintPaymentHostname ||
+      url.port ||
+      url.username ||
+      url.password ||
+      url.search ||
+      url.hash ||
+      url.pathname === "/"
+    ) {
+      return null;
+    }
+    return url.toString();
+  } catch {
+    return null;
+  }
+}
+
+export type AutomationBlueprintPaymentEnvironment = "preview" | "production";
+
+export function resolveAutomationBlueprintPaymentUrl(
+  value: unknown,
+  environment: AutomationBlueprintPaymentEnvironment,
+) {
+  const safeUrl = parseStripeHostedPaymentLinkUrl(value);
+  if (!safeUrl) return null;
+
+  const authority = automationBlueprintOfferAuthority.paymentLinks[environment];
+  if (!authority) return null;
+
+  return new URL(safeUrl).pathname === authority.approvedPath
+    ? safeUrl
+    : null;
+}
+
+export function prepareAutomationBlueprintPurchase(
+  storage: AutomationIntakeStorage,
+  brief: AutomationBrief,
+  configuredPaymentUrl: unknown,
+  environment: AutomationBlueprintPaymentEnvironment,
+) {
+  const paymentUrl = resolveAutomationBlueprintPaymentUrl(
+    configuredPaymentUrl,
+    environment,
+  );
+  if (!paymentUrl) return null;
+  storeAutomationBrief(storage, brief);
+  return paymentUrl;
 }
 
 export function buildAutomationMailto(

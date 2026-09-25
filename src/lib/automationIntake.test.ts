@@ -6,8 +6,12 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom/vitest";
 import { afterEach, describe, expect, it, vi } from "vitest";
+import AutomateClient from "@/app/automate/AutomateClient";
 import AutomatePage from "@/app/automate/page";
 import {
+  automationBlueprintOfferAuthority,
+  automationBlueprintOfferId,
+  automationBlueprintPriceUsd,
   automationBusinessTypes,
   automationImprovements,
   automationIntakeStorageKey,
@@ -19,13 +23,19 @@ import {
   clearAutomationBrief,
   formatAutomationBrief,
   parseAutomationBrief,
+  parseStripeHostedPaymentLinkUrl,
+  prepareAutomationBlueprintPurchase,
   readAutomationBrief,
+  resolveAutomationBlueprintPaymentUrl,
   storeAutomationBrief,
 } from "./automationIntake";
 
 globalThis.React = React;
 
 const routerPush = vi.hoisted(() => vi.fn());
+const validPaymentUrl = "https://buy.stripe.com/test_fZu9AUf8w8fB8zt7tH00003";
+const livePaymentUrl = "https://buy.stripe.com/cNieVe5xW8fBg1V8xL00002";
+const otherSafePaymentUrl = "https://buy.stripe.com/test_other_safe_link";
 vi.mock("next/navigation", () => ({ useRouter: () => ({ push: routerPush }) }));
 
 const scrollIntoView = vi.fn();
@@ -46,6 +56,9 @@ afterEach(() => {
   routerPush.mockClear();
   scrollIntoView.mockClear();
   matchMedia.mockReset().mockReturnValue({ matches: false });
+  delete process.env.NEXT_PUBLIC_AUTOMATION_BLUEPRINT_PAYMENT_URL;
+  delete process.env.VERCEL_ENV;
+  window.history.replaceState({}, "", "/");
 });
 
 describe("automation intake", () => {
@@ -123,6 +136,255 @@ describe("automation intake", () => {
     expect(markup).toMatch(/<fieldset[^>]*disabled=""/);
   });
 
+  it("binds the exact Blueprint offer and one-time public price language", () => {
+    expect(automationBlueprintOfferId).toBe(
+      "STAFFORDMEDIA_AUTOMATION_OPPORTUNITY_ASSESSMENT_V1",
+    );
+    expect(automationBlueprintPriceUsd).toBe(750);
+    expect(automationBlueprintOfferAuthority).toMatchObject({
+      publicName: "Automation Opportunity Blueprint",
+      paymentType: "one_time",
+      quantity: 1,
+      paymentLinks: {
+        preview: {
+          approvedPath: "/test_fZu9AUf8w8fB8zt7tH00003",
+          mode: "test",
+        },
+        production: {
+          approvedPath: "/cNieVe5xW8fBg1V8xL00002",
+          mode: "live",
+        },
+      },
+    });
+
+    render(React.createElement(AutomatePage));
+    fireEvent.click(screen.getByRole("checkbox", { name: "Lead response" }));
+    fireEvent.click(screen.getByRole("button", { name: "Show My Opportunity" }));
+
+    expect(
+      screen.getByRole("heading", {
+        name: "Your $750 Automation Opportunity Blueprint",
+      }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(/Payment purchases the Blueprint engagement described above, not implementation/),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(/owner-approved Stripe Payment Link for this exact one-time \$750 Blueprint/),
+    ).toBeInTheDocument();
+  });
+
+  it("distinguishes Stripe URL safety from owner-approved offer authority", () => {
+    expect(parseStripeHostedPaymentLinkUrl(validPaymentUrl)).toBe(
+      validPaymentUrl,
+    );
+    expect(parseStripeHostedPaymentLinkUrl(otherSafePaymentUrl)).toBe(
+      otherSafePaymentUrl,
+    );
+    expect(resolveAutomationBlueprintPaymentUrl(validPaymentUrl, "preview")).toBe(
+      validPaymentUrl,
+    );
+    expect(
+      resolveAutomationBlueprintPaymentUrl(otherSafePaymentUrl, "preview"),
+    ).toBeNull();
+    expect(
+      resolveAutomationBlueprintPaymentUrl(validPaymentUrl, "production"),
+    ).toBeNull();
+    expect(
+      resolveAutomationBlueprintPaymentUrl(livePaymentUrl, "production"),
+    ).toBe(livePaymentUrl);
+    expect(
+      resolveAutomationBlueprintPaymentUrl(livePaymentUrl, "preview"),
+    ).toBeNull();
+
+    for (const value of [
+      undefined,
+      "",
+      ` ${validPaymentUrl}`,
+      "http://buy.stripe.com/test_blueprint",
+      "https://stripe.com/test_blueprint",
+      "https://buy.stripe.com.evil.example/test_blueprint",
+      "https://attacker.example/test_blueprint",
+      "https://buy.stripe.com/",
+      "https://buy.stripe.com/test_blueprint?brief=PRIVATE_WORKFLOW",
+      "https://buy.stripe.com/test_blueprint#PRIVATE_WORKFLOW",
+      "https://user@buy.stripe.com/test_blueprint",
+      "not a url",
+    ]) {
+      expect(parseStripeHostedPaymentLinkUrl(value)).toBeNull();
+      expect(resolveAutomationBlueprintPaymentUrl(value, "preview")).toBeNull();
+      expect(resolveAutomationBlueprintPaymentUrl(value, "production")).toBeNull();
+    }
+  });
+
+  it("renders the purchase action in both required locations when configured", () => {
+    process.env.NEXT_PUBLIC_AUTOMATION_BLUEPRINT_PAYMENT_URL = validPaymentUrl;
+    process.env.VERCEL_ENV = "preview";
+    render(React.createElement(AutomatePage));
+    fireEvent.click(screen.getByRole("checkbox", { name: "Lead response" }));
+    fireEvent.click(screen.getByRole("button", { name: "Show My Opportunity" }));
+
+    const purchaseButtons = screen.getAllByRole("button", {
+      name: "Start My Blueprint — $750",
+    });
+    expect(purchaseButtons).toHaveLength(2);
+    for (const button of purchaseButtons) {
+      expect(button.tagName).toBe("BUTTON");
+      expect(button).not.toHaveAttribute("href");
+      expect(button).not.toHaveAttribute("target");
+      expect(button).toHaveAttribute(
+        "data-offer-id",
+        "STAFFORDMEDIA_AUTOMATION_OPPORTUNITY_ASSESSMENT_V1",
+      );
+    }
+    expect(screen.getByTestId("blueprint-offer-actions")).toContainElement(
+      purchaseButtons[0],
+    );
+    expect(
+      screen.getAllByRole("button", { name: "Talk With Ross First" }),
+    ).toHaveLength(2);
+  });
+
+  it("fails closed without a valid configured Payment Link", () => {
+    process.env.NEXT_PUBLIC_AUTOMATION_BLUEPRINT_PAYMENT_URL =
+      "https://attacker.example/checkout";
+    window.history.replaceState(
+      {},
+      "",
+      `/automate?paymentUrl=${encodeURIComponent(validPaymentUrl)}`,
+    );
+    render(React.createElement(AutomatePage));
+    fireEvent.click(screen.getByRole("checkbox", { name: "Lead response" }));
+    fireEvent.click(screen.getByRole("button", { name: "Show My Opportunity" }));
+
+    expect(
+      screen.queryByRole("button", { name: "Start My Blueprint — $750" }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.getAllByRole("button", { name: "Talk With Ross First" }),
+    ).toHaveLength(2);
+  });
+
+  it("rejects the Preview authority in Production", () => {
+    process.env.NEXT_PUBLIC_AUTOMATION_BLUEPRINT_PAYMENT_URL = validPaymentUrl;
+    process.env.VERCEL_ENV = "production";
+    render(React.createElement(AutomatePage));
+    fireEvent.click(screen.getByRole("checkbox", { name: "Lead response" }));
+    fireEvent.click(screen.getByRole("button", { name: "Show My Opportunity" }));
+
+    expect(
+      screen.queryByRole("button", { name: "Start My Blueprint — $750" }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.getAllByRole("button", { name: "Talk With Ross First" }),
+    ).toHaveLength(2);
+  });
+
+  it("renders only the owner-approved live Payment Link in Production", () => {
+    process.env.NEXT_PUBLIC_AUTOMATION_BLUEPRINT_PAYMENT_URL = livePaymentUrl;
+    process.env.VERCEL_ENV = "production";
+    render(React.createElement(AutomatePage));
+    fireEvent.click(screen.getByRole("checkbox", { name: "Lead response" }));
+    fireEvent.click(screen.getByRole("button", { name: "Show My Opportunity" }));
+
+    const purchaseButtons = screen.getAllByRole("button", {
+      name: "Start My Blueprint — $750",
+    });
+    expect(purchaseButtons).toHaveLength(2);
+  });
+
+  it("persists the exact brief before navigating from either semantic checkout button", () => {
+    const navigateToCheckout = vi.fn();
+    render(
+      React.createElement(AutomateClient, {
+        paymentUrl: validPaymentUrl,
+        paymentEnvironment: "preview",
+        navigateToCheckout,
+      }),
+    );
+    fireEvent.click(screen.getByRole("checkbox", { name: "Lead response" }));
+    fireEvent.change(screen.getByRole("textbox", { name: "What happens today?" }), {
+      target: { value: "PRIVATE_CURRENT_WORKFLOW" },
+    });
+    fireEvent.change(screen.getByRole("textbox", { name: "What should happen instead?" }), {
+      target: { value: "PRIVATE_DESIRED_WORKFLOW" },
+    });
+    fireEvent.click(screen.getByRole("button", { name: "Show My Opportunity" }));
+
+    const purchaseButtons = screen.getAllByRole("button", {
+      name: "Start My Blueprint — $750",
+    });
+    fireEvent.click(purchaseButtons[0]);
+    expect(readAutomationBrief(window.sessionStorage)).toMatchObject({
+      currentWorkflow: "PRIVATE_CURRENT_WORKFLOW",
+      desiredWorkflow: "PRIVATE_DESIRED_WORKFLOW",
+    });
+    expect(navigateToCheckout).toHaveBeenLastCalledWith(validPaymentUrl);
+
+    window.sessionStorage.clear();
+    fireEvent.click(purchaseButtons[1]);
+    expect(readAutomationBrief(window.sessionStorage)).toMatchObject({
+      currentWorkflow: "PRIVATE_CURRENT_WORKFLOW",
+      desiredWorkflow: "PRIVATE_DESIRED_WORKFLOW",
+    });
+    expect(navigateToCheckout).toHaveBeenCalledTimes(2);
+  });
+
+  it("fails closed without navigation when same-tab brief persistence fails", () => {
+    const navigateToCheckout = vi.fn();
+    vi.spyOn(Storage.prototype, "setItem").mockImplementation(() => {
+      throw new DOMException("Storage unavailable", "SecurityError");
+    });
+    render(
+      React.createElement(AutomateClient, {
+        paymentUrl: validPaymentUrl,
+        paymentEnvironment: "preview",
+        navigateToCheckout,
+      }),
+    );
+    fireEvent.click(screen.getByRole("checkbox", { name: "Lead response" }));
+    fireEvent.click(screen.getByRole("button", { name: "Show My Opportunity" }));
+    fireEvent.click(
+      screen.getAllByRole("button", { name: "Start My Blueprint — $750" })[0],
+    );
+
+    expect(navigateToCheckout).not.toHaveBeenCalled();
+    expect(screen.getByRole("alert")).toHaveTextContent(
+      "Your brief could not be saved privately",
+    );
+  });
+
+  it("stores the complete brief before returning the fixed checkout destination", () => {
+    const brief = parseAutomationBrief({
+      improvement: "Lead response",
+      currentWorkflow: "PRIVATE_CURRENT_WORKFLOW",
+      desiredWorkflow: "PRIVATE_DESIRED_WORKFLOW",
+    });
+
+    const destination = prepareAutomationBlueprintPurchase(
+      window.sessionStorage,
+      brief,
+      validPaymentUrl,
+      "preview",
+    );
+
+    expect(destination).toBe(validPaymentUrl);
+    expect(destination).not.toContain("PRIVATE_CURRENT_WORKFLOW");
+    expect(destination).not.toContain("PRIVATE_DESIRED_WORKFLOW");
+    expect(readAutomationBrief(window.sessionStorage)).toEqual(brief);
+  });
+
+  it("contains no Stripe secret handling or payment-card fields", () => {
+    const pageSource = readFileSync("src/app/automate/page.tsx", "utf8");
+    const intakeSource = readFileSync("src/lib/automationIntake.ts", "utf8");
+    const packageSource = readFileSync("package.json", "utf8");
+
+    expect(`${pageSource}\n${intakeSource}`).not.toMatch(
+      /STRIPE_SECRET|sk_(?:test|live)_|cardNumber|card_number|payment_method/i,
+    );
+    expect(packageSource).not.toMatch(/"stripe"|"@stripe\//i);
+  });
+
   it("stores normalized intake in same-tab state and navigates without a query", () => {
     render(React.createElement(AutomatePage));
 
@@ -136,7 +398,7 @@ describe("automation intake", () => {
     expect(routerPush).not.toHaveBeenCalled();
     expect(window.sessionStorage.getItem(automationIntakeStorageKey)).toBeNull();
 
-    fireEvent.click(screen.getByRole("button", { name: "Discuss My Blueprint" }));
+    fireEvent.click(screen.getAllByRole("button", { name: "Talk With Ross First" })[0]);
 
     expect(routerPush).toHaveBeenCalledWith("/contact");
     expect(routerPush.mock.calls[0][0]).not.toContain("?");
@@ -156,7 +418,7 @@ describe("automation intake", () => {
     });
 
     fireEvent.submit(screen.getByRole("button", { name: "Show My Opportunity" }).closest("form")!);
-    fireEvent.click(screen.getByRole("button", { name: "Discuss My Blueprint" }));
+    fireEvent.click(screen.getAllByRole("button", { name: "Talk With Ross First" })[0]);
 
     expect(routerPush).not.toHaveBeenCalled();
     expect(screen.getByRole("alert")).toHaveTextContent("Nothing was submitted");
@@ -172,7 +434,7 @@ describe("automation intake", () => {
     });
 
     fireEvent.submit(screen.getByRole("button", { name: "Show My Opportunity" }).closest("form")!);
-    fireEvent.click(screen.getByRole("button", { name: "Discuss My Blueprint" }));
+    fireEvent.click(screen.getAllByRole("button", { name: "Talk With Ross First" })[0]);
 
     expect(routerPush).not.toHaveBeenCalled();
     expect(window.location.search).toBe("");
@@ -187,7 +449,7 @@ describe("automation intake", () => {
 
     fireEvent.click(screen.getByRole("checkbox", { name: "Lead response" }));
     fireEvent.submit(screen.getByRole("button", { name: "Show My Opportunity" }).closest("form")!);
-    fireEvent.click(screen.getByRole("button", { name: "Discuss My Blueprint" }));
+    fireEvent.click(screen.getAllByRole("button", { name: "Talk With Ross First" })[0]);
 
     expect(routerPush).toHaveBeenCalledTimes(1);
     expect(screen.getByRole("alert")).toHaveTextContent("Nothing was submitted");
@@ -477,25 +739,61 @@ describe("automation intake", () => {
     fireEvent.click(screen.getByRole("checkbox", { name: "Lead response" }));
     fireEvent.click(screen.getByRole("button", { name: "Show My Opportunity" }));
 
-    const blueprint = screen.getByRole("heading", { name: "$750 Automation Opportunity Blueprint" }).parentElement!;
+    const blueprint = screen.getByRole("heading", { name: "Your $750 Automation Opportunity Blueprint" }).parentElement!;
     for (const text of [
-      "One 60–90 minute workflow interview",
-      "A visual current-workflow map",
-      "Identification of the primary breakdown or revenue-risk point",
-      "Up to three ranked automation opportunities",
-      "A detailed design for the highest-priority solution",
-      "Required software and integrations",
-      "Human-review and failure-handling requirements",
-      "Estimated implementation range and ongoing software costs",
-      "A 30-minute findings review",
-      "A written implementation proposal",
-      "The full $750 credited toward an approved implementation",
+      "A custom, decision-ready plan for automating one costly workflow—not a generic AI report and not the implementation itself.",
+      "Workflow interview and current-state map",
+      "60–90 minute working session",
+      "Documented current process and breakdown points",
+      "Primary automation diagnosis",
+      "Most important problem to solve first",
+      "Operational consequences",
+      "What must remain under human control",
+      "Recommended system design",
+      "Triggers, workflow, outputs, tools and integrations",
+      "Human approvals, exception handling and privacy considerations",
+      "Prioritized opportunities",
+      "Up to three opportunities ranked by business value, feasibility and implementation effort",
+      "Implementation roadmap",
+      "Phases, estimated timeline, software requirements, responsibilities and implementation price range",
+      "Written Blueprint and review",
+      "Customer-owned written deliverable",
+      "30-minute review meeting",
     ]) {
       expect(blueprint).toHaveTextContent(text);
     }
-    expect(blueprint).toHaveTextContent("five-business-day delivery target begins after the workflow interview");
-    expect(blueprint).toHaveTextContent("Implementation, software subscriptions, and third-party fees are not included");
+    expect(screen.getByTestId("blueprint-deliverables").children).toHaveLength(6);
+    expect(blueprint).toHaveTextContent("Delivered within five business days after the interview and receipt of required information");
+    expect(blueprint).toHaveTextContent("The entire $750 is credited toward an approved Stafford Media implementation");
+    expect(blueprint).toHaveTextContent("Implementation work, software subscriptions and third-party fees are excluded");
     expect(blueprint).toHaveTextContent("No revenue or savings are guaranteed");
+  });
+
+  it("renders the purchase sequence immediately before the final decision actions", () => {
+    process.env.NEXT_PUBLIC_AUTOMATION_BLUEPRINT_PAYMENT_URL = validPaymentUrl;
+    process.env.VERCEL_ENV = "preview";
+    render(React.createElement(AutomatePage));
+    fireEvent.click(screen.getByRole("checkbox", { name: "Lead response" }));
+    fireEvent.click(screen.getByRole("button", { name: "Show My Opportunity" }));
+
+    const blueprint = screen.getByRole("heading", {
+      name: "Your $750 Automation Opportunity Blueprint",
+    }).parentElement!;
+    for (const step of [
+      "Purchase the Blueprint.",
+      "Stafford Media contacts you within one business day.",
+      "Complete the workflow interview.",
+      "Receive and review the Blueprint.",
+      "Decide whether to implement without obligation.",
+    ]) {
+      expect(blueprint).toHaveTextContent(step);
+    }
+    expect(blueprint.nextElementSibling).toContainElement(
+      screen.getAllByRole("button", { name: "Start My Blueprint — $750" })[1],
+    );
+    expect(blueprint.nextElementSibling).toContainElement(
+      screen.getAllByRole("button", { name: "Talk With Ross First" })[1],
+    );
   });
 
   it("renders clear selected choices without changing semantic controls", () => {
