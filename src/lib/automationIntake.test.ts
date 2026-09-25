@@ -55,6 +55,7 @@ afterEach(() => {
   scrollIntoView.mockClear();
   matchMedia.mockReset().mockReturnValue({ matches: false });
   delete process.env.NEXT_PUBLIC_AUTOMATION_BLUEPRINT_PAYMENT_URL;
+  delete process.env.VERCEL_ENV;
   window.history.replaceState({}, "", "/");
 });
 
@@ -142,6 +143,13 @@ describe("automation intake", () => {
       publicName: "Automation Opportunity Blueprint",
       paymentType: "one_time",
       quantity: 1,
+      paymentLinks: {
+        preview: {
+          approvedPath: "/test_fZu9AUf8w8fB8zt7tH00003",
+          mode: "test",
+        },
+        production: null,
+      },
     });
 
     render(React.createElement(AutomatePage));
@@ -168,10 +176,15 @@ describe("automation intake", () => {
     expect(parseStripeHostedPaymentLinkUrl(otherSafePaymentUrl)).toBe(
       otherSafePaymentUrl,
     );
-    expect(resolveAutomationBlueprintPaymentUrl(validPaymentUrl)).toBe(
+    expect(resolveAutomationBlueprintPaymentUrl(validPaymentUrl, "preview")).toBe(
       validPaymentUrl,
     );
-    expect(resolveAutomationBlueprintPaymentUrl(otherSafePaymentUrl)).toBeNull();
+    expect(
+      resolveAutomationBlueprintPaymentUrl(otherSafePaymentUrl, "preview"),
+    ).toBeNull();
+    expect(
+      resolveAutomationBlueprintPaymentUrl(validPaymentUrl, "production"),
+    ).toBeNull();
 
     for (const value of [
       undefined,
@@ -188,12 +201,14 @@ describe("automation intake", () => {
       "not a url",
     ]) {
       expect(parseStripeHostedPaymentLinkUrl(value)).toBeNull();
-      expect(resolveAutomationBlueprintPaymentUrl(value)).toBeNull();
+      expect(resolveAutomationBlueprintPaymentUrl(value, "preview")).toBeNull();
+      expect(resolveAutomationBlueprintPaymentUrl(value, "production")).toBeNull();
     }
   });
 
   it("renders the purchase action in both required locations when configured", () => {
     process.env.NEXT_PUBLIC_AUTOMATION_BLUEPRINT_PAYMENT_URL = validPaymentUrl;
+    process.env.VERCEL_ENV = "preview";
     render(React.createElement(AutomatePage));
     fireEvent.click(screen.getByRole("checkbox", { name: "Lead response" }));
     fireEvent.click(screen.getByRole("button", { name: "Show My Opportunity" }));
@@ -237,6 +252,21 @@ describe("automation intake", () => {
     ).toHaveLength(2);
   });
 
+  it("keeps production closed until an owner-approved live authority exists", () => {
+    process.env.NEXT_PUBLIC_AUTOMATION_BLUEPRINT_PAYMENT_URL = validPaymentUrl;
+    process.env.VERCEL_ENV = "production";
+    render(React.createElement(AutomatePage));
+    fireEvent.click(screen.getByRole("checkbox", { name: "Lead response" }));
+    fireEvent.click(screen.getByRole("button", { name: "Show My Opportunity" }));
+
+    expect(
+      screen.queryByRole("link", { name: "Start My Blueprint — $750" }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.getAllByRole("button", { name: "Talk With Ross First" }),
+    ).toHaveLength(2);
+  });
+
   it("stores the complete brief before returning the fixed checkout destination", () => {
     const brief = parseAutomationBrief({
       improvement: "Lead response",
@@ -248,6 +278,7 @@ describe("automation intake", () => {
       window.sessionStorage,
       brief,
       validPaymentUrl,
+      "preview",
     );
 
     expect(destination).toBe(validPaymentUrl);

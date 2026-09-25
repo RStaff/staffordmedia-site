@@ -42,7 +42,13 @@ export const automationBlueprintOfferAuthority = Object.freeze({
   priceUsd: 750,
   paymentType: "one_time",
   quantity: 1,
-  approvedPaymentLinkPath: "/test_fZu9AUf8w8fB8zt7tH00003",
+  paymentLinks: Object.freeze({
+    preview: Object.freeze({
+      approvedPath: "/test_fZu9AUf8w8fB8zt7tH00003",
+      mode: "test",
+    }),
+    production: null,
+  }),
 });
 export const automationBlueprintOfferId = automationBlueprintOfferAuthority.offerId;
 export const automationBlueprintPriceUsd = automationBlueprintOfferAuthority.priceUsd;
@@ -494,12 +500,19 @@ export function parseStripeHostedPaymentLinkUrl(value: unknown) {
   }
 }
 
-export function resolveAutomationBlueprintPaymentUrl(value: unknown) {
+export type AutomationBlueprintPaymentEnvironment = "preview" | "production";
+
+export function resolveAutomationBlueprintPaymentUrl(
+  value: unknown,
+  environment: AutomationBlueprintPaymentEnvironment,
+) {
   const safeUrl = parseStripeHostedPaymentLinkUrl(value);
   if (!safeUrl) return null;
 
-  return new URL(safeUrl).pathname ===
-    automationBlueprintOfferAuthority.approvedPaymentLinkPath
+  const authority = automationBlueprintOfferAuthority.paymentLinks[environment];
+  if (!authority) return null;
+
+  return new URL(safeUrl).pathname === authority.approvedPath
     ? safeUrl
     : null;
 }
@@ -508,8 +521,12 @@ export function prepareAutomationBlueprintPurchase(
   storage: AutomationIntakeStorage,
   brief: AutomationBrief,
   configuredPaymentUrl: unknown,
+  environment: AutomationBlueprintPaymentEnvironment,
 ) {
-  const paymentUrl = resolveAutomationBlueprintPaymentUrl(configuredPaymentUrl);
+  const paymentUrl = resolveAutomationBlueprintPaymentUrl(
+    configuredPaymentUrl,
+    environment,
+  );
   if (!paymentUrl) return null;
   storeAutomationBrief(storage, brief);
   return paymentUrl;
