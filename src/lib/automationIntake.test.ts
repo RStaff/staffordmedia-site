@@ -33,6 +33,7 @@ globalThis.React = React;
 
 const routerPush = vi.hoisted(() => vi.fn());
 const validPaymentUrl = "https://buy.stripe.com/test_fZu9AUf8w8fB8zt7tH00003";
+const livePaymentUrl = "https://buy.stripe.com/cNieVe5xW8fBg1V8xL00002";
 const otherSafePaymentUrl = "https://buy.stripe.com/test_other_safe_link";
 vi.mock("next/navigation", () => ({ useRouter: () => ({ push: routerPush }) }));
 
@@ -148,7 +149,10 @@ describe("automation intake", () => {
           approvedPath: "/test_fZu9AUf8w8fB8zt7tH00003",
           mode: "test",
         },
-        production: null,
+        production: {
+          approvedPath: "/cNieVe5xW8fBg1V8xL00002",
+          mode: "live",
+        },
       },
     });
 
@@ -184,6 +188,12 @@ describe("automation intake", () => {
     ).toBeNull();
     expect(
       resolveAutomationBlueprintPaymentUrl(validPaymentUrl, "production"),
+    ).toBeNull();
+    expect(
+      resolveAutomationBlueprintPaymentUrl(livePaymentUrl, "production"),
+    ).toBe(livePaymentUrl);
+    expect(
+      resolveAutomationBlueprintPaymentUrl(livePaymentUrl, "preview"),
     ).toBeNull();
 
     for (const value of [
@@ -252,7 +262,7 @@ describe("automation intake", () => {
     ).toHaveLength(2);
   });
 
-  it("keeps production closed until an owner-approved live authority exists", () => {
+  it("rejects the Preview authority in Production", () => {
     process.env.NEXT_PUBLIC_AUTOMATION_BLUEPRINT_PAYMENT_URL = validPaymentUrl;
     process.env.VERCEL_ENV = "production";
     render(React.createElement(AutomatePage));
@@ -265,6 +275,22 @@ describe("automation intake", () => {
     expect(
       screen.getAllByRole("button", { name: "Talk With Ross First" }),
     ).toHaveLength(2);
+  });
+
+  it("renders only the owner-approved live Payment Link in Production", () => {
+    process.env.NEXT_PUBLIC_AUTOMATION_BLUEPRINT_PAYMENT_URL = livePaymentUrl;
+    process.env.VERCEL_ENV = "production";
+    render(React.createElement(AutomatePage));
+    fireEvent.click(screen.getByRole("checkbox", { name: "Lead response" }));
+    fireEvent.click(screen.getByRole("button", { name: "Show My Opportunity" }));
+
+    const purchaseLinks = screen.getAllByRole("link", {
+      name: "Start My Blueprint — $750",
+    });
+    expect(purchaseLinks).toHaveLength(2);
+    for (const link of purchaseLinks) {
+      expect(link).toHaveAttribute("href", livePaymentUrl);
+    }
   });
 
   it("stores the complete brief before returning the fixed checkout destination", () => {

@@ -47,7 +47,10 @@ export const automationBlueprintOfferAuthority = Object.freeze({
       approvedPath: "/test_fZu9AUf8w8fB8zt7tH00003",
       mode: "test",
     }),
-    production: null,
+    production: Object.freeze({
+      approvedPath: "/cNieVe5xW8fBg1V8xL00002",
+      mode: "live",
+    }),
   }),
 });
 export const automationBlueprintOfferId = automationBlueprintOfferAuthority.offerId;
