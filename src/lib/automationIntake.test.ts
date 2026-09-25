@@ -30,6 +30,11 @@ Object.defineProperty(HTMLElement.prototype, "scrollIntoView", {
   configurable: true,
   value: scrollIntoView,
 });
+const matchMedia = vi.fn().mockReturnValue({ matches: false });
+Object.defineProperty(window, "matchMedia", {
+  configurable: true,
+  value: matchMedia,
+});
 
 afterEach(() => {
   cleanup();
@@ -37,6 +42,7 @@ afterEach(() => {
   window.sessionStorage.clear();
   routerPush.mockClear();
   scrollIntoView.mockClear();
+  matchMedia.mockReset().mockReturnValue({ matches: false });
 });
 
 describe("automation intake", () => {
@@ -371,6 +377,71 @@ describe("automation intake", () => {
     expect(preview?.improvedWorkflowSteps.length).toBeGreaterThanOrEqual(4);
   });
 
+  it("presents both validated workflow descriptions without changing the recommendation", () => {
+    const preview = buildAutomationOpportunityPreview(
+      parseAutomationBrief({
+        improvement: "Lead response",
+        businessType: "Home Services",
+        currentWorkflow: "UNIQUE CURRENT: calls are written on a dispatch pad.",
+        desiredWorkflow: "UNIQUE DESIRED: callbacks have an owner and visible outcome.",
+      }),
+    );
+
+    expect(preview?.opportunities[0].id).toBe("lead-response");
+    expect(preview?.currentWorkflowContext).toBe(
+      "UNIQUE CURRENT: calls are written on a dispatch pad.",
+    );
+    expect(preview?.desiredWorkflowContext).toBe(
+      "UNIQUE DESIRED: callbacks have an owner and visible outcome.",
+    );
+  });
+
+  it("uses the deterministic fallback when one workflow description is missing", () => {
+    const preview = buildAutomationOpportunityPreview(
+      parseAutomationBrief({
+        improvement: "Estimate / quote follow-up",
+        currentWorkflow: "Estimates are checked from a shared list.",
+      }),
+    );
+
+    expect(preview?.currentWorkflowContext).toBe("Estimates are checked from a shared list.");
+    expect(preview?.desiredWorkflowContext).toMatch(/^Recommended outcome:/);
+    expect(preview?.desiredWorkflowContext).toContain("Its status and due date are tracked");
+  });
+
+  it("keeps bounded Unicode workflow descriptions display-only", () => {
+    const currentWorkflow = "🔧".repeat(automationWorkflowTextMaxLength + 20);
+    const preview = buildAutomationOpportunityPreview(
+      parseAutomationBrief({
+        improvement: "Lead response",
+        currentWorkflow,
+        desiredWorkflow: "Move orders into an ecommerce exception queue",
+      }),
+    );
+
+    expect(Array.from(preview?.currentWorkflowContext || "")).toHaveLength(
+      automationWorkflowTextMaxLength,
+    );
+    expect(preview?.opportunities[0].id).toBe("lead-response");
+  });
+
+  it("renders markup-like workflow descriptions as plain text", () => {
+    render(React.createElement(AutomatePage));
+    fireEvent.click(screen.getByRole("checkbox", { name: "Lead response" }));
+    fireEvent.change(screen.getByLabelText("What happens today?"), {
+      target: { value: '<img src=x onerror="alert(1)"> CURRENT' },
+    });
+    fireEvent.change(screen.getByLabelText("What should happen instead?"), {
+      target: { value: "<script>alert('desired')</script> DESIRED" },
+    });
+    fireEvent.click(screen.getByRole("button", { name: "Show My Opportunity" }));
+
+    expect(screen.getByText('<img src=x onerror="alert(1)"> CURRENT')).toBeInTheDocument();
+    expect(screen.getByText("<script>alert('desired')</script> DESIRED")).toBeInTheDocument();
+    expect(document.querySelector("script")).toBeNull();
+    expect(document.querySelector("img[src='x']")).toBeNull();
+  });
+
   it("submitting valid answers displays the preview", () => {
     render(React.createElement(AutomatePage));
     fireEvent.click(screen.getByRole("radio", { name: "Home Services" }));
@@ -443,6 +514,19 @@ describe("automation intake", () => {
     expect(heading).toHaveFocus();
     expect(heading).toHaveClass("automate-focus-target");
     expect(scrollIntoView).toHaveBeenCalledWith({ behavior: "smooth", block: "start" });
+  });
+
+  it("uses an immediate reveal and disables global smooth scrolling for reduced motion", () => {
+    matchMedia.mockReturnValue({ matches: true });
+    render(React.createElement(AutomatePage));
+    fireEvent.click(screen.getByRole("checkbox", { name: "Lead response" }));
+    fireEvent.click(screen.getByRole("button", { name: "Show My Opportunity" }));
+
+    expect(scrollIntoView).toHaveBeenLastCalledWith({ behavior: "auto", block: "start" });
+    const css = readFileSync("src/app/globals.css", "utf8");
+    expect(css).toMatch(
+      /@media \(prefers-reduced-motion: reduce\)[\s\S]*html,[\s\S]*body\s*{[\s\S]*scroll-behavior:\s*auto/,
+    );
   });
 
   it("restores the retained form and usable focus for adjustment", () => {

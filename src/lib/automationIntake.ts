@@ -69,6 +69,8 @@ export type AutomationOpportunityPreview = {
   primaryDiagnosis: string;
   primaryConsequence: string;
   opportunities: AutomationOpportunity[];
+  currentWorkflowContext: string;
+  desiredWorkflowContext: string;
   currentWorkflowSteps: string[];
   improvedWorkflowSteps: string[];
   humanControls: string[];
@@ -353,6 +355,10 @@ export function buildAutomationOpportunityPreview(
     primaryDiagnosis: `${first.diagnosis} For ${business.toLowerCase()}, your answers prioritize ${selectedWork}${systems}.`,
     primaryConsequence: `${first.consequence} This is a bounded diagnosis to confirm during the workflow interview, not an assumption about your internal operations.`,
     opportunities,
+    currentWorkflowContext:
+      brief.currentWorkflow || `Based on your selections: ${first.currentSteps.join(" → ")}.`,
+    desiredWorkflowContext:
+      brief.desiredWorkflow || `Recommended outcome: ${first.improvedSteps.join(" → ")}.`,
     currentWorkflowSteps: first.currentSteps,
     improvedWorkflowSteps: first.improvedSteps,
     humanControls: [

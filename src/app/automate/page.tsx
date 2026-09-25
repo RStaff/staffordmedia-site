@@ -245,10 +245,18 @@ export default function AutomatePage() {
             <div className="mt-5 grid gap-4 lg:grid-cols-2">
               <article className="premium-panel-soft p-6">
                 <h4 className="text-lg font-semibold text-white">Current</h4>
+                <p className="mt-4 rounded-lg border border-white/10 bg-white/[0.03] p-4 text-sm leading-6 text-slate-200">
+                  <strong className="block text-white">Your current workflow</strong>
+                  <span className="mt-1 block whitespace-pre-wrap">{preview.currentWorkflowContext}</span>
+                </p>
                 <WorkflowSteps steps={preview.currentWorkflowSteps} />
               </article>
               <article className="premium-panel-soft border-cyan-300/30 p-6">
                 <h4 className="text-lg font-semibold text-cyan-100">Improved</h4>
+                <p className="mt-4 rounded-lg border border-cyan-300/20 bg-cyan-300/[0.04] p-4 text-sm leading-6 text-slate-200">
+                  <strong className="block text-cyan-100">Your desired outcome</strong>
+                  <span className="mt-1 block whitespace-pre-wrap">{preview.desiredWorkflowContext}</span>
+                </p>
                 <WorkflowSteps steps={preview.improvedWorkflowSteps} />
               </article>
             </div>
