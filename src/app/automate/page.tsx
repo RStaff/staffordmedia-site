@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useRef, useState, type FormEvent } from "react";
+import { useEffect, useId, useRef, useState, type FormEvent } from "react";
 import {
   automationBusinessTypes,
   automationImprovements,
@@ -66,12 +66,21 @@ function Choice({
   type: "checkbox" | "radio";
   description?: string;
 }) {
+  const descriptionId = useId();
+
   return (
     <label className="automate-choice">
-      <input className="automate-choice-input" type={type} name={name} value={value} aria-label={value} />
+      <input
+        className="automate-choice-input"
+        type={type}
+        name={name}
+        value={value}
+        aria-label={value}
+        aria-describedby={description ? descriptionId : undefined}
+      />
       <span>
         <strong className="automate-choice-label">{value}</strong>
-        {description ? <span className="automate-choice-description">{description}</span> : null}
+        {description ? <span id={descriptionId} className="automate-choice-description">{description}</span> : null}
       </span>
     </label>
   );

@@ -8,8 +8,11 @@ import "@testing-library/jest-dom/vitest";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import AutomatePage from "@/app/automate/page";
 import {
+  automationBusinessTypes,
+  automationImprovements,
   automationIntakeStorageKey,
   automationMailtoUriMaxLength,
+  automationSystems,
   automationWorkflowTextMaxLength,
   buildAutomationMailto,
   buildAutomationOpportunityPreview,
@@ -503,6 +506,68 @@ describe("automation intake", () => {
     expect(choice).toBeChecked();
     expect(choice.closest("label")).toHaveClass("automate-choice");
     expect(choice.closest("label")).toHaveTextContent("Field and office teams coordinating inquiries");
+  });
+
+  it("associates choice descriptions without changing concise accessible names", () => {
+    render(React.createElement(AutomatePage));
+    const describedChoices = [
+      [
+        "radio",
+        "Home Services",
+        "Field and office teams coordinating inquiries, estimates, and schedules.",
+      ],
+      [
+        "checkbox",
+        "Lead response",
+        "Help new inquiries reach the right person with visible ownership.",
+      ],
+      ["checkbox", "CRM", "Customer or prospect records."],
+    ] as const;
+
+    const descriptionIds = describedChoices.map(([role, name, description]) => {
+      const control = screen.getByRole(role, { name });
+      const descriptionId = control.getAttribute("aria-describedby");
+      expect(descriptionId).toBeTruthy();
+      expect(control).toHaveAccessibleName(name);
+      expect(control).toHaveAccessibleDescription(description);
+      expect(document.getElementById(descriptionId!)).toHaveTextContent(description);
+      return descriptionId;
+    });
+
+    expect(new Set(descriptionIds).size).toBe(descriptionIds.length);
+  });
+
+  it("does not reference descriptions that do not exist", () => {
+    render(React.createElement(AutomatePage));
+
+    expect(screen.getByRole("checkbox", { name: "Appointment reminders" })).not.toHaveAttribute(
+      "aria-describedby",
+    );
+    expect(screen.getByRole("checkbox", { name: "Email" })).not.toHaveAttribute(
+      "aria-describedby",
+    );
+  });
+
+  it("preserves every choice value and the deterministic recommendation mapping", () => {
+    render(React.createElement(AutomatePage));
+    const valuesFor = (name: string) =>
+      Array.from(document.querySelectorAll<HTMLInputElement>(`input[name="${name}"]`)).map(
+        (input) => input.value,
+      );
+
+    expect(valuesFor("improvement")).toEqual(automationImprovements);
+    expect(valuesFor("businessType")).toEqual(automationBusinessTypes);
+    expect(valuesFor("system")).toEqual(automationSystems);
+
+    for (const radio of document.querySelectorAll<HTMLInputElement>('input[name="businessType"]')) {
+      fireEvent.click(radio);
+      expect(radio).toBeChecked();
+    }
+
+    const preview = buildAutomationOpportunityPreview(
+      parseAutomationBrief({ improvement: "Lead response", businessType: "Home Services" }),
+    );
+    expect(preview?.opportunities[0].id).toBe("lead-response");
   });
 
   it("focuses and reveals the primary preview heading", () => {
