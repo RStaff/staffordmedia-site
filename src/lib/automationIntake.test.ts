@@ -6,6 +6,7 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom/vitest";
 import { afterEach, describe, expect, it, vi } from "vitest";
+import AutomateClient from "@/app/automate/AutomateClient";
 import AutomatePage from "@/app/automate/page";
 import {
   automationBlueprintOfferAuthority,
@@ -223,19 +224,21 @@ describe("automation intake", () => {
     fireEvent.click(screen.getByRole("checkbox", { name: "Lead response" }));
     fireEvent.click(screen.getByRole("button", { name: "Show My Opportunity" }));
 
-    const purchaseLinks = screen.getAllByRole("link", {
+    const purchaseButtons = screen.getAllByRole("button", {
       name: "Start My Blueprint — $750",
     });
-    expect(purchaseLinks).toHaveLength(2);
-    for (const link of purchaseLinks) {
-      expect(link).toHaveAttribute("href", validPaymentUrl);
-      expect(link).toHaveAttribute(
+    expect(purchaseButtons).toHaveLength(2);
+    for (const button of purchaseButtons) {
+      expect(button.tagName).toBe("BUTTON");
+      expect(button).not.toHaveAttribute("href");
+      expect(button).not.toHaveAttribute("target");
+      expect(button).toHaveAttribute(
         "data-offer-id",
         "STAFFORDMEDIA_AUTOMATION_OPPORTUNITY_ASSESSMENT_V1",
       );
     }
     expect(screen.getByTestId("blueprint-offer-actions")).toContainElement(
-      purchaseLinks[0],
+      purchaseButtons[0],
     );
     expect(
       screen.getAllByRole("button", { name: "Talk With Ross First" }),
@@ -255,7 +258,7 @@ describe("automation intake", () => {
     fireEvent.click(screen.getByRole("button", { name: "Show My Opportunity" }));
 
     expect(
-      screen.queryByRole("link", { name: "Start My Blueprint — $750" }),
+      screen.queryByRole("button", { name: "Start My Blueprint — $750" }),
     ).not.toBeInTheDocument();
     expect(
       screen.getAllByRole("button", { name: "Talk With Ross First" }),
@@ -270,7 +273,7 @@ describe("automation intake", () => {
     fireEvent.click(screen.getByRole("button", { name: "Show My Opportunity" }));
 
     expect(
-      screen.queryByRole("link", { name: "Start My Blueprint — $750" }),
+      screen.queryByRole("button", { name: "Start My Blueprint — $750" }),
     ).not.toBeInTheDocument();
     expect(
       screen.getAllByRole("button", { name: "Talk With Ross First" }),
@@ -284,13 +287,71 @@ describe("automation intake", () => {
     fireEvent.click(screen.getByRole("checkbox", { name: "Lead response" }));
     fireEvent.click(screen.getByRole("button", { name: "Show My Opportunity" }));
 
-    const purchaseLinks = screen.getAllByRole("link", {
+    const purchaseButtons = screen.getAllByRole("button", {
       name: "Start My Blueprint — $750",
     });
-    expect(purchaseLinks).toHaveLength(2);
-    for (const link of purchaseLinks) {
-      expect(link).toHaveAttribute("href", livePaymentUrl);
-    }
+    expect(purchaseButtons).toHaveLength(2);
+  });
+
+  it("persists the exact brief before navigating from either semantic checkout button", () => {
+    const navigateToCheckout = vi.fn();
+    render(
+      React.createElement(AutomateClient, {
+        paymentUrl: validPaymentUrl,
+        paymentEnvironment: "preview",
+        navigateToCheckout,
+      }),
+    );
+    fireEvent.click(screen.getByRole("checkbox", { name: "Lead response" }));
+    fireEvent.change(screen.getByRole("textbox", { name: "What happens today?" }), {
+      target: { value: "PRIVATE_CURRENT_WORKFLOW" },
+    });
+    fireEvent.change(screen.getByRole("textbox", { name: "What should happen instead?" }), {
+      target: { value: "PRIVATE_DESIRED_WORKFLOW" },
+    });
+    fireEvent.click(screen.getByRole("button", { name: "Show My Opportunity" }));
+
+    const purchaseButtons = screen.getAllByRole("button", {
+      name: "Start My Blueprint — $750",
+    });
+    fireEvent.click(purchaseButtons[0]);
+    expect(readAutomationBrief(window.sessionStorage)).toMatchObject({
+      currentWorkflow: "PRIVATE_CURRENT_WORKFLOW",
+      desiredWorkflow: "PRIVATE_DESIRED_WORKFLOW",
+    });
+    expect(navigateToCheckout).toHaveBeenLastCalledWith(validPaymentUrl);
+
+    window.sessionStorage.clear();
+    fireEvent.click(purchaseButtons[1]);
+    expect(readAutomationBrief(window.sessionStorage)).toMatchObject({
+      currentWorkflow: "PRIVATE_CURRENT_WORKFLOW",
+      desiredWorkflow: "PRIVATE_DESIRED_WORKFLOW",
+    });
+    expect(navigateToCheckout).toHaveBeenCalledTimes(2);
+  });
+
+  it("fails closed without navigation when same-tab brief persistence fails", () => {
+    const navigateToCheckout = vi.fn();
+    vi.spyOn(Storage.prototype, "setItem").mockImplementation(() => {
+      throw new DOMException("Storage unavailable", "SecurityError");
+    });
+    render(
+      React.createElement(AutomateClient, {
+        paymentUrl: validPaymentUrl,
+        paymentEnvironment: "preview",
+        navigateToCheckout,
+      }),
+    );
+    fireEvent.click(screen.getByRole("checkbox", { name: "Lead response" }));
+    fireEvent.click(screen.getByRole("button", { name: "Show My Opportunity" }));
+    fireEvent.click(
+      screen.getAllByRole("button", { name: "Start My Blueprint — $750" })[0],
+    );
+
+    expect(navigateToCheckout).not.toHaveBeenCalled();
+    expect(screen.getByRole("alert")).toHaveTextContent(
+      "Your brief could not be saved privately",
+    );
   });
 
   it("stores the complete brief before returning the fixed checkout destination", () => {
@@ -728,7 +789,7 @@ describe("automation intake", () => {
       expect(blueprint).toHaveTextContent(step);
     }
     expect(blueprint.nextElementSibling).toContainElement(
-      screen.getAllByRole("link", { name: "Start My Blueprint — $750" })[1],
+      screen.getAllByRole("button", { name: "Start My Blueprint — $750" })[1],
     );
     expect(blueprint.nextElementSibling).toContainElement(
       screen.getAllByRole("button", { name: "Talk With Ross First" })[1],

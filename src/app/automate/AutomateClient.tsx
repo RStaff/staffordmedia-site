@@ -8,7 +8,6 @@ import {
   useRef,
   useState,
   type FormEvent,
-  type MouseEvent,
 } from "react";
 import {
   automationBusinessTypes,
@@ -158,9 +157,11 @@ function focusAndReveal(element: HTMLElement | null) {
 export default function AutomateClient({
   paymentUrl,
   paymentEnvironment,
+  navigateToCheckout = (destination) => window.location.assign(destination),
 }: {
   paymentUrl: string | null;
   paymentEnvironment: AutomationBlueprintPaymentEnvironment;
+  navigateToCheckout?: (destination: string) => void;
 }) {
   const router = useRouter();
   const [hydrated, setHydrated] = useState(false);
@@ -218,21 +219,25 @@ export default function AutomateClient({
     }
   }
 
-  function handlePurchase(event: MouseEvent<HTMLAnchorElement>) {
+  function handlePurchase() {
     if (!brief || !paymentUrl) {
-      event.preventDefault();
+      setHandoffError(true);
       return;
     }
     setHandoffError(false);
     try {
-      prepareAutomationBlueprintPurchase(
+      const destination = prepareAutomationBlueprintPurchase(
         window.sessionStorage,
         brief,
         paymentUrl,
         paymentEnvironment,
       );
+      if (!destination) {
+        setHandoffError(true);
+        return;
+      }
+      navigateToCheckout(destination);
     } catch {
-      event.preventDefault();
       setHandoffError(true);
     }
   }
@@ -429,9 +434,9 @@ export default function AutomateClient({
             </p>
             <div className="mt-5 flex flex-wrap gap-4" data-testid="blueprint-offer-actions">
               {paymentUrl ? (
-                <a href={paymentUrl} onClick={handlePurchase} data-offer-id={automationBlueprintOfferAuthority.offerId} className="smc-button smc-button-primary">
+                <button type="button" onClick={handlePurchase} data-offer-id={automationBlueprintOfferAuthority.offerId} className="smc-button smc-button-primary">
                   Start My Blueprint — ${automationBlueprintPriceUsd}
-                </a>
+                </button>
               ) : null}
               <button type="button" onClick={handleDiscussOpportunity} className="smc-button smc-button-secondary">Talk With Ross First</button>
             </div>
@@ -439,9 +444,9 @@ export default function AutomateClient({
 
           <div className="flex flex-wrap gap-4">
             {paymentUrl ? (
-              <a href={paymentUrl} onClick={handlePurchase} data-offer-id={automationBlueprintOfferAuthority.offerId} className="smc-button smc-button-primary">
+              <button type="button" onClick={handlePurchase} data-offer-id={automationBlueprintOfferAuthority.offerId} className="smc-button smc-button-primary">
                 Start My Blueprint — ${automationBlueprintPriceUsd}
-              </a>
+              </button>
             ) : null}
             <button type="button" onClick={handleDiscussOpportunity} className="smc-button smc-button-secondary">Talk With Ross First</button>
             <button type="button" onClick={handleAdjustAnswers} className="smc-button smc-button-secondary">Adjust My Answers</button>
