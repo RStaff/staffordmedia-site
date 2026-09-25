@@ -162,7 +162,7 @@ describe("automation intake", () => {
 
     expect(
       screen.getByRole("heading", {
-        name: "$750 Automation Opportunity Blueprint",
+        name: "Your $750 Automation Opportunity Blueprint",
       }),
     ).toBeInTheDocument();
     expect(
@@ -678,25 +678,61 @@ describe("automation intake", () => {
     fireEvent.click(screen.getByRole("checkbox", { name: "Lead response" }));
     fireEvent.click(screen.getByRole("button", { name: "Show My Opportunity" }));
 
-    const blueprint = screen.getByRole("heading", { name: "$750 Automation Opportunity Blueprint" }).parentElement!;
+    const blueprint = screen.getByRole("heading", { name: "Your $750 Automation Opportunity Blueprint" }).parentElement!;
     for (const text of [
-      "One 60–90 minute workflow interview",
-      "A visual current-workflow map",
-      "Identification of the primary breakdown or revenue-risk point",
-      "Up to three ranked automation opportunities",
-      "A detailed design for the highest-priority solution",
-      "Required software and integrations",
-      "Human-review and failure-handling requirements",
-      "Estimated implementation range and ongoing software costs",
-      "A 30-minute findings review",
-      "A written implementation proposal",
-      "The full $750 credited toward an approved implementation",
+      "A custom, decision-ready plan for automating one costly workflow—not a generic AI report and not the implementation itself.",
+      "Workflow interview and current-state map",
+      "60–90 minute working session",
+      "Documented current process and breakdown points",
+      "Primary automation diagnosis",
+      "Most important problem to solve first",
+      "Operational consequences",
+      "What must remain under human control",
+      "Recommended system design",
+      "Triggers, workflow, outputs, tools and integrations",
+      "Human approvals, exception handling and privacy considerations",
+      "Prioritized opportunities",
+      "Up to three opportunities ranked by business value, feasibility and implementation effort",
+      "Implementation roadmap",
+      "Phases, estimated timeline, software requirements, responsibilities and implementation price range",
+      "Written Blueprint and review",
+      "Customer-owned written deliverable",
+      "30-minute review meeting",
     ]) {
       expect(blueprint).toHaveTextContent(text);
     }
-    expect(blueprint).toHaveTextContent("five-business-day delivery target begins after the workflow interview");
-    expect(blueprint).toHaveTextContent("Implementation, software subscriptions, and third-party fees are not included");
+    expect(screen.getByTestId("blueprint-deliverables").children).toHaveLength(6);
+    expect(blueprint).toHaveTextContent("Delivered within five business days after the interview and receipt of required information");
+    expect(blueprint).toHaveTextContent("The entire $750 is credited toward an approved Stafford Media implementation");
+    expect(blueprint).toHaveTextContent("Implementation work, software subscriptions and third-party fees are excluded");
     expect(blueprint).toHaveTextContent("No revenue or savings are guaranteed");
+  });
+
+  it("renders the purchase sequence immediately before the final decision actions", () => {
+    process.env.NEXT_PUBLIC_AUTOMATION_BLUEPRINT_PAYMENT_URL = validPaymentUrl;
+    process.env.VERCEL_ENV = "preview";
+    render(React.createElement(AutomatePage));
+    fireEvent.click(screen.getByRole("checkbox", { name: "Lead response" }));
+    fireEvent.click(screen.getByRole("button", { name: "Show My Opportunity" }));
+
+    const blueprint = screen.getByRole("heading", {
+      name: "Your $750 Automation Opportunity Blueprint",
+    }).parentElement!;
+    for (const step of [
+      "Purchase the Blueprint.",
+      "Stafford Media contacts you within one business day.",
+      "Complete the workflow interview.",
+      "Receive and review the Blueprint.",
+      "Decide whether to implement without obligation.",
+    ]) {
+      expect(blueprint).toHaveTextContent(step);
+    }
+    expect(blueprint.nextElementSibling).toContainElement(
+      screen.getAllByRole("link", { name: "Start My Blueprint — $750" })[1],
+    );
+    expect(blueprint.nextElementSibling).toContainElement(
+      screen.getAllByRole("button", { name: "Talk With Ross First" })[1],
+    );
   });
 
   it("renders clear selected choices without changing semantic controls", () => {

@@ -53,17 +53,55 @@ const systemDescriptions: Partial<Record<(typeof automationSystems)[number], str
 };
 
 const blueprintDeliverables = [
-  "One 60–90 minute workflow interview",
-  "A visual current-workflow map",
-  "Identification of the primary breakdown or revenue-risk point",
-  "Up to three ranked automation opportunities",
-  "A detailed design for the highest-priority solution",
-  "Required software and integrations",
-  "Human-review and failure-handling requirements",
-  "Estimated implementation range and ongoing software costs",
-  "A 30-minute findings review",
-  "A written implementation proposal",
-  "The full $750 credited toward an approved implementation",
+  {
+    title: "Workflow interview and current-state map",
+    details: [
+      "60–90 minute working session",
+      "Documented current process and breakdown points",
+    ],
+  },
+  {
+    title: "Primary automation diagnosis",
+    details: [
+      "Most important problem to solve first",
+      "Operational consequences",
+      "What must remain under human control",
+    ],
+  },
+  {
+    title: "Recommended system design",
+    details: [
+      "Triggers, workflow, outputs, tools and integrations",
+      "Human approvals, exception handling and privacy considerations",
+    ],
+  },
+  {
+    title: "Prioritized opportunities",
+    details: [
+      "Up to three opportunities ranked by business value, feasibility and implementation effort",
+    ],
+  },
+  {
+    title: "Implementation roadmap",
+    details: [
+      "Phases, estimated timeline, software requirements, responsibilities and implementation price range",
+    ],
+  },
+  {
+    title: "Written Blueprint and review",
+    details: [
+      "Customer-owned written deliverable",
+      "30-minute review meeting",
+    ],
+  },
+];
+
+const blueprintNextSteps = [
+  "Purchase the Blueprint.",
+  "Stafford Media contacts you within one business day.",
+  "Complete the workflow interview.",
+  "Receive and review the Blueprint.",
+  "Decide whether to implement without obligation.",
 ];
 
 function Choice({
@@ -336,22 +374,58 @@ export default function AutomateClient({
             </ul>
           </section>
 
+          <section className="premium-panel-soft p-6 md:p-8">
+            <h3 className="text-xl font-semibold text-white">Four questions we confirm during the Blueprint</h3>
+            <ol className="mt-4 grid gap-3 text-sm leading-6 text-slate-300 md:grid-cols-2">
+              {preview.assessmentQuestions.map((item, index) => <li key={item}><strong className="text-white">{index + 1}.</strong> {item}</li>)}
+            </ol>
+          </section>
+
           <section className="automate-blueprint" aria-labelledby="blueprint-heading">
             <p className="eyebrow text-cyan-200">Paid engagement</p>
-            <h3 id="blueprint-heading" className="mt-3 text-3xl font-bold text-white">$750 Automation Opportunity Blueprint</h3>
-            <p className="mt-4 max-w-3xl text-lg leading-8 text-slate-200">A bounded engagement that turns the selected workflow into a reviewed current-state map and an implementation-ready first-system design.</p>
-            <h4 className="mt-7 font-semibold text-white">What you receive</h4>
-            <ul className="mt-4 grid gap-x-8 gap-y-3 text-sm leading-6 text-slate-200 md:grid-cols-2">
-              {blueprintDeliverables.map((item) => <li key={item} className="flex gap-3"><span aria-hidden="true" className="text-cyan-300">✓</span><span>{item}</span></li>)}
-            </ul>
-            <div className="mt-7 grid gap-4 border-t border-white/10 pt-6 text-sm leading-6 text-slate-300 md:grid-cols-2">
-              <p><strong className="text-white">Delivery:</strong> The five-business-day delivery target begins after the workflow interview and receipt of required information.</p>
-              <p><strong className="text-white">Exclusions:</strong> Implementation, software subscriptions, and third-party fees are not included. No revenue or savings are guaranteed.</p>
+            <h3 id="blueprint-heading" className="mt-3 text-3xl font-bold text-white">Your $750 Automation Opportunity Blueprint</h3>
+            <p className="mt-4 max-w-4xl text-lg leading-8 text-slate-200">A custom, decision-ready plan for automating one costly workflow—not a generic AI report and not the implementation itself.</p>
+
+            <h4 className="mt-8 text-lg font-semibold text-white">What your Blueprint includes</h4>
+            <ol className="mt-5 grid gap-4 md:grid-cols-2" data-testid="blueprint-deliverables">
+              {blueprintDeliverables.map((deliverable, index) => (
+                <li key={deliverable.title} className="rounded-lg border border-white/10 bg-white/[0.04] p-5">
+                  <div className="flex items-start gap-3">
+                    <span aria-hidden="true" className="automate-step-number">{index + 1}</span>
+                    <div>
+                      <h5 className="font-semibold text-white">{deliverable.title}</h5>
+                      <ul className="mt-2 grid gap-1 text-sm leading-6 text-slate-300">
+                        {deliverable.details.map((detail) => <li key={detail}>• {detail}</li>)}
+                      </ul>
+                    </div>
+                  </div>
+                </li>
+              ))}
+            </ol>
+
+            <div className="mt-7 grid gap-4 border-t border-white/10 pt-6 text-sm leading-6 text-slate-300 md:grid-cols-3">
+              <p><strong className="text-white">Delivery:</strong> Delivered within five business days after the interview and receipt of required information.</p>
+              <p><strong className="text-white">Implementation credit:</strong> The entire $750 is credited toward an approved Stafford Media implementation.</p>
+              <p><strong className="text-white">Exclusions:</strong> Implementation work, software subscriptions and third-party fees are excluded.</p>
             </div>
-            <p className="mt-6 text-sm leading-6 text-slate-200">
+
+            <div className="mt-8 rounded-lg border border-cyan-300/20 bg-cyan-300/[0.04] p-5">
+              <h4 className="text-lg font-semibold text-white">What happens next</h4>
+              <ol className="mt-4 grid gap-3 text-sm leading-6 text-slate-200 sm:grid-cols-2 lg:grid-cols-5">
+                {blueprintNextSteps.map((step, index) => (
+                  <li key={step} className="flex gap-3">
+                    <span aria-hidden="true" className="font-bold text-cyan-200">{index + 1}.</span>
+                    <span>{step}</span>
+                  </li>
+                ))}
+              </ol>
+            </div>
+
+            <p className="mt-6 text-sm leading-6 text-slate-300">
               Payment purchases the Blueprint engagement described above, not implementation.
               Checkout uses the owner-approved Stripe Payment Link for this exact one-time $750 Blueprint.
               Ross manually confirms payment in Stripe before recording the engagement or scheduling work.
+              No revenue or savings are guaranteed.
             </p>
             <div className="mt-5 flex flex-wrap gap-4" data-testid="blueprint-offer-actions">
               {paymentUrl ? (
@@ -361,13 +435,6 @@ export default function AutomateClient({
               ) : null}
               <button type="button" onClick={handleDiscussOpportunity} className="smc-button smc-button-secondary">Talk With Ross First</button>
             </div>
-          </section>
-
-          <section className="premium-panel-soft p-6 md:p-8">
-            <h3 className="text-xl font-semibold text-white">Four questions we confirm during the Blueprint</h3>
-            <ol className="mt-4 grid gap-3 text-sm leading-6 text-slate-300 md:grid-cols-2">
-              {preview.assessmentQuestions.map((item, index) => <li key={item}><strong className="text-white">{index + 1}.</strong> {item}</li>)}
-            </ol>
           </section>
 
           <div className="flex flex-wrap gap-4">
