@@ -13,8 +13,14 @@ import ContactPage from "./page";
 
 globalThis.React = React;
 
+const analytics = vi.hoisted(() => ({ track: vi.fn(() => true) }));
+vi.mock("@/components/analytics/AnalyticsProvider", () => ({
+  useStaffordMediaAnalytics: () => ({ consent: "accepted", track: analytics.track }),
+}));
+
 describe("contact intake handoff", () => {
   beforeEach(() => {
+    analytics.track.mockReset().mockReturnValue(true);
     window.sessionStorage.clear();
     window.history.replaceState({}, "", "/contact");
     Object.defineProperty(navigator, "clipboard", {
@@ -54,6 +60,9 @@ describe("contact intake handoff", () => {
     );
     expect(screen.getByRole("button", { name: "Copy Brief" })).toBeInTheDocument();
     expect(screen.queryByRole("link", { name: "Book Strategy Call" })).not.toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole("link", { name: "Email Stafford Media" }));
+    expect(analytics.track).toHaveBeenCalledWith("email_click");
   });
 
   it("keeps no-brief contact actions usable when session storage is unavailable", async () => {

@@ -9,8 +9,10 @@ import {
   readAutomationBrief,
   type AutomationBrief,
 } from "@/lib/automationIntake";
+import { useStaffordMediaAnalytics } from "@/components/analytics/AnalyticsProvider";
 
 export default function ContactPage() {
+  const analytics = useStaffordMediaAnalytics();
   const [brief, setBrief] = useState<AutomationBrief | null>(null);
   const [copyError, setCopyError] = useState(false);
   const calendlyUrl = process.env.NEXT_PUBLIC_CALENDLY_URL?.trim();
@@ -145,7 +147,7 @@ export default function ContactPage() {
             </div>
           )}
           {mailto ? (
-            <a href={mailto} className="rounded bg-gray-900 px-4 py-2 font-semibold text-white hover:bg-gray-800">
+            <a href={mailto} onClick={() => analytics.track("email_click")} className="rounded bg-gray-900 px-4 py-2 font-semibold text-white hover:bg-gray-800">
               Email Stafford Media
             </a>
           ) : (
