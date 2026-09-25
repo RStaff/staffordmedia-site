@@ -37,11 +37,31 @@ html,
 body {
   min-height: 100%;
   background:
-    radial-gradient(circle at top left, rgba(52, 211, 153, 0.1), transparent 26%),
-    radial-gradient(circle at top right, rgba(167, 139, 250, 0.12), transparent 22%),
-    linear-gradient(180deg, var(--smc-bg) 0%, #091425 48%, var(--smc-bg-deep) 100%);
+    radial-gradient(
+      circle at top left,
+      rgba(52, 211, 153, 0.1),
+      transparent 26%
+    ),
+    radial-gradient(
+      circle at top right,
+      rgba(167, 139, 250, 0.12),
+      transparent 22%
+    ),
+    linear-gradient(
+      180deg,
+      var(--smc-bg) 0%,
+      #091425 48%,
+      var(--smc-bg-deep) 100%
+    );
   color: var(--smc-text);
   scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html,
+  body {
+    scroll-behavior: auto;
+  }
 }
 
 body {
@@ -75,7 +95,11 @@ a {
 .premium-panel {
   border: 1px solid var(--smc-border);
   border-radius: var(--smc-radius-card);
-  background: linear-gradient(180deg, rgba(12, 20, 34, 0.96), rgba(7, 12, 22, 0.9));
+  background: linear-gradient(
+    180deg,
+    rgba(12, 20, 34, 0.96),
+    rgba(7, 12, 22, 0.9)
+  );
   box-shadow: 0 30px 120px rgba(0, 0, 0, 0.3);
 }
 
@@ -168,6 +192,143 @@ a {
 .smc-field:focus {
   border-color: rgba(255, 225, 105, 0.5);
   box-shadow: 0 0 0 3px rgba(255, 225, 105, 0.12);
+}
+
+.automate-choice {
+  display: flex;
+  min-width: 0;
+  align-items: flex-start;
+  gap: 12px;
+  border: 1px solid var(--smc-border);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.02);
+  padding: 14px 16px;
+  color: var(--smc-muted-strong);
+  cursor: pointer;
+  transition:
+    border-color 160ms ease,
+    background-color 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.automate-focus-target {
+  scroll-margin-top: 6.5rem;
+}
+
+.automate-choice:hover {
+  border-color: rgba(255, 255, 255, 0.28);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.automate-choice:has(.automate-choice-input:checked) {
+  border-color: rgba(255, 225, 105, 0.72);
+  background: rgba(255, 225, 105, 0.1);
+  box-shadow: inset 3px 0 0 var(--smc-accent);
+}
+
+.automate-choice:focus-within {
+  outline: 3px solid rgba(255, 225, 105, 0.2);
+  outline-offset: 2px;
+}
+
+.automate-choice-input {
+  width: 18px;
+  height: 18px;
+  flex: 0 0 auto;
+  margin-top: 2px;
+  accent-color: var(--smc-accent);
+}
+
+.automate-choice-label,
+.automate-choice-description {
+  display: block;
+}
+
+.automate-choice-label {
+  color: var(--smc-text);
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.automate-choice-description {
+  margin-top: 5px;
+  color: var(--smc-muted);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.automate-primary-diagnosis,
+.automate-blueprint {
+  border: 1px solid rgba(103, 232, 249, 0.28);
+  border-radius: 8px;
+  background: linear-gradient(
+    135deg,
+    rgba(8, 47, 73, 0.52),
+    rgba(12, 20, 34, 0.9)
+  );
+  padding: 28px;
+}
+
+.automate-blueprint {
+  border-color: rgba(255, 225, 105, 0.34);
+  background: linear-gradient(
+    135deg,
+    rgba(55, 48, 18, 0.42),
+    rgba(12, 20, 34, 0.94)
+  );
+}
+
+.automate-workflow-steps {
+  display: grid;
+  gap: 0;
+  margin: 18px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.automate-workflow-steps li {
+  position: relative;
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr);
+  gap: 12px;
+  align-items: start;
+  min-width: 0;
+  padding-bottom: 20px;
+  color: var(--smc-muted-strong);
+  line-height: 1.55;
+}
+
+.automate-workflow-steps li:not(:last-child)::after {
+  position: absolute;
+  top: 28px;
+  bottom: 4px;
+  left: 13px;
+  width: 1px;
+  background: rgba(148, 163, 184, 0.35);
+  content: "";
+}
+
+.automate-workflow-steps li:last-child {
+  padding-bottom: 0;
+}
+
+.automate-step-number {
+  display: inline-grid;
+  width: 28px;
+  height: 28px;
+  place-items: center;
+  border: 1px solid rgba(103, 232, 249, 0.38);
+  border-radius: 50%;
+  color: #cffafe;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+@media (min-width: 768px) {
+  .automate-primary-diagnosis,
+  .automate-blueprint {
+    padding: 36px;
+  }
 }
 
 .offer-grid {

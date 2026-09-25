@@ -56,17 +56,23 @@ export type AutomationBrief = {
 export type AutomationOpportunity = {
   id: string;
   title: string;
+  diagnosis: string;
+  consequence: string;
   recommendation: string;
-  currentState: string;
-  improvedState: string;
+  currentSteps: string[];
+  improvedSteps: string[];
   humanControl: string;
+  valueMechanisms: string[];
 };
 
 export type AutomationOpportunityPreview = {
-  whatWeSee: string;
+  primaryDiagnosis: string;
+  primaryConsequence: string;
   opportunities: AutomationOpportunity[];
-  currentWorkflow: string;
-  improvedWorkflow: string;
+  currentWorkflowContext: string;
+  desiredWorkflowContext: string;
+  currentWorkflowSteps: string[];
+  improvedWorkflowSteps: string[];
   humanControls: string[];
   valueMechanisms: string[];
   assessmentQuestions: string[];
@@ -106,51 +112,123 @@ const opportunityDefinitions: OpportunityDefinition[] = [
   {
     id: "lead-response",
     title: "Inquiry acknowledgement and callback queue",
+    diagnosis:
+      "The first workflow to improve is the handoff from a new inquiry to an owned callback.",
+    consequence:
+      "Without a visible acknowledgement and owner, an inquiry can wait or lose visibility between channels.",
     recommendation:
       "Create a reviewed queue that acknowledges new inquiries and assigns each callback for staff follow-through.",
-    currentState: "New inquiries can arrive through separate channels and wait for manual triage.",
-    improvedState:
-      "Validated inquiries enter one visible callback queue with ownership and exception flags.",
+    currentSteps: [
+      "A customer inquiry arrives",
+      "Someone notices and triages it manually",
+      "Callback ownership or status may be unclear",
+    ],
+    improvedSteps: [
+      "A customer inquiry arrives",
+      "The system acknowledges and routes it",
+      "Assigned staff review and complete the callback",
+      "The outcome is recorded for follow-up",
+    ],
     humanControl:
       "Staff decide priority, make the callback, and approve every customer-facing response.",
+    valueMechanisms: [
+      "Faster response",
+      "Fewer forgotten follow-ups",
+      "Better owner visibility",
+      "Trackable outcomes",
+    ],
     matches: (brief) =>
       includesAny(brief.improvements, ["Lead response", "Missed-call follow-up"]),
   },
   {
     id: "estimate-follow-up",
     title: "Estimate status and reminder workflow",
+    diagnosis:
+      "The first workflow to improve is knowing which estimates need a timely, appropriate follow-up.",
+    consequence:
+      "When status and next action are not visible together, follow-up can depend on repeated checking or memory.",
     recommendation:
       "Track estimate status and prepare bounded reminders for staff review when follow-up is due.",
-    currentState: "Estimate status and follow-up timing can depend on manual notes or memory.",
-    improvedState:
-      "A status queue identifies estimates due for a reviewed reminder or personal follow-up.",
+    currentSteps: [
+      "An estimate is issued",
+      "Status is checked manually",
+      "The next follow-up can lose visibility",
+    ],
+    improvedSteps: [
+      "An estimate is issued",
+      "Its status and due date are tracked",
+      "Staff review the prepared follow-up",
+      "The response or next action is recorded",
+    ],
     humanControl:
       "Staff set estimate terms, approve messages, and decide when follow-up should stop.",
+    valueMechanisms: [
+      "Fewer forgotten follow-ups",
+      "Reduced repetitive administration",
+      "More consistent customer communication",
+      "Trackable outcomes",
+    ],
     matches: (brief) => brief.improvements.includes("Estimate / quote follow-up"),
   },
   {
     id: "scheduling",
     title: "Appointment reminder and exception workflow",
+    diagnosis:
+      "The first workflow to improve is the coordination between a confirmed appointment, reminders, and schedule exceptions.",
+    consequence:
+      "Repeated manual coordination can make changes harder to see and resolve consistently.",
     recommendation:
       "Prepare reminders around confirmed appointments and route changes or exceptions back to staff.",
-    currentState: "Appointment reminders and schedule changes require repeated manual coordination.",
-    improvedState:
-      "Confirmed appointments receive bounded reminders while exceptions return to a staff queue.",
+    currentSteps: [
+      "An appointment is confirmed",
+      "Reminders and changes are handled manually",
+      "Exceptions can be hard to track",
+    ],
+    improvedSteps: [
+      "An appointment is confirmed",
+      "The system prepares reminders and flags changes",
+      "Assigned staff resolve exceptions",
+      "The appointment outcome is tracked",
+    ],
     humanControl:
       "Staff confirm availability, resolve conflicts, and approve schedule changes.",
+    valueMechanisms: [
+      "Reduced repetitive administration",
+      "More consistent customer communication",
+      "Clear exception handling",
+      "Better owner visibility",
+    ],
     matches: (brief) =>
       includesAny(brief.improvements, ["Scheduling", "Appointment reminders"]),
   },
   {
     id: "system-handoff",
     title: "Reviewed system handoff",
+    diagnosis:
+      "The first workflow to improve is moving the same information between the systems your team already uses.",
+    consequence:
+      "Repeated re-entry can consume staff attention and make mismatches harder to detect.",
     recommendation:
       "Prepare validated information for a reviewed handoff between the systems already in use.",
-    currentState: "The same information may be copied or re-entered across separate systems.",
-    improvedState:
-      "A bounded handoff prepares consistent data and pauses for review before any system change.",
+    currentSteps: [
+      "A record changes in one system",
+      "Staff copy or re-enter the information",
+      "Completion or mismatch may lack visibility",
+    ],
+    improvedSteps: [
+      "A validated record change is detected",
+      "The system prepares the destination handoff",
+      "Staff review mismatches and authorize the update",
+      "The completed handoff is recorded",
+    ],
     humanControl:
       "Staff verify the record, resolve mismatches, and authorize the final system update.",
+    valueMechanisms: [
+      "Reduced repetitive administration",
+      "Better owner visibility",
+      "Clear exception handling",
+      "Trackable outcomes",
+    ],
     matches: (brief) =>
       includesAny(brief.improvements, [
         "Repetitive data entry",
@@ -160,25 +238,61 @@ const opportunityDefinitions: OpportunityDefinition[] = [
   {
     id: "customer-follow-up",
     title: "Staff-reviewed follow-up queue",
+    diagnosis:
+      "The first workflow to improve is turning due customer follow-ups into visible, owned staff actions.",
+    consequence:
+      "When follow-up context is spread across notes and inboxes, the next action can be harder to see.",
     recommendation:
       "Organize due follow-ups in a queue that gives staff context before any message is sent.",
-    currentState: "Customer follow-up can be distributed across inboxes, notes, and individual memory.",
-    improvedState:
-      "A visible queue groups due follow-ups with context and an accountable owner.",
+    currentSteps: [
+      "A customer follow-up becomes due",
+      "Staff search for context and decide what to do",
+      "The next action may remain untracked",
+    ],
+    improvedSteps: [
+      "A follow-up becomes due",
+      "The system assembles context and routes it",
+      "Assigned staff review and send the message",
+      "The response and next action are tracked",
+    ],
     humanControl:
       "Staff choose the timing, message, channel, and final outcome for each follow-up.",
+    valueMechanisms: [
+      "Fewer forgotten follow-ups",
+      "Reduced repetitive administration",
+      "More consistent customer communication",
+      "Trackable outcomes",
+    ],
     matches: (brief) => brief.improvements.includes("Customer follow-up"),
   },
   {
     id: "ecommerce-exceptions",
     title: "E-commerce exception and customer-service queue",
+    diagnosis:
+      "The first workflow to improve is bringing order and customer-service exceptions into one reviewed queue.",
+    consequence:
+      "Exceptions spread across storefront and inbox views can require repeated checking before staff can act.",
     recommendation:
       "Identify bounded order or customer-service exceptions and route them to a reviewed resolution queue.",
-    currentState: "Order and customer-service exceptions can be spread across storefront and inbox views.",
-    improvedState:
-      "Recognized exceptions enter a prioritized queue with context for customer-service review.",
+    currentSteps: [
+      "An order or service exception occurs",
+      "Staff search across storefront and inbox views",
+      "Resolution status can be difficult to track",
+    ],
+    improvedSteps: [
+      "A recognized exception occurs",
+      "The system routes it with relevant context",
+      "Store staff choose and approve the resolution",
+      "The outcome is recorded",
+    ],
     humanControl:
       "Store staff decide refunds, order changes, customer messages, and exception resolution.",
+    valueMechanisms: [
+      "Faster response",
+      "Clear exception handling",
+      "Better owner visibility",
+      "Trackable outcomes",
+    ],
     matches: (brief) =>
       brief.businessType === "E-commerce" ||
       brief.improvements.includes("E-commerce workflow"),
@@ -188,13 +302,31 @@ const opportunityDefinitions: OpportunityDefinition[] = [
 const fallbackOpportunity: AutomationOpportunity = {
   id: "workflow-review",
   title: "Reviewed workflow handoff",
+  diagnosis:
+    "The first opportunity is to define one repeatable handoff clearly enough to automate it safely.",
+  consequence:
+    "Without a clear trigger, owner, and exception boundary, automation can move the wrong work or hide important decisions.",
   recommendation:
     "Map the first repeatable handoff, define its exceptions, and prepare one bounded step for staff review.",
-  currentState: "The selected work needs a clearer boundary before an automation is chosen.",
-  improvedState:
-    "One repeatable handoff is documented with ownership, evidence, and an explicit review point.",
+  currentSteps: [
+    "Work enters through an identified trigger",
+    "The handoff is handled case by case",
+    "Ownership or completion may lack visibility",
+  ],
+  improvedSteps: [
+    "A validated trigger starts the workflow",
+    "The system prepares a bounded handoff",
+    "The responsible person reviews exceptions",
+    "Completion is recorded",
+  ],
   humanControl:
     "Staff choose the workflow boundary, approve every decision rule, and authorize any action.",
+  valueMechanisms: [
+    "Reduced repetitive administration",
+    "Better owner visibility",
+    "Clear exception handling",
+    "Trackable outcomes",
+  ],
 };
 
 export function buildAutomationOpportunityPreview(
@@ -211,23 +343,30 @@ export function buildAutomationOpportunityPreview(
     .map(({ matches: _matches, ...opportunity }) => opportunity);
   const opportunities = matched.length ? matched : [fallbackOpportunity];
   const first = opportunities[0];
+  const selectedWork = brief.improvements.length
+    ? brief.improvements.slice(0, 2).join(" and ").toLowerCase()
+    : "the workflow you described";
+  const systems = brief.systems.length
+    ? ` across ${brief.systems.slice(0, 3).join(", ")}`
+    : "";
+  const business = brief.businessType || "your business";
 
   return {
-    whatWeSee: `A practical starting point is the coordination around ${language.work}. The preview identifies a bounded first workflow to confirm; it does not assume how your internal systems operate.`,
+    primaryDiagnosis: `${first.diagnosis} For ${business.toLowerCase()}, your answers prioritize ${selectedWork}${systems}.`,
+    primaryConsequence: `${first.consequence} This is a bounded diagnosis to confirm during the workflow interview, not an assumption about your internal operations.`,
     opportunities,
-    currentWorkflow: brief.currentWorkflow || first.currentState,
-    improvedWorkflow: brief.desiredWorkflow || first.improvedState,
+    currentWorkflowContext:
+      brief.currentWorkflow || `Based on your selections: ${first.currentSteps.join(" → ")}.`,
+    desiredWorkflowContext:
+      brief.desiredWorkflow || `Recommended outcome: ${first.improvedSteps.join(" → ")}.`,
+    currentWorkflowSteps: first.currentSteps,
+    improvedWorkflowSteps: first.improvedSteps,
     humanControls: [
       first.humanControl,
       `${language.owner} retain authority over exceptions and any customer-facing action.`,
       "No system change or external message occurs without the agreed review and authorization boundary.",
     ],
-    valueMechanisms: [
-      "More consistent acknowledgement and handoff",
-      "Clearer ownership of queued work and exceptions",
-      "Less repetitive status checking and re-entry",
-      "Better evidence for staff review and follow-up",
-    ],
+    valueMechanisms: first.valueMechanisms.slice(0, 4),
     assessmentQuestions: [
       "Where does this work enter today, and which systems hold its source information?",
       "Who owns the next decision, and what evidence do they need?",
