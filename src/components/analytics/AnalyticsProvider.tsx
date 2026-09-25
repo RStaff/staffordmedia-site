@@ -8,6 +8,7 @@ import {
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
   type ReactNode,
 } from "react";
@@ -26,11 +27,13 @@ const googleAnalyticsScriptId = "staffordmedia-ga4";
 
 type AnalyticsContextValue = {
   consent: AnalyticsConsent;
+  ready: boolean;
   track: (event: StaffordMediaAnalyticsEvent) => boolean;
 };
 
 const AnalyticsContext = createContext<AnalyticsContextValue>({
   consent: "undecided",
+  ready: false,
   track: () => false,
 });
 
@@ -43,11 +46,11 @@ function clearGoogleAnalyticsCookies() {
   }
 }
 
-function enableGoogleAnalytics() {
+function enableGoogleAnalytics(consentCommand: "default" | "update") {
   window[`ga-disable-${staffordMediaGaMeasurementId}`] = false;
   window.dataLayer = window.dataLayer || [];
   window.gtag = window.gtag || ((...args: unknown[]) => window.dataLayer?.push(args));
-  window.gtag("consent", "default", {
+  window.gtag("consent", consentCommand, {
     analytics_storage: "granted",
     ad_storage: "denied",
     ad_user_data: "denied",
@@ -87,8 +90,10 @@ function disableGoogleAnalytics() {
 export function AnalyticsProvider({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const [consent, setConsent] = useState<AnalyticsConsent>("undecided");
+  const [ready, setReady] = useState(false);
   const [preferencesOpen, setPreferencesOpen] = useState(false);
   const [preferenceError, setPreferenceError] = useState(false);
+  const analyticsPreviouslyEnabled = useRef(false);
 
   useEffect(() => {
     const stored = readStoredAnalyticsConsent(window.localStorage);
@@ -98,15 +103,19 @@ export function AnalyticsProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     if (consent !== "accepted") {
+      setReady(false);
       disableGoogleAnalytics();
       return;
     }
 
     setAnalyticsCollectionEnabled(true);
     try {
-      enableGoogleAnalytics();
+      enableGoogleAnalytics(analyticsPreviouslyEnabled.current ? "update" : "default");
+      analyticsPreviouslyEnabled.current = true;
+      setReady(true);
     } catch {
       setAnalyticsCollectionEnabled(false);
+      setReady(false);
     }
   }, [consent]);
 
@@ -141,8 +150,8 @@ export function AnalyticsProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const contextValue = useMemo<AnalyticsContextValue>(
-    () => ({ consent, track: trackStaffordMediaEvent }),
-    [consent],
+    () => ({ consent, ready, track: trackStaffordMediaEvent }),
+    [consent, ready],
   );
 
   return (

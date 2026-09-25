@@ -22,6 +22,19 @@ function EventProbe() {
   );
 }
 
+function AutomateViewProbe() {
+  const analytics = useStaffordMediaAnalytics();
+  const tracked = React.useRef(false);
+
+  React.useEffect(() => {
+    if (analytics.consent === "accepted" && analytics.ready && !tracked.current) {
+      tracked.current = analytics.track("automate_view");
+    }
+  }, [analytics]);
+
+  return null;
+}
+
 describe("analytics consent provider", () => {
   beforeEach(() => {
     window.localStorage.clear();
@@ -93,6 +106,20 @@ describe("analytics consent provider", () => {
     ]);
   });
 
+  it("emits the automate view exactly once after stored consent restores and transport becomes ready", async () => {
+    window.localStorage.setItem(analyticsConsentStorageKey, "accepted");
+    render(<AnalyticsProvider><AutomateViewProbe /></AnalyticsProvider>);
+
+    await waitFor(() => expect(window.dataLayer).toContainEqual([
+      "event",
+      "automate_view",
+      { route: "/automate" },
+    ]));
+    expect(window.dataLayer?.filter(
+      (entry) => Array.isArray(entry) && entry[0] === "event" && entry[1] === "automate_view",
+    )).toHaveLength(1);
+  });
+
   it("withdrawal disables all future event collection", async () => {
     render(<AnalyticsProvider><EventProbe /></AnalyticsProvider>);
     fireEvent.click(await screen.findByRole("button", { name: "Accept analytics" }));
@@ -116,6 +143,28 @@ describe("analytics consent provider", () => {
     expect(window.dataLayer?.filter(
       (entry) => Array.isArray(entry) && entry[0] === "event" && entry[1] === "contact_click",
     )).toHaveLength(eventCountBeforeWithdrawal || 0);
+  });
+
+  it("uses a consent update when analytics is accepted after withdrawal", async () => {
+    render(<AnalyticsProvider><EventProbe /></AnalyticsProvider>);
+    fireEvent.click(await screen.findByRole("button", { name: "Accept analytics" }));
+    await waitFor(() => expect(window.gtag).toBeTypeOf("function"));
+
+    fireEvent.click(screen.getByRole("button", { name: "Analytics preferences" }));
+    fireEvent.click(screen.getByRole("button", { name: "Decline analytics" }));
+    fireEvent.click(screen.getByRole("button", { name: "Analytics preferences" }));
+    fireEvent.click(screen.getByRole("button", { name: "Accept analytics" }));
+
+    await waitFor(() => expect(window.dataLayer).toContainEqual([
+      "consent",
+      "update",
+      {
+        analytics_storage: "granted",
+        ad_storage: "denied",
+        ad_user_data: "denied",
+        ad_personalization: "denied",
+      },
+    ]));
   });
 
   it("fails closed when local preference storage is unavailable", async () => {

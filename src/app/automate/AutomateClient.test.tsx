@@ -10,11 +10,12 @@ globalThis.React = React;
 const mocks = vi.hoisted(() => ({
   push: vi.fn(),
   track: vi.fn<(event: string) => boolean>(() => true),
+  ready: true,
 }));
 
 vi.mock("next/navigation", () => ({ useRouter: () => ({ push: mocks.push }) }));
 vi.mock("@/components/analytics/AnalyticsProvider", () => ({
-  useStaffordMediaAnalytics: () => ({ consent: "accepted", track: mocks.track }),
+  useStaffordMediaAnalytics: () => ({ consent: "accepted", ready: mocks.ready, track: mocks.track }),
 }));
 
 const livePaymentUrl = "https://buy.stripe.com/cNieVe5xW8fBg1V8xL00002";
@@ -47,6 +48,7 @@ describe("automate funnel analytics", () => {
     window.sessionStorage.clear();
     mocks.push.mockReset();
     mocks.track.mockReset().mockReturnValue(true);
+    mocks.ready = true;
     Object.defineProperty(window, "matchMedia", {
       configurable: true,
       value: vi.fn(() => ({ matches: true })),
@@ -77,6 +79,24 @@ describe("automate funnel analytics", () => {
     expect(mocks.track.mock.calls.filter(([event]) => event === "form_start")).toHaveLength(1);
     expect(mocks.track).toHaveBeenCalledWith("automation_result_view");
     expect(JSON.stringify(mocks.track.mock.calls)).not.toContain("PRIVATE WORKFLOW SENTINEL");
+  });
+
+  it("waits for analytics readiness and then tracks the automate view exactly once", async () => {
+    mocks.ready = false;
+    const props = {
+      paymentUrl: livePaymentUrl,
+      paymentEnvironment: "production" as const,
+      navigateToCheckout: vi.fn<(destination: string) => void>(),
+    };
+    const { rerender } = render(<AutomateClient {...props} />);
+    expect(mocks.track).not.toHaveBeenCalledWith("automate_view");
+
+    mocks.ready = true;
+    rerender(<AutomateClient {...props} />);
+    await waitFor(() => expect(mocks.track).toHaveBeenCalledWith("automate_view"));
+    rerender(<AutomateClient {...props} />);
+
+    expect(mocks.track.mock.calls.filter(([event]) => event === "automate_view")).toHaveLength(1);
   });
 
   it("tracks successful private contact and checkout activations", async () => {

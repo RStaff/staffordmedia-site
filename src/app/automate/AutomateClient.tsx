@@ -182,7 +182,7 @@ export default function AutomateClient({
   }, []);
 
   useEffect(() => {
-    if (analytics.consent === "accepted" && !automateViewTracked.current) {
+    if (analytics.consent === "accepted" && analytics.ready && !automateViewTracked.current) {
       automateViewTracked.current = analytics.track("automate_view");
     }
   }, [analytics]);
