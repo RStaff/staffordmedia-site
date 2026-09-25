@@ -2,14 +2,24 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useId, useRef, useState, type FormEvent } from "react";
+import {
+  useEffect,
+  useId,
+  useRef,
+  useState,
+  type FormEvent,
+  type MouseEvent,
+} from "react";
 import {
   automationBusinessTypes,
+  automationBlueprintPriceUsd,
   automationImprovements,
   automationSystems,
   automationWorkflowTextMaxLength,
   buildAutomationOpportunityPreview,
   parseAutomationBrief,
+  parseAutomationBlueprintPaymentUrl,
+  prepareAutomationBlueprintPurchase,
   storeAutomationBrief,
   type AutomationBrief,
   type AutomationOpportunityPreview,
@@ -108,6 +118,9 @@ function focusAndReveal(element: HTMLElement | null) {
 
 export default function AutomatePage() {
   const router = useRouter();
+  const paymentUrl = parseAutomationBlueprintPaymentUrl(
+    process.env.NEXT_PUBLIC_AUTOMATION_BLUEPRINT_PAYMENT_URL,
+  );
   const [hydrated, setHydrated] = useState(false);
   const [handoffError, setHandoffError] = useState(false);
   const [brief, setBrief] = useState<AutomationBrief | null>(null);
@@ -159,6 +172,24 @@ export default function AutomatePage() {
       storeAutomationBrief(window.sessionStorage, brief);
       router.push("/contact");
     } catch {
+      setHandoffError(true);
+    }
+  }
+
+  function handlePurchase(event: MouseEvent<HTMLAnchorElement>) {
+    if (!brief || !paymentUrl) {
+      event.preventDefault();
+      return;
+    }
+    setHandoffError(false);
+    try {
+      prepareAutomationBlueprintPurchase(
+        window.sessionStorage,
+        brief,
+        paymentUrl,
+      );
+    } catch {
+      event.preventDefault();
       setHandoffError(true);
     }
   }
@@ -312,6 +343,18 @@ export default function AutomatePage() {
               <p><strong className="text-white">Delivery:</strong> The five-business-day delivery target begins after the workflow interview and receipt of required information.</p>
               <p><strong className="text-white">Exclusions:</strong> Implementation, software subscriptions, and third-party fees are not included. No revenue or savings are guaranteed.</p>
             </div>
+            <p className="mt-6 text-sm leading-6 text-slate-200">
+              Payment purchases the Blueprint engagement described above, not implementation.
+              Ross manually confirms payment in Stripe before recording the engagement or scheduling work.
+            </p>
+            <div className="mt-5 flex flex-wrap gap-4" data-testid="blueprint-offer-actions">
+              {paymentUrl ? (
+                <a href={paymentUrl} onClick={handlePurchase} className="smc-button smc-button-primary">
+                  Start My Blueprint — ${automationBlueprintPriceUsd}
+                </a>
+              ) : null}
+              <button type="button" onClick={handleDiscussOpportunity} className="smc-button smc-button-secondary">Talk With Ross First</button>
+            </div>
           </section>
 
           <section className="premium-panel-soft p-6 md:p-8">
@@ -322,7 +365,12 @@ export default function AutomatePage() {
           </section>
 
           <div className="flex flex-wrap gap-4">
-            <button type="button" onClick={handleDiscussOpportunity} className="smc-button smc-button-primary">Discuss My Blueprint</button>
+            {paymentUrl ? (
+              <a href={paymentUrl} onClick={handlePurchase} className="smc-button smc-button-primary">
+                Start My Blueprint — ${automationBlueprintPriceUsd}
+              </a>
+            ) : null}
+            <button type="button" onClick={handleDiscussOpportunity} className="smc-button smc-button-secondary">Talk With Ross First</button>
             <button type="button" onClick={handleAdjustAnswers} className="smc-button smc-button-secondary">Adjust My Answers</button>
           </div>
         </section>

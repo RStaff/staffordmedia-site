@@ -36,6 +36,11 @@ export const automationSystems = [
 export const automationWorkflowTextMaxLength = 500;
 export const automationMailtoUriMaxLength = 512;
 export const automationIntakeStorageKey = "staffordmedia.automation-intake.v1";
+export const automationBlueprintOfferId =
+  "STAFFORDMEDIA_AUTOMATION_OPPORTUNITY_ASSESSMENT_V1";
+export const automationBlueprintPriceUsd = 750;
+
+const automationBlueprintPaymentHostname = "buy.stripe.com";
 
 const automationIntakeStorageSchema = "staffordmedia.automation_intake.v1";
 
@@ -455,6 +460,42 @@ export function formatAutomationBrief(brief: AutomationBrief) {
   }
 
   return lines.join("\n");
+}
+
+export function parseAutomationBlueprintPaymentUrl(value: unknown) {
+  if (typeof value !== "string" || value !== value.trim() || !value) {
+    return null;
+  }
+
+  try {
+    const url = new URL(value);
+    if (
+      url.protocol !== "https:" ||
+      url.hostname !== automationBlueprintPaymentHostname ||
+      url.port ||
+      url.username ||
+      url.password ||
+      url.search ||
+      url.hash ||
+      url.pathname === "/"
+    ) {
+      return null;
+    }
+    return url.toString();
+  } catch {
+    return null;
+  }
+}
+
+export function prepareAutomationBlueprintPurchase(
+  storage: AutomationIntakeStorage,
+  brief: AutomationBrief,
+  configuredPaymentUrl: unknown,
+) {
+  const paymentUrl = parseAutomationBlueprintPaymentUrl(configuredPaymentUrl);
+  if (!paymentUrl) return null;
+  storeAutomationBrief(storage, brief);
+  return paymentUrl;
 }
 
 export function buildAutomationMailto(

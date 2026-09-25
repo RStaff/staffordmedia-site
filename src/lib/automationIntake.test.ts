@@ -8,6 +8,8 @@ import "@testing-library/jest-dom/vitest";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import AutomatePage from "@/app/automate/page";
 import {
+  automationBlueprintOfferId,
+  automationBlueprintPriceUsd,
   automationBusinessTypes,
   automationImprovements,
   automationIntakeStorageKey,
@@ -19,6 +21,8 @@ import {
   clearAutomationBrief,
   formatAutomationBrief,
   parseAutomationBrief,
+  parseAutomationBlueprintPaymentUrl,
+  prepareAutomationBlueprintPurchase,
   readAutomationBrief,
   storeAutomationBrief,
 } from "./automationIntake";
@@ -26,6 +30,7 @@ import {
 globalThis.React = React;
 
 const routerPush = vi.hoisted(() => vi.fn());
+const validPaymentUrl = "https://buy.stripe.com/test_staffordmedia_blueprint";
 vi.mock("next/navigation", () => ({ useRouter: () => ({ push: routerPush }) }));
 
 const scrollIntoView = vi.fn();
@@ -46,6 +51,8 @@ afterEach(() => {
   routerPush.mockClear();
   scrollIntoView.mockClear();
   matchMedia.mockReset().mockReturnValue({ matches: false });
+  delete process.env.NEXT_PUBLIC_AUTOMATION_BLUEPRINT_PAYMENT_URL;
+  window.history.replaceState({}, "", "/");
 });
 
 describe("automation intake", () => {
@@ -123,6 +130,120 @@ describe("automation intake", () => {
     expect(markup).toMatch(/<fieldset[^>]*disabled=""/);
   });
 
+  it("binds the exact Blueprint offer and one-time public price language", () => {
+    expect(automationBlueprintOfferId).toBe(
+      "STAFFORDMEDIA_AUTOMATION_OPPORTUNITY_ASSESSMENT_V1",
+    );
+    expect(automationBlueprintPriceUsd).toBe(750);
+
+    render(React.createElement(AutomatePage));
+    fireEvent.click(screen.getByRole("checkbox", { name: "Lead response" }));
+    fireEvent.click(screen.getByRole("button", { name: "Show My Opportunity" }));
+
+    expect(
+      screen.getByRole("heading", {
+        name: "$750 Automation Opportunity Blueprint",
+      }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(/Payment purchases the Blueprint engagement described above, not implementation/),
+    ).toBeInTheDocument();
+  });
+
+  it("accepts only a configured HTTPS Stripe Payment Link", () => {
+    expect(parseAutomationBlueprintPaymentUrl(validPaymentUrl)).toBe(
+      validPaymentUrl,
+    );
+
+    for (const value of [
+      undefined,
+      "",
+      ` ${validPaymentUrl}`,
+      "http://buy.stripe.com/test_blueprint",
+      "https://stripe.com/test_blueprint",
+      "https://buy.stripe.com.evil.example/test_blueprint",
+      "https://attacker.example/test_blueprint",
+      "https://buy.stripe.com/",
+      "https://buy.stripe.com/test_blueprint?brief=PRIVATE_WORKFLOW",
+      "https://buy.stripe.com/test_blueprint#PRIVATE_WORKFLOW",
+      "https://user@buy.stripe.com/test_blueprint",
+      "not a url",
+    ]) {
+      expect(parseAutomationBlueprintPaymentUrl(value)).toBeNull();
+    }
+  });
+
+  it("renders the purchase action in both required locations when configured", () => {
+    process.env.NEXT_PUBLIC_AUTOMATION_BLUEPRINT_PAYMENT_URL = validPaymentUrl;
+    render(React.createElement(AutomatePage));
+    fireEvent.click(screen.getByRole("checkbox", { name: "Lead response" }));
+    fireEvent.click(screen.getByRole("button", { name: "Show My Opportunity" }));
+
+    const purchaseLinks = screen.getAllByRole("link", {
+      name: "Start My Blueprint — $750",
+    });
+    expect(purchaseLinks).toHaveLength(2);
+    for (const link of purchaseLinks) {
+      expect(link).toHaveAttribute("href", validPaymentUrl);
+    }
+    expect(screen.getByTestId("blueprint-offer-actions")).toContainElement(
+      purchaseLinks[0],
+    );
+    expect(
+      screen.getAllByRole("button", { name: "Talk With Ross First" }),
+    ).toHaveLength(2);
+  });
+
+  it("fails closed without a valid configured Payment Link", () => {
+    process.env.NEXT_PUBLIC_AUTOMATION_BLUEPRINT_PAYMENT_URL =
+      "https://attacker.example/checkout";
+    window.history.replaceState(
+      {},
+      "",
+      `/automate?paymentUrl=${encodeURIComponent(validPaymentUrl)}`,
+    );
+    render(React.createElement(AutomatePage));
+    fireEvent.click(screen.getByRole("checkbox", { name: "Lead response" }));
+    fireEvent.click(screen.getByRole("button", { name: "Show My Opportunity" }));
+
+    expect(
+      screen.queryByRole("link", { name: "Start My Blueprint — $750" }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.getAllByRole("button", { name: "Talk With Ross First" }),
+    ).toHaveLength(2);
+  });
+
+  it("stores the complete brief before returning the fixed checkout destination", () => {
+    const brief = parseAutomationBrief({
+      improvement: "Lead response",
+      currentWorkflow: "PRIVATE_CURRENT_WORKFLOW",
+      desiredWorkflow: "PRIVATE_DESIRED_WORKFLOW",
+    });
+
+    const destination = prepareAutomationBlueprintPurchase(
+      window.sessionStorage,
+      brief,
+      validPaymentUrl,
+    );
+
+    expect(destination).toBe(validPaymentUrl);
+    expect(destination).not.toContain("PRIVATE_CURRENT_WORKFLOW");
+    expect(destination).not.toContain("PRIVATE_DESIRED_WORKFLOW");
+    expect(readAutomationBrief(window.sessionStorage)).toEqual(brief);
+  });
+
+  it("contains no Stripe secret handling or payment-card fields", () => {
+    const pageSource = readFileSync("src/app/automate/page.tsx", "utf8");
+    const intakeSource = readFileSync("src/lib/automationIntake.ts", "utf8");
+    const packageSource = readFileSync("package.json", "utf8");
+
+    expect(`${pageSource}\n${intakeSource}`).not.toMatch(
+      /STRIPE_SECRET|sk_(?:test|live)_|cardNumber|card_number|payment_method/i,
+    );
+    expect(packageSource).not.toMatch(/"stripe"|"@stripe\//i);
+  });
+
   it("stores normalized intake in same-tab state and navigates without a query", () => {
     render(React.createElement(AutomatePage));
 
@@ -136,7 +257,7 @@ describe("automation intake", () => {
     expect(routerPush).not.toHaveBeenCalled();
     expect(window.sessionStorage.getItem(automationIntakeStorageKey)).toBeNull();
 
-    fireEvent.click(screen.getByRole("button", { name: "Discuss My Blueprint" }));
+    fireEvent.click(screen.getAllByRole("button", { name: "Talk With Ross First" })[0]);
 
     expect(routerPush).toHaveBeenCalledWith("/contact");
     expect(routerPush.mock.calls[0][0]).not.toContain("?");
@@ -156,7 +277,7 @@ describe("automation intake", () => {
     });
 
     fireEvent.submit(screen.getByRole("button", { name: "Show My Opportunity" }).closest("form")!);
-    fireEvent.click(screen.getByRole("button", { name: "Discuss My Blueprint" }));
+    fireEvent.click(screen.getAllByRole("button", { name: "Talk With Ross First" })[0]);
 
     expect(routerPush).not.toHaveBeenCalled();
     expect(screen.getByRole("alert")).toHaveTextContent("Nothing was submitted");
@@ -172,7 +293,7 @@ describe("automation intake", () => {
     });
 
     fireEvent.submit(screen.getByRole("button", { name: "Show My Opportunity" }).closest("form")!);
-    fireEvent.click(screen.getByRole("button", { name: "Discuss My Blueprint" }));
+    fireEvent.click(screen.getAllByRole("button", { name: "Talk With Ross First" })[0]);
 
     expect(routerPush).not.toHaveBeenCalled();
     expect(window.location.search).toBe("");
@@ -187,7 +308,7 @@ describe("automation intake", () => {
 
     fireEvent.click(screen.getByRole("checkbox", { name: "Lead response" }));
     fireEvent.submit(screen.getByRole("button", { name: "Show My Opportunity" }).closest("form")!);
-    fireEvent.click(screen.getByRole("button", { name: "Discuss My Blueprint" }));
+    fireEvent.click(screen.getAllByRole("button", { name: "Talk With Ross First" })[0]);
 
     expect(routerPush).toHaveBeenCalledTimes(1);
     expect(screen.getByRole("alert")).toHaveTextContent("Nothing was submitted");
