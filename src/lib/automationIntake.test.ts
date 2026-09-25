@@ -25,11 +25,18 @@ globalThis.React = React;
 const routerPush = vi.hoisted(() => vi.fn());
 vi.mock("next/navigation", () => ({ useRouter: () => ({ push: routerPush }) }));
 
+const scrollIntoView = vi.fn();
+Object.defineProperty(HTMLElement.prototype, "scrollIntoView", {
+  configurable: true,
+  value: scrollIntoView,
+});
+
 afterEach(() => {
   cleanup();
   vi.restoreAllMocks();
   window.sessionStorage.clear();
   routerPush.mockClear();
+  scrollIntoView.mockClear();
 });
 
 describe("automation intake", () => {
@@ -116,11 +123,11 @@ describe("automation intake", () => {
     });
     fireEvent.submit(screen.getByRole("button", { name: "Show My Opportunity" }).closest("form")!);
 
-    expect(screen.getByText("Your first automation opportunity")).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Your biggest automation opportunity" })).toBeInTheDocument();
     expect(routerPush).not.toHaveBeenCalled();
     expect(window.sessionStorage.getItem(automationIntakeStorageKey)).toBeNull();
 
-    fireEvent.click(screen.getByRole("button", { name: "Discuss This Opportunity" }));
+    fireEvent.click(screen.getByRole("button", { name: "Discuss My Blueprint" }));
 
     expect(routerPush).toHaveBeenCalledWith("/contact");
     expect(routerPush.mock.calls[0][0]).not.toContain("?");
@@ -140,7 +147,7 @@ describe("automation intake", () => {
     });
 
     fireEvent.submit(screen.getByRole("button", { name: "Show My Opportunity" }).closest("form")!);
-    fireEvent.click(screen.getByRole("button", { name: "Discuss This Opportunity" }));
+    fireEvent.click(screen.getByRole("button", { name: "Discuss My Blueprint" }));
 
     expect(routerPush).not.toHaveBeenCalled();
     expect(screen.getByRole("alert")).toHaveTextContent("Nothing was submitted");
@@ -156,7 +163,7 @@ describe("automation intake", () => {
     });
 
     fireEvent.submit(screen.getByRole("button", { name: "Show My Opportunity" }).closest("form")!);
-    fireEvent.click(screen.getByRole("button", { name: "Discuss This Opportunity" }));
+    fireEvent.click(screen.getByRole("button", { name: "Discuss My Blueprint" }));
 
     expect(routerPush).not.toHaveBeenCalled();
     expect(window.location.search).toBe("");
@@ -171,7 +178,7 @@ describe("automation intake", () => {
 
     fireEvent.click(screen.getByRole("checkbox", { name: "Lead response" }));
     fireEvent.submit(screen.getByRole("button", { name: "Show My Opportunity" }).closest("form")!);
-    fireEvent.click(screen.getByRole("button", { name: "Discuss This Opportunity" }));
+    fireEvent.click(screen.getByRole("button", { name: "Discuss My Blueprint" }));
 
     expect(routerPush).toHaveBeenCalledTimes(1);
     expect(screen.getByRole("alert")).toHaveTextContent("Nothing was submitted");
@@ -277,7 +284,8 @@ describe("automation intake", () => {
       id: "lead-response",
       title: "Inquiry acknowledgement and callback queue",
     });
-    expect(preview?.whatWeSee).toContain("inquiries, callbacks, estimates, and field schedules");
+    expect(preview?.primaryDiagnosis).toContain("home services");
+    expect(preview?.primaryDiagnosis).toContain("lead response and missed-call follow-up");
   });
 
   it("uses materially different professional-services language", () => {
@@ -290,9 +298,9 @@ describe("automation intake", () => {
     );
 
     expect(preview?.opportunities[0].id).toBe("system-handoff");
-    expect(preview?.whatWeSee).toContain("professional-service handoffs");
+    expect(preview?.primaryDiagnosis).toContain("professional services");
     expect(preview?.humanControls.join(" ")).toContain("responsible professional");
-    expect(preview?.whatWeSee).not.toContain("field schedules");
+    expect(preview?.primaryDiagnosis).not.toContain("field schedules");
   });
 
   it("maps ecommerce work to an exception and customer-service queue", () => {
@@ -338,9 +346,29 @@ describe("automation intake", () => {
       const preview = buildAutomationOpportunityPreview(brief);
       expect(preview?.humanControls.length).toBeGreaterThan(0);
       expect(preview?.humanControls.join(" ").toLowerCase()).toMatch(/staff|team member/);
-      expect(JSON.stringify(preview)).not.toMatch(/\bROI\b|guarantee|benchmark|\bscore\b|\d+%/i);
+      expect(JSON.stringify(preview)).not.toMatch(/\bROI\b|guaranteed? (?:leads?|revenue|savings)|benchmark|\bscore\b|\d+%/i);
       expect(preview?.opportunities.length).toBeLessThanOrEqual(3);
+      expect(preview?.valueMechanisms.length).toBeLessThanOrEqual(4);
     }
+  });
+
+  it.each([
+    ["Lead response", "lead-response"],
+    ["Estimate / quote follow-up", "estimate-follow-up"],
+    ["Scheduling", "scheduling"],
+    ["Repetitive data entry", "system-handoff"],
+    ["Customer follow-up", "customer-follow-up"],
+    ["E-commerce workflow", "ecommerce-exceptions"],
+  ])("produces one primary diagnosis and system for %s", (improvement, expectedId) => {
+    const preview = buildAutomationOpportunityPreview(
+      parseAutomationBrief({ improvement, businessType: "Home Services" }),
+    );
+
+    expect(preview?.opportunities[0].id).toBe(expectedId);
+    expect(preview?.primaryDiagnosis).toBeTruthy();
+    expect(preview?.primaryConsequence).toBeTruthy();
+    expect(preview?.currentWorkflowSteps.length).toBeGreaterThanOrEqual(3);
+    expect(preview?.improvedWorkflowSteps.length).toBeGreaterThanOrEqual(4);
   });
 
   it("submitting valid answers displays the preview", () => {
@@ -349,20 +377,72 @@ describe("automation intake", () => {
     fireEvent.click(screen.getByRole("checkbox", { name: "Missed-call follow-up" }));
     fireEvent.click(screen.getByRole("button", { name: "Show My Opportunity" }));
 
-    expect(screen.getByRole("heading", { name: "Inquiry acknowledgement and callback queue" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Your biggest automation opportunity" })).toBeInTheDocument();
+    expect(screen.getByTestId("primary-diagnosis")).toHaveTextContent("Inquiry acknowledgement and callback queue");
+    expect(screen.getByTestId("recommended-system")).toHaveTextContent("Inquiry acknowledgement and callback queue");
+    expect(screen.getByRole("heading", { name: "Current" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Improved" })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "Human-control requirements" })).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: "What we would confirm during assessment" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Four questions we confirm during the Blueprint" })).toBeInTheDocument();
     expect(routerPush).not.toHaveBeenCalled();
   });
 
-  it("moves focus to the primary preview heading", () => {
+  it("renders at most two subordinate opportunities", () => {
+    render(React.createElement(AutomatePage));
+    fireEvent.click(screen.getByRole("checkbox", { name: "Lead response" }));
+    fireEvent.click(screen.getByRole("checkbox", { name: "Scheduling" }));
+    fireEvent.click(screen.getByRole("checkbox", { name: "Customer follow-up" }));
+    fireEvent.click(screen.getByRole("button", { name: "Show My Opportunity" }));
+
+    const section = screen.getByRole("heading", { name: "Secondary opportunities" }).parentElement!;
+    expect(section.querySelectorAll("article")).toHaveLength(2);
+  });
+
+  it("renders the complete Blueprint scope, delivery boundary, credit, and exclusions", () => {
     render(React.createElement(AutomatePage));
     fireEvent.click(screen.getByRole("checkbox", { name: "Lead response" }));
     fireEvent.click(screen.getByRole("button", { name: "Show My Opportunity" }));
 
-    expect(
-      screen.getByRole("heading", { name: "Inquiry acknowledgement and callback queue" }),
-    ).toHaveFocus();
+    const blueprint = screen.getByRole("heading", { name: "$750 Automation Opportunity Blueprint" }).parentElement!;
+    for (const text of [
+      "One 60–90 minute workflow interview",
+      "A visual current-workflow map",
+      "Identification of the primary breakdown or revenue-risk point",
+      "Up to three ranked automation opportunities",
+      "A detailed design for the highest-priority solution",
+      "Required software and integrations",
+      "Human-review and failure-handling requirements",
+      "Estimated implementation range and ongoing software costs",
+      "A 30-minute findings review",
+      "A written implementation proposal",
+      "The full $750 credited toward an approved implementation",
+    ]) {
+      expect(blueprint).toHaveTextContent(text);
+    }
+    expect(blueprint).toHaveTextContent("five-business-day delivery target begins after the workflow interview");
+    expect(blueprint).toHaveTextContent("Implementation, software subscriptions, and third-party fees are not included");
+    expect(blueprint).toHaveTextContent("No revenue or savings are guaranteed");
+  });
+
+  it("renders clear selected choices without changing semantic controls", () => {
+    render(React.createElement(AutomatePage));
+    const choice = screen.getByRole("radio", { name: /Home Services/ });
+    fireEvent.click(choice);
+
+    expect(choice).toBeChecked();
+    expect(choice.closest("label")).toHaveClass("automate-choice");
+    expect(choice.closest("label")).toHaveTextContent("Field and office teams coordinating inquiries");
+  });
+
+  it("focuses and reveals the primary preview heading", () => {
+    render(React.createElement(AutomatePage));
+    fireEvent.click(screen.getByRole("checkbox", { name: "Lead response" }));
+    fireEvent.click(screen.getByRole("button", { name: "Show My Opportunity" }));
+
+    const heading = screen.getByRole("heading", { name: "Your biggest automation opportunity" });
+    expect(heading).toHaveFocus();
+    expect(heading).toHaveClass("automate-focus-target");
+    expect(scrollIntoView).toHaveBeenCalledWith({ behavior: "smooth", block: "start" });
   });
 
   it("restores the retained form and usable focus for adjustment", () => {
@@ -375,6 +455,7 @@ describe("automation intake", () => {
     expect(
       screen.getByRole("heading", { name: "What are you trying to improve?" }),
     ).toHaveFocus();
+    expect(scrollIntoView).toHaveBeenLastCalledWith({ behavior: "smooth", block: "start" });
     expect(window.location.search).toBe("");
   });
 });
