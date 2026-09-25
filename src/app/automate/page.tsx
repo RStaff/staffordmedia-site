@@ -12,14 +12,15 @@ import {
 } from "react";
 import {
   automationBusinessTypes,
+  automationBlueprintOfferAuthority,
   automationBlueprintPriceUsd,
   automationImprovements,
   automationSystems,
   automationWorkflowTextMaxLength,
   buildAutomationOpportunityPreview,
   parseAutomationBrief,
-  parseAutomationBlueprintPaymentUrl,
   prepareAutomationBlueprintPurchase,
+  resolveAutomationBlueprintPaymentUrl,
   storeAutomationBrief,
   type AutomationBrief,
   type AutomationOpportunityPreview,
@@ -118,7 +119,7 @@ function focusAndReveal(element: HTMLElement | null) {
 
 export default function AutomatePage() {
   const router = useRouter();
-  const paymentUrl = parseAutomationBlueprintPaymentUrl(
+  const paymentUrl = resolveAutomationBlueprintPaymentUrl(
     process.env.NEXT_PUBLIC_AUTOMATION_BLUEPRINT_PAYMENT_URL,
   );
   const [hydrated, setHydrated] = useState(false);
@@ -345,11 +346,12 @@ export default function AutomatePage() {
             </div>
             <p className="mt-6 text-sm leading-6 text-slate-200">
               Payment purchases the Blueprint engagement described above, not implementation.
+              Checkout uses the owner-approved Stripe Payment Link for this exact one-time $750 Blueprint.
               Ross manually confirms payment in Stripe before recording the engagement or scheduling work.
             </p>
             <div className="mt-5 flex flex-wrap gap-4" data-testid="blueprint-offer-actions">
               {paymentUrl ? (
-                <a href={paymentUrl} onClick={handlePurchase} className="smc-button smc-button-primary">
+                <a href={paymentUrl} onClick={handlePurchase} data-offer-id={automationBlueprintOfferAuthority.offerId} className="smc-button smc-button-primary">
                   Start My Blueprint — ${automationBlueprintPriceUsd}
                 </a>
               ) : null}
@@ -366,7 +368,7 @@ export default function AutomatePage() {
 
           <div className="flex flex-wrap gap-4">
             {paymentUrl ? (
-              <a href={paymentUrl} onClick={handlePurchase} className="smc-button smc-button-primary">
+              <a href={paymentUrl} onClick={handlePurchase} data-offer-id={automationBlueprintOfferAuthority.offerId} className="smc-button smc-button-primary">
                 Start My Blueprint — ${automationBlueprintPriceUsd}
               </a>
             ) : null}

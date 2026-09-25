@@ -8,6 +8,7 @@ import "@testing-library/jest-dom/vitest";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import AutomatePage from "@/app/automate/page";
 import {
+  automationBlueprintOfferAuthority,
   automationBlueprintOfferId,
   automationBlueprintPriceUsd,
   automationBusinessTypes,
@@ -21,16 +22,18 @@ import {
   clearAutomationBrief,
   formatAutomationBrief,
   parseAutomationBrief,
-  parseAutomationBlueprintPaymentUrl,
+  parseStripeHostedPaymentLinkUrl,
   prepareAutomationBlueprintPurchase,
   readAutomationBrief,
+  resolveAutomationBlueprintPaymentUrl,
   storeAutomationBrief,
 } from "./automationIntake";
 
 globalThis.React = React;
 
 const routerPush = vi.hoisted(() => vi.fn());
-const validPaymentUrl = "https://buy.stripe.com/test_staffordmedia_blueprint";
+const validPaymentUrl = "https://buy.stripe.com/test_fZu9AUf8w8fB8zt7tH00003";
+const otherSafePaymentUrl = "https://buy.stripe.com/test_other_safe_link";
 vi.mock("next/navigation", () => ({ useRouter: () => ({ push: routerPush }) }));
 
 const scrollIntoView = vi.fn();
@@ -135,6 +138,11 @@ describe("automation intake", () => {
       "STAFFORDMEDIA_AUTOMATION_OPPORTUNITY_ASSESSMENT_V1",
     );
     expect(automationBlueprintPriceUsd).toBe(750);
+    expect(automationBlueprintOfferAuthority).toMatchObject({
+      publicName: "Automation Opportunity Blueprint",
+      paymentType: "one_time",
+      quantity: 1,
+    });
 
     render(React.createElement(AutomatePage));
     fireEvent.click(screen.getByRole("checkbox", { name: "Lead response" }));
@@ -148,12 +156,22 @@ describe("automation intake", () => {
     expect(
       screen.getByText(/Payment purchases the Blueprint engagement described above, not implementation/),
     ).toBeInTheDocument();
+    expect(
+      screen.getByText(/owner-approved Stripe Payment Link for this exact one-time \$750 Blueprint/),
+    ).toBeInTheDocument();
   });
 
-  it("accepts only a configured HTTPS Stripe Payment Link", () => {
-    expect(parseAutomationBlueprintPaymentUrl(validPaymentUrl)).toBe(
+  it("distinguishes Stripe URL safety from owner-approved offer authority", () => {
+    expect(parseStripeHostedPaymentLinkUrl(validPaymentUrl)).toBe(
       validPaymentUrl,
     );
+    expect(parseStripeHostedPaymentLinkUrl(otherSafePaymentUrl)).toBe(
+      otherSafePaymentUrl,
+    );
+    expect(resolveAutomationBlueprintPaymentUrl(validPaymentUrl)).toBe(
+      validPaymentUrl,
+    );
+    expect(resolveAutomationBlueprintPaymentUrl(otherSafePaymentUrl)).toBeNull();
 
     for (const value of [
       undefined,
@@ -169,7 +187,8 @@ describe("automation intake", () => {
       "https://user@buy.stripe.com/test_blueprint",
       "not a url",
     ]) {
-      expect(parseAutomationBlueprintPaymentUrl(value)).toBeNull();
+      expect(parseStripeHostedPaymentLinkUrl(value)).toBeNull();
+      expect(resolveAutomationBlueprintPaymentUrl(value)).toBeNull();
     }
   });
 
@@ -185,6 +204,10 @@ describe("automation intake", () => {
     expect(purchaseLinks).toHaveLength(2);
     for (const link of purchaseLinks) {
       expect(link).toHaveAttribute("href", validPaymentUrl);
+      expect(link).toHaveAttribute(
+        "data-offer-id",
+        "STAFFORDMEDIA_AUTOMATION_OPPORTUNITY_ASSESSMENT_V1",
+      );
     }
     expect(screen.getByTestId("blueprint-offer-actions")).toContainElement(
       purchaseLinks[0],

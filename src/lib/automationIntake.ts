@@ -36,9 +36,16 @@ export const automationSystems = [
 export const automationWorkflowTextMaxLength = 500;
 export const automationMailtoUriMaxLength = 512;
 export const automationIntakeStorageKey = "staffordmedia.automation-intake.v1";
-export const automationBlueprintOfferId =
-  "STAFFORDMEDIA_AUTOMATION_OPPORTUNITY_ASSESSMENT_V1";
-export const automationBlueprintPriceUsd = 750;
+export const automationBlueprintOfferAuthority = Object.freeze({
+  offerId: "STAFFORDMEDIA_AUTOMATION_OPPORTUNITY_ASSESSMENT_V1",
+  publicName: "Automation Opportunity Blueprint",
+  priceUsd: 750,
+  paymentType: "one_time",
+  quantity: 1,
+  approvedPaymentLinkPath: "/test_fZu9AUf8w8fB8zt7tH00003",
+});
+export const automationBlueprintOfferId = automationBlueprintOfferAuthority.offerId;
+export const automationBlueprintPriceUsd = automationBlueprintOfferAuthority.priceUsd;
 
 const automationBlueprintPaymentHostname = "buy.stripe.com";
 
@@ -462,7 +469,7 @@ export function formatAutomationBrief(brief: AutomationBrief) {
   return lines.join("\n");
 }
 
-export function parseAutomationBlueprintPaymentUrl(value: unknown) {
+export function parseStripeHostedPaymentLinkUrl(value: unknown) {
   if (typeof value !== "string" || value !== value.trim() || !value) {
     return null;
   }
@@ -487,12 +494,22 @@ export function parseAutomationBlueprintPaymentUrl(value: unknown) {
   }
 }
 
+export function resolveAutomationBlueprintPaymentUrl(value: unknown) {
+  const safeUrl = parseStripeHostedPaymentLinkUrl(value);
+  if (!safeUrl) return null;
+
+  return new URL(safeUrl).pathname ===
+    automationBlueprintOfferAuthority.approvedPaymentLinkPath
+    ? safeUrl
+    : null;
+}
+
 export function prepareAutomationBlueprintPurchase(
   storage: AutomationIntakeStorage,
   brief: AutomationBrief,
   configuredPaymentUrl: unknown,
 ) {
-  const paymentUrl = parseAutomationBlueprintPaymentUrl(configuredPaymentUrl);
+  const paymentUrl = resolveAutomationBlueprintPaymentUrl(configuredPaymentUrl);
   if (!paymentUrl) return null;
   storeAutomationBrief(storage, brief);
   return paymentUrl;
