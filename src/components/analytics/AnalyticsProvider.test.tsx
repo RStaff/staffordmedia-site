@@ -38,6 +38,7 @@ function AutomateViewProbe() {
 describe("analytics consent provider", () => {
   beforeEach(() => {
     window.localStorage.clear();
+    window.sessionStorage.clear();
     window.history.replaceState(
       {},
       "",
@@ -165,6 +166,70 @@ describe("analytics consent provider", () => {
         ad_personalization: "denied",
       },
     ]));
+  });
+
+  it("does not restore an older acceptance after a failed withdrawal write", async () => {
+    window.localStorage.setItem(analyticsConsentStorageKey, "accepted");
+    const view = render(<AnalyticsProvider><EventProbe /></AnalyticsProvider>);
+    await waitFor(() => expect(window.gtag).toBeTypeOf("function"));
+    vi.spyOn(Storage.prototype, "setItem").mockImplementation(() => {
+      throw new DOMException("denied", "SecurityError");
+    });
+
+    fireEvent.click(screen.getByRole("button", { name: "Analytics preferences" }));
+    fireEvent.click(screen.getByRole("button", { name: "Decline analytics" }));
+
+    expect(screen.getByRole("alert")).toHaveTextContent("Analytics remains off");
+    expect(window.localStorage.getItem(analyticsConsentStorageKey)).toBeNull();
+    expect(window[`ga-disable-${staffordMediaGaMeasurementId}`]).toBe(true);
+    view.unmount();
+    render(<AnalyticsProvider><EventProbe /></AnalyticsProvider>);
+    expect(await screen.findByRole("dialog", { name: "Optional website analytics" })).toBeInTheDocument();
+    expect(window[`ga-disable-${staffordMediaGaMeasurementId}`]).toBe(true);
+  });
+
+  it("keeps a tab withdrawn if local preference writes and removal both fail", async () => {
+    window.localStorage.setItem(analyticsConsentStorageKey, "accepted");
+    const view = render(<AnalyticsProvider><EventProbe /></AnalyticsProvider>);
+    await waitFor(() => expect(window.gtag).toBeTypeOf("function"));
+    const originalSetItem = Storage.prototype.setItem;
+    vi.spyOn(Storage.prototype, "setItem").mockImplementation(function (this: Storage, key, value) {
+      if (this === window.localStorage) throw new DOMException("denied", "SecurityError");
+      return Reflect.apply(originalSetItem, this, [key, value]);
+    });
+    vi.spyOn(window.localStorage, "removeItem").mockImplementation(() => {
+      throw new DOMException("denied", "SecurityError");
+    });
+
+    fireEvent.click(screen.getByRole("button", { name: "Analytics preferences" }));
+    fireEvent.click(screen.getByRole("button", { name: "Decline analytics" }));
+    expect(window[`ga-disable-${staffordMediaGaMeasurementId}`]).toBe(true);
+    view.unmount();
+    render(<AnalyticsProvider><EventProbe /></AnalyticsProvider>);
+    expect(await screen.findByRole("button", { name: "Analytics preferences" })).toBeInTheDocument();
+    expect(window[`ga-disable-${staffordMediaGaMeasurementId}`]).toBe(true);
+  });
+
+  it("stops collection when another tab withdraws consent", async () => {
+    window.localStorage.setItem(analyticsConsentStorageKey, "accepted");
+    render(<AnalyticsProvider><EventProbe /></AnalyticsProvider>);
+    await waitFor(() => expect(window.gtag).toBeTypeOf("function"));
+
+    window.localStorage.setItem(analyticsConsentStorageKey, "declined");
+    fireEvent(window, new StorageEvent("storage", {
+      key: analyticsConsentStorageKey,
+      oldValue: "accepted",
+      newValue: "declined",
+      storageArea: window.localStorage,
+    }));
+    const count = window.dataLayer?.filter(
+      (entry) => Array.isArray(entry) && entry[0] === "event" && entry[1] === "contact_click",
+    ).length;
+    fireEvent.click(screen.getByRole("button", { name: "Probe event" }));
+    expect(window.dataLayer?.filter(
+      (entry) => Array.isArray(entry) && entry[0] === "event" && entry[1] === "contact_click",
+    )).toHaveLength(count || 0);
+    expect(window[`ga-disable-${staffordMediaGaMeasurementId}`]).toBe(true);
   });
 
   it("fails closed when local preference storage is unavailable", async () => {

@@ -24,6 +24,16 @@ import {
 } from "@/lib/analytics";
 
 const googleAnalyticsScriptId = "staffordmedia-ga4";
+const withdrawalOverrideKey = "staffordmedia.analytics_withdrawn.v1";
+
+function storedConsent(): AnalyticsConsent {
+  try {
+    if (window.sessionStorage.getItem(withdrawalOverrideKey) === "true") return "declined";
+  } catch {
+    // Storage can be unavailable; local consent then defaults to undecided on read failure.
+  }
+  return readStoredAnalyticsConsent(window.localStorage);
+}
 
 type AnalyticsContextValue = {
   consent: AnalyticsConsent;
@@ -96,9 +106,24 @@ export function AnalyticsProvider({ children }: { children: ReactNode }) {
   const analyticsPreviouslyEnabled = useRef(false);
 
   useEffect(() => {
-    const stored = readStoredAnalyticsConsent(window.localStorage);
+    const stored = storedConsent();
     setConsent(stored);
     setPreferencesOpen(stored === "undecided");
+  }, []);
+
+  useEffect(() => {
+    const onStorage = (event: StorageEvent) => {
+      if (event.key !== analyticsConsentStorageKey && event.key !== null) return;
+      const stored = storedConsent();
+      if (stored !== "accepted") {
+        disableGoogleAnalytics();
+        setReady(false);
+      }
+      setConsent(stored);
+      setPreferencesOpen(stored === "undecided");
+    };
+    window.addEventListener("storage", onStorage);
+    return () => window.removeEventListener("storage", onStorage);
   }, []);
 
   useEffect(() => {
@@ -135,16 +160,23 @@ export function AnalyticsProvider({ children }: { children: ReactNode }) {
 
   const saveConsent = useCallback((nextConsent: Exclude<AnalyticsConsent, "undecided">) => {
     setPreferenceError(false);
+    if (nextConsent === "declined") disableGoogleAnalytics();
     try {
+      if (nextConsent === "accepted") window.sessionStorage.removeItem(withdrawalOverrideKey);
       window.localStorage.setItem(analyticsConsentStorageKey, nextConsent);
     } catch {
+      // A failed withdrawal must not leave an older acceptance active on reload.
+      try { window.sessionStorage.setItem(withdrawalOverrideKey, "true"); } catch {}
+      try { window.localStorage.removeItem(analyticsConsentStorageKey); } catch {}
       disableGoogleAnalytics();
       setConsent("undecided");
       setPreferenceError(true);
       setPreferencesOpen(true);
       return;
     }
-    if (nextConsent === "declined") disableGoogleAnalytics();
+    if (nextConsent === "declined") {
+      try { window.sessionStorage.removeItem(withdrawalOverrideKey); } catch {}
+    }
     setConsent(nextConsent);
     setPreferencesOpen(false);
   }, []);
