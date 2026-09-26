@@ -115,6 +115,10 @@ export function AnalyticsProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const onStorage = (event: StorageEvent) => {
       if (event.key !== analyticsConsentStorageKey && event.key !== null) return;
+      if (event.key === analyticsConsentStorageKey && event.newValue === "accepted") {
+        // A later explicit acceptance in another tab supersedes its earlier withdrawal.
+        try { window.sessionStorage.removeItem(withdrawalOverrideKey); } catch {}
+      }
       const stored = storedConsent();
       if (stored !== "accepted") {
         disableGoogleAnalytics();

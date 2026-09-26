@@ -252,6 +252,17 @@ describe("analytics consent provider", () => {
     expect(window.localStorage.getItem(analyticsConsentStorageKey)).toBe("accepted");
     expect(screen.getAllByTestId("consent-state")[1]).toHaveTextContent("declined:false");
     expect(window[`ga-disable-${staffordMediaGaMeasurementId}`]).toBe(true);
+
+    vi.restoreAllMocks();
+    window.localStorage.setItem(analyticsConsentStorageKey, "declined");
+    window.localStorage.setItem(analyticsConsentStorageKey, "accepted");
+    fireEvent(window, new StorageEvent("storage", {
+      key: analyticsConsentStorageKey,
+      oldValue: "declined",
+      newValue: "accepted",
+      storageArea: window.localStorage,
+    }));
+    await waitFor(() => expect(screen.getAllByTestId("consent-state")[1]).toHaveTextContent("accepted:true"));
   });
 
   it("stops collection when another tab withdraws consent", async () => {
