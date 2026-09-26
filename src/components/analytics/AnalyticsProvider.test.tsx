@@ -22,6 +22,11 @@ function EventProbe() {
   );
 }
 
+function ConsentProbe() {
+  const analytics = useStaffordMediaAnalytics();
+  return <output data-testid="consent-state">{analytics.consent}:{String(analytics.ready)}</output>;
+}
+
 function AutomateViewProbe() {
   const analytics = useStaffordMediaAnalytics();
   const tracked = React.useRef(false);
@@ -53,6 +58,7 @@ describe("analytics consent provider", () => {
   afterEach(() => {
     cleanup();
     vi.restoreAllMocks();
+    vi.unstubAllGlobals();
     document.getElementById("staffordmedia-ga4")?.remove();
   });
 
@@ -207,6 +213,44 @@ describe("analytics consent provider", () => {
     view.unmount();
     render(<AnalyticsProvider><EventProbe /></AnalyticsProvider>);
     expect(await screen.findByRole("button", { name: "Analytics preferences" })).toBeInTheDocument();
+    expect(window[`ga-disable-${staffordMediaGaMeasurementId}`]).toBe(true);
+  });
+
+  it("broadcasts failed withdrawal so another open tab stops collection", async () => {
+    class TestChannel {
+      static instances: TestChannel[] = [];
+      onmessage: ((event: MessageEvent) => void) | null = null;
+      constructor(_name: string) { TestChannel.instances.push(this); }
+      postMessage(message: string) {
+        for (const peer of TestChannel.instances) {
+          if (peer !== this) peer.onmessage?.({ data: message } as MessageEvent);
+        }
+      }
+      close() {}
+    }
+    vi.stubGlobal("BroadcastChannel", TestChannel);
+    window.localStorage.setItem(analyticsConsentStorageKey, "accepted");
+    render(<AnalyticsProvider><ConsentProbe /></AnalyticsProvider>);
+    render(<AnalyticsProvider><ConsentProbe /></AnalyticsProvider>);
+    await waitFor(() => expect(screen.getAllByTestId("consent-state")).toHaveLength(2));
+    await waitFor(() => expect(screen.getAllByTestId("consent-state")[1]).toHaveTextContent("accepted:true"));
+
+    const originalSetItem = Storage.prototype.setItem;
+    const originalRemoveItem = Storage.prototype.removeItem;
+    vi.spyOn(Storage.prototype, "setItem").mockImplementation(function (this: Storage, key, value) {
+      if (this === window.localStorage) throw new DOMException("denied", "SecurityError");
+      return Reflect.apply(originalSetItem, this, [key, value]);
+    });
+    vi.spyOn(Storage.prototype, "removeItem").mockImplementation(function (this: Storage, key) {
+      if (this === window.localStorage) throw new DOMException("denied", "SecurityError");
+      return Reflect.apply(originalRemoveItem, this, [key]);
+    });
+
+    fireEvent.click(screen.getAllByRole("button", { name: "Analytics preferences" })[0]);
+    fireEvent.click(screen.getByRole("button", { name: "Decline analytics" }));
+
+    expect(window.localStorage.getItem(analyticsConsentStorageKey)).toBe("accepted");
+    expect(screen.getAllByTestId("consent-state")[1]).toHaveTextContent("declined:false");
     expect(window[`ga-disable-${staffordMediaGaMeasurementId}`]).toBe(true);
   });
 

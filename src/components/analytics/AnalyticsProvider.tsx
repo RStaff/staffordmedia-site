@@ -104,6 +104,7 @@ export function AnalyticsProvider({ children }: { children: ReactNode }) {
   const [preferencesOpen, setPreferencesOpen] = useState(false);
   const [preferenceError, setPreferenceError] = useState(false);
   const analyticsPreviouslyEnabled = useRef(false);
+  const withdrawalChannel = useRef<BroadcastChannel | null>(null);
 
   useEffect(() => {
     const stored = storedConsent();
@@ -124,6 +125,28 @@ export function AnalyticsProvider({ children }: { children: ReactNode }) {
     };
     window.addEventListener("storage", onStorage);
     return () => window.removeEventListener("storage", onStorage);
+  }, []);
+
+  useEffect(() => {
+    if (typeof BroadcastChannel === "undefined") return;
+    try {
+      const channel = new BroadcastChannel(analyticsConsentStorageKey);
+      withdrawalChannel.current = channel;
+      channel.onmessage = (event: MessageEvent) => {
+        if (event.data !== "declined") return;
+        try { window.sessionStorage.setItem(withdrawalOverrideKey, "true"); } catch {}
+        disableGoogleAnalytics();
+        setReady(false);
+        setConsent("declined");
+        setPreferencesOpen(false);
+      };
+      return () => {
+        withdrawalChannel.current = null;
+        channel.close();
+      };
+    } catch {
+      // Optional transport failure does not block a local withdrawal.
+    }
   }, []);
 
   useEffect(() => {
@@ -160,7 +183,10 @@ export function AnalyticsProvider({ children }: { children: ReactNode }) {
 
   const saveConsent = useCallback((nextConsent: Exclude<AnalyticsConsent, "undecided">) => {
     setPreferenceError(false);
-    if (nextConsent === "declined") disableGoogleAnalytics();
+    if (nextConsent === "declined") {
+      disableGoogleAnalytics();
+      try { withdrawalChannel.current?.postMessage("declined"); } catch {}
+    }
     try {
       if (nextConsent === "accepted") window.sessionStorage.removeItem(withdrawalOverrideKey);
       window.localStorage.setItem(analyticsConsentStorageKey, nextConsent);
