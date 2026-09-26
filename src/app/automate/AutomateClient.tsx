@@ -24,6 +24,8 @@ import {
   type AutomationBlueprintPaymentEnvironment,
   type AutomationOpportunityPreview,
 } from "@/lib/automationIntake";
+import { useStaffordMediaAnalytics } from "@/components/analytics/AnalyticsProvider";
+import { trackBlueprintCheckoutBeforeNavigation } from "@/lib/analytics";
 
 const improvementDescriptions: Partial<Record<(typeof automationImprovements)[number], string>> = {
   "Lead response": "Help new inquiries reach the right person with visible ownership.",
@@ -164,6 +166,7 @@ export default function AutomateClient({
   navigateToCheckout?: (destination: string) => void;
 }) {
   const router = useRouter();
+  const analytics = useStaffordMediaAnalytics();
   const [hydrated, setHydrated] = useState(false);
   const [handoffError, setHandoffError] = useState(false);
   const [brief, setBrief] = useState<AutomationBrief | null>(null);
@@ -172,10 +175,18 @@ export default function AutomateClient({
   const formHeadingRef = useRef<HTMLHeadingElement>(null);
   const previewHeadingRef = useRef<HTMLHeadingElement>(null);
   const restoreFormFocus = useRef(false);
+  const automateViewTracked = useRef(false);
+  const formStartTracked = useRef(false);
 
   useEffect(() => {
     setHydrated(true);
   }, []);
+
+  useEffect(() => {
+    if (analytics.consent === "accepted" && analytics.ready && !automateViewTracked.current) {
+      automateViewTracked.current = analytics.track("automate_view");
+    }
+  }, [analytics]);
 
   useEffect(() => {
     if (preview) {
@@ -206,6 +217,13 @@ export default function AutomateClient({
     }
     setBrief(nextBrief);
     setPreview(nextPreview);
+    analytics.track("automation_result_view");
+  }
+
+  function handleFormStart() {
+    if (!formStartTracked.current) {
+      formStartTracked.current = analytics.track("form_start");
+    }
   }
 
   function handleDiscussOpportunity() {
@@ -213,6 +231,7 @@ export default function AutomateClient({
     setHandoffError(false);
     try {
       storeAutomationBrief(window.sessionStorage, brief);
+      analytics.track("contact_click");
       router.push("/contact");
     } catch {
       setHandoffError(true);
@@ -236,7 +255,9 @@ export default function AutomateClient({
         setHandoffError(true);
         return;
       }
-      navigateToCheckout(destination);
+      trackBlueprintCheckoutBeforeNavigation(() => {
+        try { navigateToCheckout(destination); } catch { setHandoffError(true); }
+      });
     } catch {
       setHandoffError(true);
     }
@@ -254,7 +275,7 @@ export default function AutomateClient({
       <h1 className="mt-4 max-w-3xl text-4xl font-extrabold text-white md:text-5xl">Automate My Business</h1>
       <p className="body-lg mt-5 max-w-3xl">Describe the work you want to improve. You will receive an immediate, deterministic opportunity preview before deciding whether to contact us.</p>
 
-      <form method="post" action="/automate" onSubmit={handleSubmit} className="mt-10" hidden={Boolean(preview)}>
+      <form method="post" action="/automate" onSubmit={handleSubmit} onChangeCapture={handleFormStart} className="mt-10" hidden={Boolean(preview)}>
         <fieldset disabled={!hydrated} className="grid gap-6">
           <section className="premium-panel-soft p-6 md:p-8">
             <h2 ref={formHeadingRef} tabIndex={-1} className="automate-focus-target text-2xl font-semibold text-white">What are you trying to improve?</h2>

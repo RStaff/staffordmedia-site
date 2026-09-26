@@ -194,6 +194,61 @@ a {
   box-shadow: 0 0 0 3px rgba(255, 225, 105, 0.12);
 }
 
+.analytics-consent-panel {
+  position: fixed;
+  z-index: 100;
+  right: 16px;
+  bottom: 16px;
+  left: 16px;
+  display: grid;
+  gap: 16px;
+  max-width: 760px;
+  margin-inline: auto;
+  padding: 20px;
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  border-radius: 8px;
+  background: #08111f;
+  box-shadow: 0 20px 70px rgba(0, 0, 0, 0.48);
+}
+
+.analytics-consent-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.analytics-preferences-button {
+  position: fixed;
+  z-index: 90;
+  right: 16px;
+  bottom: 16px;
+  min-height: 44px;
+  padding: 10px 14px;
+  border: 1px solid rgba(148, 163, 184, 0.4);
+  border-radius: 8px;
+  background: #08111f;
+  color: #e2e8f0;
+  font-size: 13px;
+  font-weight: 650;
+}
+
+@media (min-width: 768px) {
+  .analytics-consent-panel {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+  }
+
+  .analytics-consent-actions {
+    min-width: 310px;
+  }
+}
+
+@media (max-width: 480px) {
+  .analytics-consent-actions {
+    grid-template-columns: 1fr;
+  }
+}
+
 .automate-choice {
   display: flex;
   min-width: 0;

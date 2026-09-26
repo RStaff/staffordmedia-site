@@ -48,6 +48,7 @@ export default function Footer() {
             </Link>
             <Link href="/staffordnext" className="transition hover:text-white">StaffordNext</Link>
             <Link href="/staffordos" className="transition hover:text-white">How We Work</Link>
+            <Link href="/privacy" className="transition hover:text-white">Privacy</Link>
             <Link href="/contact" className="transition hover:text-white">
               Contact
             </Link>
