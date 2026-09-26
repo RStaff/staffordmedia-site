@@ -1,0 +1,117 @@
+{
+  "version": "control_boundary_registry_v1",
+  "status": "BOUNDARY_CLARIFICATION_ONLY",
+  "control_layers": [
+    {
+      "control_layer_id": "STAFFORDOS_DEV_CONTROL",
+      "name": "StaffordOS Dev Control",
+      "scope": "Operating-system truth layer for repo state, surfaces, patch gates, runtime binding, lifecycle state, and approval boundaries.",
+      "owned_artifacts": [
+        "staffordos/dev_control/*",
+        "staffordos/lifecycle/*",
+        "staffordos/commercial/*",
+        "surface_registry_v1.json",
+        "patch_queue_v1.json",
+        "ross_visual_approval_session_v1.md"
+      ],
+      "prohibited_artifacts": [
+        "live Shopify themes",
+        "merchant production stores",
+        "Abando recovery runtime internals unless explicitly bound",
+        "ShopiFixer mutation packet execution beyond approval gating"
+      ],
+      "escalation_owner": "Ross / StaffordOS",
+      "allowed_actions": [
+        "classify worktree state",
+        "record approval gates",
+        "record patch dependencies",
+        "bind runtime surfaces",
+        "define lifecycle transition rules",
+        "block unsafe operational movement"
+      ],
+      "prohibited_actions": [
+        "mutate live Shopify themes",
+        "execute merchant transformations",
+        "deploy public surfaces without approval",
+        "launch agents or workers without a separate approved slice",
+        "infer product approval from validation output"
+      ]
+    },
+    {
+      "control_layer_id": "SHOPIFIXER_INTERNAL_DEV_CONTROL",
+      "name": "ShopiFixer Internal Dev Control",
+      "scope": "Internal fulfillment control for ShopiFixer audit-to-transformation work, mutation packets, local sandboxes, validation, proof, rollback, and merchant approval packets.",
+      "owned_artifacts": [
+        "staffordos/shopifixer_auto/*",
+        "mutation_packet_schema_v1.json",
+        "theme_intelligence_registry_v1.json",
+        "before_after_artifact_manifest_v1.json",
+        "local sandbox runner artifacts"
+      ],
+      "prohibited_artifacts": [
+        "src/app/page.tsx",
+        "src/app/shopifixer/page.tsx",
+        "src/app/audit-result/page.tsx",
+        "src/app/pricing/page.tsx",
+        "src/app/abando/page.tsx",
+        "src/app/recovery-demo/page.tsx",
+        "Abando recovery runtime behavior",
+        "live Shopify themes"
+      ],
+      "escalation_owner": "Ross / ShopiFixer fulfillment",
+      "allowed_actions": [
+        "validate mutation packets",
+        "create local sandbox snapshots",
+        "write proof manifests",
+        "define rollback requirements",
+        "prepare merchant approval packets"
+      ],
+      "prohibited_actions": [
+        "edit public StaffordMedia routes",
+        "mutate live Shopify themes",
+        "run Shopify CLI or APIs without separate approval",
+        "deploy",
+        "change Abando recovery product behavior",
+        "bypass StaffordOS patch gates"
+      ]
+    },
+    {
+      "control_layer_id": "ABANDO_RECOVERY_CONTROL",
+      "name": "Abando Recovery Control",
+      "scope": "Recovery product control for recovery proof, recovery messages, return links, recovery readiness, attribution, and Abando onboarding.",
+      "owned_artifacts": [
+        "Abando recovery runtime proof",
+        "recovery message proof",
+        "return link proof",
+        "recovery readiness and attribution artifacts"
+      ],
+      "prohibited_artifacts": [
+        "ShopiFixer theme mutation packets",
+        "ShopiFixer local sandbox outputs",
+        "StaffordMedia homepage approval",
+        "ShopiFixer pricing page decisions",
+        "StaffordOS patch queue mutation"
+      ],
+      "escalation_owner": "Ross / Abando recovery",
+      "allowed_actions": [
+        "prove recovery loop readiness",
+        "record recovery proof state",
+        "support Abando onboarding decisions",
+        "provide recovery destination readiness for StaffordOS review"
+      ],
+      "prohibited_actions": [
+        "change ShopiFixer fulfillment scope",
+        "replace audit-result or pricing flow",
+        "edit StaffordMedia public routes without StaffordOS approval",
+        "treat recovery proof as ShopiFixer transformation proof",
+        "bypass merchant approval"
+      ]
+    }
+  ],
+  "overlap_resolution": [
+    "Public route or visual approval overlap is owned by StaffordOS Dev Control.",
+    "Merchant theme transformation overlap is owned by ShopiFixer Internal Dev Control and gated by StaffordOS.",
+    "Recovery proof and recovery product overlap is owned by Abando Recovery Control and gated by StaffordOS when public surfaces are affected.",
+    "Ambiguous ownership blocks action until the control layer and approval path are recorded."
+  ]
+}

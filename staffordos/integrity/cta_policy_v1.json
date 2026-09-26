@@ -1,0 +1,67 @@
+{
+  "artifact": "cta_policy_v1",
+  "purpose": "Enforce allowed and forbidden CTA targets by route/product surface.",
+  "routes": {
+    "/": {
+      "allowed_targets": [
+        "/shopifixer",
+        "/abando",
+        "/recovery-demo",
+        "/contact",
+        "/services"
+      ],
+      "forbidden_targets": ["/shopifixer/onboarding", "app.abando.ai"]
+    },
+    "/shopifixer": {
+      "allowed_targets": ["/shopifixer/result", "/recovery-demo", "/services"],
+      "forbidden_targets": [
+        "/shopifixer/onboarding",
+        "app.abando.ai",
+        "/embedded",
+        "/dashboard"
+      ]
+    },
+    "/shopifixer/result": {
+      "allowed_targets": ["/pricing", "/audit-result", "/shopifixer"],
+      "forbidden_targets": [
+        "/shopifixer/onboarding",
+        "app.abando.ai",
+        "/embedded",
+        "/dashboard"
+      ]
+    },
+    "/audit-result": {
+      "allowed_targets": [
+        "/pricing",
+        "/shopifixer",
+        "/shopifixer/result",
+        "/abando"
+      ],
+      "forbidden_targets": [
+        "/shopifixer/onboarding",
+        "app.abando.ai/embedded",
+        "app.abando.ai/dashboard"
+      ]
+    },
+    "/pricing": {
+      "allowed_targets": ["/audit-result", "/shopifixer", "buy.stripe.com"],
+      "forbidden_targets": [
+        "/shopifixer/onboarding",
+        "app.abando.ai/embedded",
+        "app.abando.ai/dashboard"
+      ]
+    },
+    "/abando": {
+      "allowed_targets": ["/recovery-demo", "/shopifixer"],
+      "forbidden_targets": ["app.abando.ai/embedded", "app.abando.ai/dashboard"]
+    },
+    "/recovery-demo": {
+      "allowed_targets": ["/shopifixer", "/abando"],
+      "forbidden_targets": [
+        "/shopifixer/onboarding",
+        "app.abando.ai/embedded",
+        "app.abando.ai/dashboard"
+      ]
+    }
+  }
+}
