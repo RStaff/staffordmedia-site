@@ -254,14 +254,8 @@ describe("analytics consent provider", () => {
     expect(window[`ga-disable-${staffordMediaGaMeasurementId}`]).toBe(true);
 
     vi.restoreAllMocks();
-    window.localStorage.setItem(analyticsConsentStorageKey, "declined");
-    window.localStorage.setItem(analyticsConsentStorageKey, "accepted");
-    fireEvent(window, new StorageEvent("storage", {
-      key: analyticsConsentStorageKey,
-      oldValue: "declined",
-      newValue: "accepted",
-      storageArea: window.localStorage,
-    }));
+    fireEvent.click(screen.getByRole("button", { name: "Accept analytics" }));
+    expect(window.localStorage.getItem(analyticsConsentStorageKey)).toBe("accepted");
     await waitFor(() => expect(screen.getAllByTestId("consent-state")[1]).toHaveTextContent("accepted:true"));
   });
 

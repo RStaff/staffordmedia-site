@@ -137,6 +137,15 @@ export function AnalyticsProvider({ children }: { children: ReactNode }) {
       const channel = new BroadcastChannel(analyticsConsentStorageKey);
       withdrawalChannel.current = channel;
       channel.onmessage = (event: MessageEvent) => {
+        if (event.data === "accepted") {
+          try { window.sessionStorage.removeItem(withdrawalOverrideKey); } catch {}
+          const stored = storedConsent();
+          if (stored === "accepted") {
+            setConsent("accepted");
+            setPreferencesOpen(false);
+          }
+          return;
+        }
         if (event.data !== "declined") return;
         try { window.sessionStorage.setItem(withdrawalOverrideKey, "true"); } catch {}
         disableGoogleAnalytics();
@@ -206,6 +215,8 @@ export function AnalyticsProvider({ children }: { children: ReactNode }) {
     }
     if (nextConsent === "declined") {
       try { window.sessionStorage.removeItem(withdrawalOverrideKey); } catch {}
+    } else {
+      try { withdrawalChannel.current?.postMessage("accepted"); } catch {}
     }
     setConsent(nextConsent);
     setPreferencesOpen(false);
