@@ -120,6 +120,7 @@ export function AnalyticsProvider({ children }: { children: ReactNode }) {
         try { window.sessionStorage.removeItem(withdrawalOverrideKey); } catch {}
       }
       const stored = storedConsent();
+      if (stored === "accepted") setPreferenceError(false);
       if (stored !== "accepted") {
         disableGoogleAnalytics();
         setReady(false);
@@ -141,6 +142,7 @@ export function AnalyticsProvider({ children }: { children: ReactNode }) {
           try { window.sessionStorage.removeItem(withdrawalOverrideKey); } catch {}
           const stored = storedConsent();
           if (stored === "accepted") {
+            setPreferenceError(false);
             setConsent("accepted");
             setPreferencesOpen(false);
           }

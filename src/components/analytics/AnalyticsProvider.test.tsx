@@ -281,6 +281,30 @@ describe("analytics consent provider", () => {
     expect(window[`ga-disable-${staffordMediaGaMeasurementId}`]).toBe(true);
   });
 
+  it("clears a stale preference error when another tab accepts", async () => {
+    window.localStorage.setItem(analyticsConsentStorageKey, "accepted");
+    render(<AnalyticsProvider><ConsentProbe /></AnalyticsProvider>);
+    await waitFor(() => expect(screen.getByTestId("consent-state")).toHaveTextContent("accepted:true"));
+    vi.spyOn(Storage.prototype, "setItem").mockImplementation(() => {
+      throw new DOMException("denied", "SecurityError");
+    });
+    fireEvent.click(screen.getByRole("button", { name: "Analytics preferences" }));
+    fireEvent.click(screen.getByRole("button", { name: "Decline analytics" }));
+    expect(screen.getByRole("alert")).toHaveTextContent("Analytics remains off");
+    vi.restoreAllMocks();
+
+    window.localStorage.setItem(analyticsConsentStorageKey, "accepted");
+    fireEvent(window, new StorageEvent("storage", {
+      key: analyticsConsentStorageKey,
+      oldValue: null,
+      newValue: "accepted",
+      storageArea: window.localStorage,
+    }));
+
+    expect(screen.queryByRole("alert")).toBeNull();
+    await waitFor(() => expect(screen.getByTestId("consent-state")).toHaveTextContent("accepted:true"));
+  });
+
   it("fails closed when local preference storage is unavailable", async () => {
     vi.spyOn(Storage.prototype, "setItem").mockImplementation(() => {
       throw new DOMException("denied", "SecurityError");

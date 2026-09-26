@@ -25,6 +25,7 @@ import {
   type AutomationOpportunityPreview,
 } from "@/lib/automationIntake";
 import { useStaffordMediaAnalytics } from "@/components/analytics/AnalyticsProvider";
+import { trackBlueprintCheckoutBeforeNavigation } from "@/lib/analytics";
 
 const improvementDescriptions: Partial<Record<(typeof automationImprovements)[number], string>> = {
   "Lead response": "Help new inquiries reach the right person with visible ownership.",
@@ -254,8 +255,9 @@ export default function AutomateClient({
         setHandoffError(true);
         return;
       }
-      analytics.track("blueprint_checkout_start");
-      navigateToCheckout(destination);
+      trackBlueprintCheckoutBeforeNavigation(() => {
+        try { navigateToCheckout(destination); } catch { setHandoffError(true); }
+      });
     } catch {
       setHandoffError(true);
     }

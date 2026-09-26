@@ -4,6 +4,7 @@ import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/re
 import * as React from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import AutomateClient from "./AutomateClient";
+import { setAnalyticsCollectionEnabled } from "@/lib/analytics";
 
 globalThis.React = React;
 
@@ -45,6 +46,7 @@ function completeAssessment() {
 
 describe("automate funnel analytics", () => {
   beforeEach(() => {
+    setAnalyticsCollectionEnabled(false);
     window.sessionStorage.clear();
     mocks.push.mockReset();
     mocks.track.mockReset().mockReturnValue(true);
@@ -62,6 +64,7 @@ describe("automate funnel analytics", () => {
   afterEach(() => {
     cleanup();
     vi.restoreAllMocks();
+    setAnalyticsCollectionEnabled(false);
   });
 
   it("tracks view, first interaction once, and each valid result without form content", async () => {
@@ -109,7 +112,6 @@ describe("automate funnel analytics", () => {
     expect(mocks.push).toHaveBeenCalledWith("/contact");
 
     fireEvent.click(screen.getAllByRole("button", { name: "Start My Blueprint — $750" })[0]);
-    expect(mocks.track).toHaveBeenCalledWith("blueprint_checkout_start");
     expect(navigateToCheckout).toHaveBeenCalledWith(livePaymentUrl);
     expect(navigateToCheckout.mock.calls[0][0]).not.toContain("PRIVATE");
   });
@@ -124,6 +126,21 @@ describe("automate funnel analytics", () => {
     fireEvent.click(screen.getAllByRole("button", { name: "Start My Blueprint — $750" })[0]);
 
     expect(mocks.push).toHaveBeenCalledWith("/contact");
+    expect(navigateToCheckout).toHaveBeenCalledWith(livePaymentUrl);
+  });
+
+  it("waits for the checkout event callback before leaving for Stripe", async () => {
+    const navigateToCheckout = renderAutomate();
+    completeAssessment();
+    await screen.findByRole("heading", { name: "Your biggest automation opportunity" });
+    window.gtag = vi.fn();
+    setAnalyticsCollectionEnabled(true);
+
+    fireEvent.click(screen.getAllByRole("button", { name: "Start My Blueprint — $750" })[0]);
+
+    expect(navigateToCheckout).not.toHaveBeenCalled();
+    const payload = vi.mocked(window.gtag).mock.calls[0][2] as { event_callback: () => void };
+    payload.event_callback();
     expect(navigateToCheckout).toHaveBeenCalledWith(livePaymentUrl);
   });
 });

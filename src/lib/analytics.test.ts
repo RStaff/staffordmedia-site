@@ -6,6 +6,7 @@ import {
   sanitizeAnalyticsPageLocation,
   setAnalyticsCollectionEnabled,
   staffordMediaGaMeasurementId,
+  trackBlueprintCheckoutBeforeNavigation,
   trackStaffordMediaEvent,
 } from "./analytics";
 
@@ -19,6 +20,7 @@ describe("privacy-safe analytics contract", () => {
 
   afterEach(() => {
     vi.restoreAllMocks();
+    vi.useRealTimers();
     setAnalyticsCollectionEnabled(false);
   });
 
@@ -79,6 +81,36 @@ describe("privacy-safe analytics contract", () => {
     setAnalyticsCollectionEnabled(true);
 
     expect(trackStaffordMediaEvent("contact_click")).toBe(false);
+  });
+
+  it("lets the checkout event hand off before navigation", () => {
+    vi.useFakeTimers();
+    const navigate = vi.fn();
+    window.gtag = vi.fn();
+    setAnalyticsCollectionEnabled(true);
+    trackBlueprintCheckoutBeforeNavigation(navigate);
+
+    expect(navigate).not.toHaveBeenCalled();
+    const [command, event, payload] = vi.mocked(window.gtag).mock.calls[0];
+    expect([command, event]).toEqual(["event", "blueprint_checkout_start"]);
+    expect(payload).toMatchObject({ route: "/automate", value: 750, event_timeout: 400 });
+    expect(JSON.stringify(payload)).not.toMatch(/workflow|private|email/i);
+    (payload as { event_callback: () => void }).event_callback();
+    vi.advanceTimersByTime(400);
+    expect(navigate).toHaveBeenCalledTimes(1);
+  });
+
+  it("navigates after the bounded delay if the tag never finishes loading", () => {
+    vi.useFakeTimers();
+    const navigate = vi.fn();
+    window.gtag = vi.fn();
+    setAnalyticsCollectionEnabled(true);
+    trackBlueprintCheckoutBeforeNavigation(navigate);
+
+    vi.advanceTimersByTime(399);
+    expect(navigate).not.toHaveBeenCalled();
+    vi.advanceTimersByTime(1);
+    expect(navigate).toHaveBeenCalledTimes(1);
   });
 
   it("accepts only the versioned local consent values", () => {

@@ -103,6 +103,32 @@ export function trackStaffordMediaEvent(event: StaffordMediaAnalyticsEvent) {
   }
 }
 
+export function trackBlueprintCheckoutBeforeNavigation(navigate: () => void) {
+  if (!collectionEnabled || typeof window === "undefined" || typeof window.gtag !== "function") {
+    navigate();
+    return;
+  }
+
+  let completed = false;
+  let timeout: ReturnType<typeof setTimeout>;
+  const complete = () => {
+    if (completed) return;
+    completed = true;
+    clearTimeout(timeout);
+    navigate();
+  };
+  timeout = setTimeout(complete, 400);
+  try {
+    window.gtag("event", "blueprint_checkout_start", {
+      ...fixedEventParameters.blueprint_checkout_start,
+      event_callback: complete,
+      event_timeout: 400,
+    });
+  } catch {
+    complete();
+  }
+}
+
 export function readStoredAnalyticsConsent(storage: Pick<Storage, "getItem">): AnalyticsConsent {
   try {
     const stored = storage.getItem(analyticsConsentStorageKey);
