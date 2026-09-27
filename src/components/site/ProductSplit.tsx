@@ -112,8 +112,19 @@ export default function ProductSplit() {
             Independent product. Complementary recovery layer.
           </div>
 
-          <Link href="/recovery-demo" className="mt-8 inline-flex rounded-xl border border-white/10 px-6 py-3 font-semibold text-white transition hover:border-violet-300 hover:text-violet-200">
-            See Abando Recovery Proof
+          <a
+            href="https://www.abando.ai/"
+            className="smc-button smc-button-primary mt-8"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Visit Abando.ai
+          </a>
+          <Link
+            href="/recovery-demo"
+            className="smc-button smc-button-secondary mt-3"
+          >
+            View optional concept demo
           </Link>
         </article>
       </div>
