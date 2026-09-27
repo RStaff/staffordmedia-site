@@ -11,7 +11,7 @@ export default function RecoveryDemoPage() {
       <div className="mx-auto max-w-5xl space-y-8">
         <section className="rounded-[28px] border border-slate-800 bg-slate-900/90 p-8 shadow-2xl shadow-black/20">
           <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-violet-300">
-            Abando Recovery Demo
+            Optional concept demo · Abando Recovery
           </p>
           <h1 className="mt-4 text-4xl font-semibold tracking-tight text-white">
             See the proof loop: message sent, shopper returns, revenue attributed.
@@ -37,8 +37,16 @@ export default function RecoveryDemoPage() {
           </div>
 
           <div className="mt-8 flex flex-wrap gap-4">
-            <Link href="/shopifixer" className="rounded-full border border-slate-600 px-5 py-3 text-sm font-semibold text-white transition hover:border-violet-300 hover:text-violet-200">
-              Run ShopiFixer Audit
+            <a
+              href="https://www.abando.ai/"
+              target="_blank"
+              rel="noreferrer"
+              className="smc-button smc-button-primary"
+            >
+              Visit Abando.ai
+            </a>
+            <Link href="/contact" className="smc-button smc-button-secondary">
+              Talk with Stafford Media
             </Link>
           </div>
         </section>

@@ -15,24 +15,8 @@ export default function ContactPage() {
   const analytics = useStaffordMediaAnalytics();
   const [brief, setBrief] = useState<AutomationBrief | null>(null);
   const [copyError, setCopyError] = useState(false);
-  const calendlyUrl = process.env.NEXT_PUBLIC_CALENDLY_URL?.trim();
-  let validCalendlyUrl: string | null = null;
-  if (calendlyUrl) {
-    try {
-      const parsedCalendlyUrl = new URL(calendlyUrl);
-      if (
-        parsedCalendlyUrl.protocol === "https:" &&
-        (parsedCalendlyUrl.hostname === "calendly.com" ||
-          parsedCalendlyUrl.hostname.endsWith(".calendly.com"))
-      ) {
-        validCalendlyUrl = calendlyUrl;
-      }
-    } catch {
-      validCalendlyUrl = null;
-    }
-  }
   const mailto = buildAutomationMailto(
-    process.env.NEXT_PUBLIC_CONTACT_EMAIL,
+    process.env.NEXT_PUBLIC_CONTACT_EMAIL?.trim() || "support@staffordmedia.ai",
     brief || {
       improvements: [],
       businessType: null,
@@ -84,15 +68,13 @@ export default function ContactPage() {
   }
 
   return (
-    <main className="bg-white px-6 py-20 text-center text-gray-900">
-      <div className="mx-auto max-w-3xl">
-        <p className="mb-4 text-sm font-semibold uppercase tracking-[0.24em] text-blue-600">
-          Stafford Media Consulting
-        </p>
-        <h1 className="mb-6 text-4xl font-bold md:text-5xl">
+    <main className="section-pad">
+      <div className="site-shell max-w-3xl text-center">
+        <p className="eyebrow text-[var(--smc-accent)]">Stafford Media Consulting</p>
+        <h1 className="hero-title mt-5 text-white">
           Tell us what you want to improve
         </h1>
-        <p className="mb-8 text-lg md:text-xl">
+        <p className="body-lg mt-6">
           Tell us about a workflow, follow-up problem, or business process that
           is taking more time than it should.
         </p>
@@ -100,7 +82,7 @@ export default function ContactPage() {
         {brief ? (
           <section
             aria-labelledby="submitted-brief-heading"
-            className="mb-8 rounded-xl border border-gray-200 bg-gray-50 p-6 text-left"
+            className="premium-panel-soft mb-8 p-6 text-left"
           >
             <div className="flex items-start justify-between gap-4">
               <h2 id="submitted-brief-heading" className="text-xl font-semibold">
@@ -109,7 +91,7 @@ export default function ContactPage() {
               <button
                 type="button"
                 onClick={removeBrief}
-                className="text-sm font-semibold text-gray-600 underline hover:text-gray-900"
+                className="text-sm font-semibold text-slate-300 underline hover:text-white"
               >
                 Remove saved brief
               </button>
@@ -124,50 +106,34 @@ export default function ContactPage() {
           </section>
         ) : null}
 
-        <div className="flex flex-wrap justify-center gap-4">
+        <div className="mt-8 flex flex-wrap justify-center gap-4">
           {brief ? (
             <button
               type="button"
               onClick={copyBrief}
-              className="rounded bg-blue-600 px-4 py-2 font-semibold text-white hover:bg-blue-700"
+              className="smc-button smc-button-secondary"
             >
               Copy Brief
             </button>
           ) : null}
-          {validCalendlyUrl ? (
-            <a
-              href={validCalendlyUrl}
-              className="rounded border border-gray-400 px-4 py-2 font-semibold text-gray-800 hover:bg-gray-100"
-            >
-              Book Strategy Call
-            </a>
-          ) : (
-            <div className="rounded border border-gray-300 bg-gray-100 px-4 py-2 text-sm text-gray-600">
-              Strategy call link is not configured locally
-            </div>
-          )}
           {mailto ? (
-            <a href={mailto} onClick={() => analytics.track("email_click")} className="rounded bg-gray-900 px-4 py-2 font-semibold text-white hover:bg-gray-800">
+            <a href={mailto} onClick={() => analytics.track("email_click")} className="smc-button smc-button-primary">
               Email Stafford Media
             </a>
-          ) : (
-            <div className="rounded border border-gray-300 bg-gray-100 px-4 py-2 text-sm text-gray-600">
-              Email contact is not configured locally
-            </div>
-          )}
+          ) : null}
         </div>
         {copyError ? (
-          <p role="alert" className="mt-4 text-sm text-red-700">
-            The brief could not be copied automatically. Copy it manually, then use the booking link.
+          <p role="alert" className="mt-4 text-sm text-red-300">
+            The brief could not be copied automatically. Copy it manually, then use the email link.
           </p>
         ) : null}
         {brief ? (
-          <p className="mt-4 text-sm text-gray-600">
+          <p className="mt-4 text-sm text-slate-400">
             Copy your brief to paste into an email or booking form; it is not sent automatically.
           </p>
         ) : null}
         {brief && mailto ? (
-          <p className="mt-2 text-sm text-gray-600">
+          <p className="mt-2 text-sm text-slate-400">
             The email link contains coordination text only. Use Copy Brief, then paste the brief into your email if desired.
           </p>
         ) : null}
