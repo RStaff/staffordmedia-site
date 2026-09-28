@@ -15,7 +15,10 @@ function visitorToken(request: Request, secret: string) {
 
 export async function POST(request: Request) {
   const origin = request.headers.get("origin");
-  if (!origin || origin !== new URL(request.url).origin) return NextResponse.json({ ok: false, error: "INQUIRY_ORIGIN_INVALID" }, { status: 403 });
+  const allowedOrigins = process.env.NODE_ENV === "production"
+    ? ["https://staffordmedia.ai", "https://www.staffordmedia.ai"]
+    : [new URL(request.url).origin];
+  if (!origin || !allowedOrigins.includes(origin)) return NextResponse.json({ ok: false, error: "INQUIRY_ORIGIN_INVALID" }, { status: 403 });
   if (!request.headers.get("content-type")?.toLowerCase().startsWith("application/json")) return NextResponse.json({ ok: false, error: "INQUIRY_PAYLOAD_INVALID" }, { status: 415 });
   const target = String(process.env.STAFFORDOS_INTAKE_API_URL || "").trim().replace(/\/$/, "");
   const serviceKey = String(process.env.INTERNAL_API_KEY || "").trim();

@@ -5,6 +5,7 @@ const body = JSON.stringify({ schema: "staffordmedia.automation_inquiry.v1", sub
 
 afterEach(() => {
   vi.restoreAllMocks();
+  vi.unstubAllEnvs();
   delete process.env.STAFFORDOS_INTAKE_API_URL;
   delete process.env.INTERNAL_API_KEY;
 });
@@ -31,6 +32,23 @@ describe("automation inquiry forwarding", () => {
       expect(response.status).toBe(403);
     }
     expect(fetch).not.toHaveBeenCalled();
+  });
+
+  it("accepts the public domain behind a proxy and rejects invalid origin or content type", async () => {
+    vi.stubEnv("NODE_ENV", "production");
+    process.env.STAFFORDOS_INTAKE_API_URL = "https://api.example.test";
+    process.env.INTERNAL_API_KEY = "test-only-key";
+    vi.stubGlobal("fetch", vi.fn(async () => new Response(JSON.stringify({ inquiryId: "inq_2", status: "NEEDS_REVIEW" }), { status: 201 })));
+    const url = "http://internal-render-host/api/automation-inquiries";
+    const valid = await POST(new Request(url, { method: "POST", headers: { "content-type": "application/json", origin: "https://www.staffordmedia.ai" }, body }));
+    expect(valid.status).toBe(200);
+    expect(vi.mocked(fetch)).toHaveBeenCalledTimes(1);
+
+    const crossSite = await POST(new Request(url, { method: "POST", headers: { "content-type": "application/json", origin: "https://elsewhere.test" }, body }));
+    expect(crossSite.status).toBe(403);
+    const nonJson = await POST(new Request(url, { method: "POST", headers: { "content-type": "text/plain", origin: "https://staffordmedia.ai" }, body }));
+    expect(nonJson.status).toBe(415);
+    expect(vi.mocked(fetch)).toHaveBeenCalledTimes(1);
   });
 
   it("does not claim receipt when the service is unavailable and forwards provider throttling", async () => {
