@@ -4,7 +4,7 @@ export const automationInquirySchema = "staffordmedia.automation_inquiry.v1";
 
 export function buildInquiryPayload(
   brief: AutomationBrief,
-  contact: { submissionId: string; name?: string; email: string; phone?: string; companyName?: string },
+  contact: { submissionId: string; name?: string; email: string; phone?: string; companyName?: string; contactAcknowledgement: boolean },
 ) {
   return {
     schema: automationInquirySchema,
@@ -18,6 +18,6 @@ export function buildInquiryPayload(
     systems: brief.systems,
     currentWorkflow: brief.currentWorkflow,
     desiredWorkflow: brief.desiredWorkflow,
-    contactAcknowledgement: true,
+    contactAcknowledgement: contact.contactAcknowledgement,
   };
 }
