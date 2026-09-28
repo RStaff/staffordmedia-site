@@ -14,22 +14,35 @@ describe("automation inquiry forwarding", () => {
     process.env.STAFFORDOS_INTAKE_API_URL = "https://api.example.test";
     process.env.INTERNAL_API_KEY = "test-only-key";
     vi.stubGlobal("fetch", vi.fn(async () => new Response(JSON.stringify({ inquiryId: "inq_1", status: "NEEDS_REVIEW" }), { status: 201 })));
-    const response = await POST(new Request("http://site.test/api/automation-inquiries", { method: "POST", headers: { "content-type": "application/json", "x-forwarded-for": "10.0.0.1" }, body }));
+    const response = await POST(new Request("http://site.test/api/automation-inquiries", { method: "POST", headers: { "content-type": "application/json", origin: "http://site.test", "x-forwarded-for": "10.0.0.1" }, body }));
     expect(response.status).toBe(200);
     expect(await response.json()).toMatchObject({ ok: true, inquiryId: "inq_1" });
     expect(vi.mocked(fetch).mock.calls[0][1]).toMatchObject({ headers: expect.objectContaining({ "x-internal-api-key": "test-only-key", "x-stafford-visitor-token": expect.stringMatching(/^v1\./) }) });
+  });
+
+  it("rejects cross-site or absent Origin before forwarding", async () => {
+    process.env.STAFFORDOS_INTAKE_API_URL = "https://api.example.test";
+    process.env.INTERNAL_API_KEY = "test-only-key";
+    vi.stubGlobal("fetch", vi.fn());
+    for (const origin of ["https://elsewhere.test", undefined]) {
+      const headers = new Headers({ "content-type": "application/json" });
+      if (origin) headers.set("origin", origin);
+      const response = await POST(new Request("https://site.test/api/automation-inquiries", { method: "POST", headers, body }));
+      expect(response.status).toBe(403);
+    }
+    expect(fetch).not.toHaveBeenCalled();
   });
 
   it("does not claim receipt when the service is unavailable and forwards provider throttling", async () => {
     process.env.STAFFORDOS_INTAKE_API_URL = "https://api.example.test";
     process.env.INTERNAL_API_KEY = "test-only-key";
     vi.stubGlobal("fetch", vi.fn(async () => { throw new Error("offline"); }));
-    const failed = await POST(new Request("http://site.test", { method: "POST", headers: { "x-forwarded-for": "10.0.0.2" }, body }));
+    const failed = await POST(new Request("http://site.test", { method: "POST", headers: { "content-type": "application/json", origin: "http://site.test", "x-forwarded-for": "10.0.0.2" }, body }));
     expect(failed.status).toBe(503);
     expect(await failed.json()).not.toHaveProperty("inquiryId");
 
     vi.mocked(fetch).mockResolvedValue(new Response(JSON.stringify({ error: "INQUIRY_RATE_LIMITED" }), { status: 429, headers: { "Retry-After": "321" } }));
-    const limited = await POST(new Request("http://site.test", { method: "POST", headers: { "x-forwarded-for": "forged" }, body }));
+    const limited = await POST(new Request("http://site.test", { method: "POST", headers: { "content-type": "application/json", origin: "http://site.test", "x-forwarded-for": "forged" }, body }));
     expect(limited.status).toBe(429);
     expect(limited.headers.get("Retry-After")).toBe("321");
   });
