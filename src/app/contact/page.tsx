@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { buildInquiryPayload } from "@/lib/automationInquiry";
 import {
   automationIntakeStorageKey,
@@ -16,6 +16,7 @@ export default function ContactPage() {
   const analytics = useStaffordMediaAnalytics();
   const [brief, setBrief] = useState<AutomationBrief | null>(null);
   const [copyError, setCopyError] = useState(false);
+  const submissionIdRef = useRef<string | null>(null);
   const [captureState, setCaptureState] = useState<"idle" | "saving" | "received" | "failed">("idle");
   const mailto = buildAutomationMailto(
     process.env.NEXT_PUBLIC_CONTACT_EMAIL?.trim() || "support@staffordmedia.ai",
@@ -74,12 +75,15 @@ export default function ContactPage() {
     if (!brief) return;
     setCaptureState("saving");
     const form = new FormData(event.currentTarget);
+    const submissionId = submissionIdRef.current || `web_${crypto.randomUUID()}`;
+    submissionIdRef.current = submissionId;
     const payload = buildInquiryPayload(brief, {
-      submissionId: `web_${crypto.randomUUID()}`,
+      submissionId,
       name: String(form.get("name") || ""),
       email: String(form.get("email") || ""),
       phone: String(form.get("phone") || ""),
       companyName: String(form.get("companyName") || ""),
+      contactAcknowledgement: form.get("contactAcknowledgement") === "yes",
     });
     try {
       const response = await fetch("/api/automation-inquiries", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(payload) });
@@ -161,16 +165,16 @@ export default function ContactPage() {
           </p>
         ) : null}
         {brief ? (
-          <form onSubmit={submitInquiry} className="premium-panel-soft mt-8 grid gap-4 p-6 text-left" aria-labelledby="inquiry-heading">
+          <form onSubmit={submitInquiry} onChange={() => { if (captureState !== "saving") { submissionIdRef.current = null; setCaptureState("idle"); } }} className="premium-panel-soft mt-8 grid gap-4 p-6 text-left" aria-labelledby="inquiry-heading">
             <h2 id="inquiry-heading" className="text-xl font-semibold text-white">Talk With Ross First</h2>
             <p className="text-sm text-slate-400">Save this brief for human review. No automated email or qualification is created.</p>
             <input className="smc-field" name="name" placeholder="Your name" maxLength={200} />
             <input className="smc-field" name="companyName" placeholder="Company (optional)" maxLength={200} />
             <input className="smc-field" name="email" type="email" required placeholder="Email" maxLength={254} />
             <input className="smc-field" name="phone" placeholder="Phone (optional)" maxLength={40} />
-            <label className="text-sm text-slate-300"><input type="checkbox" required className="mr-2" />I agree Stafford Media may contact me about this inquiry.</label>
+            <label className="text-sm text-slate-300"><input type="checkbox" name="contactAcknowledgement" value="yes" required className="mr-2" />I agree Stafford Media may contact me about this inquiry.</label>
             <button disabled={captureState === "saving" || captureState === "received"} type="submit" className="smc-button smc-button-primary">{captureState === "saving" ? "Saving…" : captureState === "received" ? "Received for review" : "Submit for review"}</button>
-            {captureState === "failed" ? <p role="alert" className="text-sm text-red-300">We could not confirm durable receipt. Nothing was submitted; use the email option above instead.</p> : null}
+            {captureState === "failed" ? <p role="alert" className="text-sm text-red-300">We could not confirm receipt. Your inquiry may have been saved; retry this submission or use the email option above.</p> : null}
           </form>
         ) : null}
       </div>
