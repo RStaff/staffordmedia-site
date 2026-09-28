@@ -3,7 +3,7 @@ import { buildInquiryPayload } from "./automationInquiry";
 import type { AutomationBrief } from "./automationIntake";
 
 const brief: AutomationBrief = {
-  improvements: ["lead_follow_up"],
+  improvements: ["Lead response"],
   businessType: null,
   systems: [],
   currentWorkflow: "A request arrives.",
