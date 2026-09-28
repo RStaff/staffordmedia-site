@@ -59,6 +59,7 @@ const blueprintDeliverables = [
     details: [
       "60–90 minute working session",
       "Documented current process and breakdown points",
+      "Baseline measures where available, and clear success measures for the proposed improvement",
     ],
   },
   {
@@ -410,7 +411,7 @@ export default function AutomateClient({
           <section className="automate-blueprint" aria-labelledby="blueprint-heading">
             <p className="eyebrow text-cyan-200">Paid engagement</p>
             <h3 id="blueprint-heading" className="mt-3 text-3xl font-bold text-white">Your $750 Automation Opportunity Blueprint</h3>
-            <p className="mt-4 max-w-4xl text-lg leading-8 text-slate-200">A custom, decision-ready plan for automating one costly workflow—not a generic AI report and not the implementation itself.</p>
+            <p className="mt-4 max-w-4xl text-lg leading-8 text-slate-200">A custom, decision-ready plan for automating one workflow worth improving—not a generic AI report and not the implementation itself.</p>
 
             <h4 className="mt-8 text-lg font-semibold text-white">What your Blueprint includes</h4>
             <ol className="mt-5 grid gap-4 md:grid-cols-2" data-testid="blueprint-deliverables">
