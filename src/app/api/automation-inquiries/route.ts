@@ -14,6 +14,9 @@ function visitorToken(request: Request, secret: string) {
 }
 
 export async function POST(request: Request) {
+  const origin = request.headers.get("origin");
+  if (!origin || origin !== new URL(request.url).origin) return NextResponse.json({ ok: false, error: "INQUIRY_ORIGIN_INVALID" }, { status: 403 });
+  if (!request.headers.get("content-type")?.toLowerCase().startsWith("application/json")) return NextResponse.json({ ok: false, error: "INQUIRY_PAYLOAD_INVALID" }, { status: 415 });
   const target = String(process.env.STAFFORDOS_INTAKE_API_URL || "").trim().replace(/\/$/, "");
   const serviceKey = String(process.env.INTERNAL_API_KEY || "").trim();
   if (!target || !serviceKey) return NextResponse.json({ ok: false, error: "INQUIRY_CAPTURE_UNAVAILABLE" }, { status: 503 });
