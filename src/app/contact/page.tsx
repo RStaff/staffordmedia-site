@@ -167,13 +167,14 @@ export default function ContactPage() {
         {brief ? (
           <form onSubmit={submitInquiry} onChange={() => { if (captureState !== "saving") { submissionIdRef.current = null; setCaptureState("idle"); } }} className="premium-panel-soft mt-8 grid gap-4 p-6 text-left" aria-labelledby="inquiry-heading">
             <h2 id="inquiry-heading" className="text-xl font-semibold text-white">Talk With Ross First</h2>
-            <p className="text-sm text-slate-400">Save this brief for human review. No automated email or qualification is created.</p>
+            <p className="text-sm text-slate-400">Save this brief for human review. No automated qualification or outreach is created.</p>
             <input className="smc-field" name="name" placeholder="Your name" maxLength={200} />
             <input className="smc-field" name="companyName" placeholder="Company (optional)" maxLength={200} />
             <input className="smc-field" name="email" type="email" required placeholder="Email" maxLength={254} />
             <input className="smc-field" name="phone" placeholder="Phone (optional)" maxLength={40} />
             <label className="text-sm text-slate-300"><input type="checkbox" name="contactAcknowledgement" value="yes" required className="mr-2" />I agree Stafford Media may contact me about this inquiry.</label>
             <button disabled={captureState === "saving" || captureState === "received"} type="submit" className="smc-button smc-button-primary">{captureState === "saving" ? "Saving…" : captureState === "received" ? "Received for review" : "Submit for review"}</button>
+            {captureState === "received" ? <p role="status" className="text-sm text-emerald-300">Your inquiry was stored for Ross’s review. Email acknowledgement is tracked separately; you do not need to resubmit.</p> : null}
             {captureState === "failed" ? <p role="alert" className="text-sm text-red-300">We could not confirm receipt. Your inquiry may have been saved; retry this submission or use the email option above.</p> : null}
           </form>
         ) : null}
