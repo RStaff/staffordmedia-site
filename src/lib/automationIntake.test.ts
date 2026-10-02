@@ -167,10 +167,7 @@ describe("automation intake", () => {
       }),
     ).toBeInTheDocument();
     expect(
-      screen.getByText(/Payment purchases the Blueprint engagement described above, not implementation/),
-    ).toBeInTheDocument();
-    expect(
-      screen.getByText(/owner-approved Stripe Payment Link for this exact one-time \$750 Blueprint/),
+      screen.getByText(/The \$750 fee covers your Blueprint, not implementation\. Payment is processed securely through Stripe\./),
     ).toBeInTheDocument();
   });
 
@@ -217,7 +214,7 @@ describe("automation intake", () => {
     }
   });
 
-  it("renders the purchase action in both required locations when configured", () => {
+  it("renders one purchase and contact action pair inside the Blueprint section", () => {
     process.env.NEXT_PUBLIC_AUTOMATION_BLUEPRINT_PAYMENT_URL = validPaymentUrl;
     process.env.VERCEL_ENV = "preview";
     render(React.createElement(AutomatePage));
@@ -227,22 +224,18 @@ describe("automation intake", () => {
     const purchaseButtons = screen.getAllByRole("button", {
       name: "Start My Blueprint — $750",
     });
-    expect(purchaseButtons).toHaveLength(2);
-    for (const button of purchaseButtons) {
-      expect(button.tagName).toBe("BUTTON");
-      expect(button).not.toHaveAttribute("href");
-      expect(button).not.toHaveAttribute("target");
-      expect(button).toHaveAttribute(
-        "data-offer-id",
-        "STAFFORDMEDIA_AUTOMATION_OPPORTUNITY_ASSESSMENT_V1",
-      );
-    }
+    expect(purchaseButtons).toHaveLength(1);
+    expect(purchaseButtons[0].tagName).toBe("BUTTON");
+    expect(purchaseButtons[0]).not.toHaveAttribute("href");
+    expect(purchaseButtons[0]).not.toHaveAttribute("target");
+    expect(purchaseButtons[0]).toHaveAttribute(
+      "data-offer-id",
+      "STAFFORDMEDIA_AUTOMATION_OPPORTUNITY_ASSESSMENT_V1",
+    );
     expect(screen.getByTestId("blueprint-offer-actions")).toContainElement(
       purchaseButtons[0],
     );
-    expect(
-      screen.getAllByRole("button", { name: "Talk With Ross First" }),
-    ).toHaveLength(2);
+    expect(screen.getAllByRole("button", { name: "Talk With Ross First" })).toHaveLength(1);
   });
 
   it("fails closed without a valid configured Payment Link", () => {
@@ -262,7 +255,7 @@ describe("automation intake", () => {
     ).not.toBeInTheDocument();
     expect(
       screen.getAllByRole("button", { name: "Talk With Ross First" }),
-    ).toHaveLength(2);
+    ).toHaveLength(1);
   });
 
   it("rejects the Preview authority in Production", () => {
@@ -277,7 +270,7 @@ describe("automation intake", () => {
     ).not.toBeInTheDocument();
     expect(
       screen.getAllByRole("button", { name: "Talk With Ross First" }),
-    ).toHaveLength(2);
+    ).toHaveLength(1);
   });
 
   it("renders only the owner-approved live Payment Link in Production", () => {
@@ -290,10 +283,10 @@ describe("automation intake", () => {
     const purchaseButtons = screen.getAllByRole("button", {
       name: "Start My Blueprint — $750",
     });
-    expect(purchaseButtons).toHaveLength(2);
+    expect(purchaseButtons).toHaveLength(1);
   });
 
-  it("persists the exact brief before navigating from either semantic checkout button", () => {
+  it("persists the exact brief before navigating from the Blueprint checkout button", () => {
     const navigateToCheckout = vi.fn();
     render(
       React.createElement(AutomateClient, {
@@ -321,13 +314,7 @@ describe("automation intake", () => {
     });
     expect(navigateToCheckout).toHaveBeenLastCalledWith(validPaymentUrl);
 
-    window.sessionStorage.clear();
-    fireEvent.click(purchaseButtons[1]);
-    expect(readAutomationBrief(window.sessionStorage)).toMatchObject({
-      currentWorkflow: "PRIVATE_CURRENT_WORKFLOW",
-      desiredWorkflow: "PRIVATE_DESIRED_WORKFLOW",
-    });
-    expect(navigateToCheckout).toHaveBeenCalledTimes(2);
+    expect(navigateToCheckout).toHaveBeenCalledTimes(1);
   });
 
   it("fails closed without navigation when same-tab brief persistence fails", () => {
@@ -741,7 +728,7 @@ describe("automation intake", () => {
 
     const blueprint = screen.getByRole("heading", { name: "Your $750 Automation Opportunity Blueprint" }).parentElement!;
     for (const text of [
-      "A custom, decision-ready plan for automating one costly workflow—not a generic AI report and not the implementation itself.",
+      "A custom, decision-ready plan for automating one workflow worth improving—not a generic AI report and not the implementation itself.",
       "Workflow interview and current-state map",
       "60–90 minute working session",
       "Documented current process and breakdown points",
@@ -780,20 +767,26 @@ describe("automation intake", () => {
       name: "Your $750 Automation Opportunity Blueprint",
     }).parentElement!;
     for (const step of [
-      "Purchase the Blueprint.",
+      "Purchase",
+      "Start the one-time Blueprint.",
+      "Connect",
       "Stafford Media contacts you within one business day.",
+      "Interview",
       "Complete the workflow interview.",
+      "Review",
       "Receive and review the Blueprint.",
+      "Choose",
       "Decide whether to implement without obligation.",
     ]) {
       expect(blueprint).toHaveTextContent(step);
     }
-    expect(blueprint.nextElementSibling).toContainElement(
-      screen.getAllByRole("button", { name: "Start My Blueprint — $750" })[1],
+    expect(blueprint).toContainElement(
+      screen.getByRole("button", { name: "Start My Blueprint — $750" }),
     );
-    expect(blueprint.nextElementSibling).toContainElement(
-      screen.getAllByRole("button", { name: "Talk With Ross First" })[1],
+    expect(blueprint).toContainElement(
+      screen.getByRole("button", { name: "Talk With Ross First" }),
     );
+    expect(screen.getByRole("button", { name: "Adjust My Answers" })).toBeInTheDocument();
   });
 
   it("renders clear selected choices without changing semantic controls", () => {
