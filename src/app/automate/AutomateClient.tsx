@@ -99,11 +99,11 @@ const blueprintDeliverables = [
 ];
 
 const blueprintNextSteps = [
-  "Purchase the Blueprint.",
-  "Stafford Media contacts you within one business day.",
-  "Complete the workflow interview.",
-  "Receive and review the Blueprint.",
-  "Decide whether to implement without obligation.",
+  { heading: "Purchase", detail: "Start the one-time Blueprint." },
+  { heading: "Connect", detail: "Stafford Media contacts you within one business day." },
+  { heading: "Interview", detail: "Complete the workflow interview." },
+  { heading: "Review", detail: "Receive and review the Blueprint." },
+  { heading: "Choose", detail: "Decide whether to implement without obligation." },
 ];
 
 function Choice({
@@ -438,21 +438,21 @@ export default function AutomateClient({
 
             <div className="mt-8 rounded-lg border border-cyan-300/20 bg-cyan-300/[0.04] p-5">
               <h4 className="text-lg font-semibold text-white">What happens next</h4>
-              <ol className="mt-4 grid gap-3 text-sm leading-6 text-slate-200 sm:grid-cols-2 lg:grid-cols-5">
+              <ol className="mt-4 grid gap-4 text-sm leading-6 text-slate-200 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
                 {blueprintNextSteps.map((step, index) => (
-                  <li key={step} className="flex gap-3">
+                  <li key={step.heading} className="flex min-w-0 gap-3 rounded-lg border border-white/10 bg-white/[0.03] p-4">
                     <span aria-hidden="true" className="font-bold text-cyan-200">{index + 1}.</span>
-                    <span>{step}</span>
+                    <span className="min-w-0">
+                      <strong className="block text-white">{step.heading}</strong>
+                      <span className="mt-1 block">{step.detail}</span>
+                    </span>
                   </li>
                 ))}
               </ol>
             </div>
 
             <p className="mt-6 text-sm leading-6 text-slate-300">
-              Payment purchases the Blueprint engagement described above, not implementation.
-              Checkout uses the owner-approved Stripe Payment Link for this exact one-time $750 Blueprint.
-              Ross manually confirms payment in Stripe before recording the engagement or scheduling work.
-              No revenue or savings are guaranteed.
+              The $750 fee covers your Blueprint, not implementation. Payment is processed securely through Stripe. Implementation is optional and scoped separately. No revenue or savings are guaranteed.
             </p>
             <div className="mt-5 flex flex-wrap gap-4" data-testid="blueprint-offer-actions">
               {paymentUrl ? (
@@ -465,13 +465,7 @@ export default function AutomateClient({
           </section>
 
           <div className="flex flex-wrap gap-4">
-            {paymentUrl ? (
-              <button type="button" onClick={handlePurchase} data-offer-id={automationBlueprintOfferAuthority.offerId} className="smc-button smc-button-primary">
-                Start My Blueprint — ${automationBlueprintPriceUsd}
-              </button>
-            ) : null}
-            <button type="button" onClick={handleDiscussOpportunity} className="smc-button smc-button-secondary">Talk With Ross First</button>
-            <button type="button" onClick={handleAdjustAnswers} className="smc-button smc-button-secondary">Adjust My Answers</button>
+            <button type="button" onClick={handleAdjustAnswers} className="text-sm font-medium text-slate-400 underline decoration-slate-500 underline-offset-4 hover:text-white">Adjust My Answers</button>
           </div>
         </section>
       ) : null}
