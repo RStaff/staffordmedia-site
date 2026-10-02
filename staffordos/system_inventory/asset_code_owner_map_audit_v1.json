@@ -1,0 +1,129 @@
+{
+  "artifact": "asset_code_owner_map_audit_v1",
+  "status": "draft_truth_audit",
+  "purpose": "Map existing StaffordMedia, ShopiFixer, and Abando business concepts to actual routes, code owners, CTAs, and system boundaries before patching.",
+  "products": {
+    "staffordmedia": {
+      "role": "Decision layer and parent company wrapper",
+      "primary_routes": ["/", "/services", "/contact"],
+      "code_owners": [
+        "src/app/page.tsx",
+        "src/components/site/HomeHero.tsx",
+        "src/components/site/ProductSplit.tsx",
+        "src/components/site/SystemFlow.tsx",
+        "src/components/Header.tsx",
+        "src/components/Footer.tsx"
+      ],
+      "allowed_paths": ["/shopifixer", "/recovery-demo", "/contact"],
+      "forbidden_paths": [
+        "Directly blending ShopiFixer fix onboarding with Abando install/admin flows"
+      ]
+    },
+    "shopifixer": {
+      "role": "Audit the store, convert the merchant, sell/fix the highest-priority problem",
+      "correct_flow": [
+        "/shopifixer brief audit",
+        "submitAudit()",
+        "triggerShopifixerOutreach()",
+        "email full audit link",
+        "/audit-result?store=... full audit",
+        "/pricing?store=... payment",
+        "post-payment onboarding"
+      ],
+      "primary_routes": [
+        "/shopifixer",
+        "/shopifixer/result",
+        "/audit-result",
+        "/pricing",
+        "/fix"
+      ],
+      "code_owners": [
+        "src/app/shopifixer/page.tsx",
+        "src/app/shopifixer/result/page.tsx",
+        "src/app/audit-result/page.tsx",
+        "src/app/pricing/page.tsx",
+        "src/app/fix/page.tsx",
+        "src/components/shopifixer/AuditFormCard.tsx",
+        "src/components/shopifixer/AuditHero.tsx",
+        "src/components/shopifixer/AuditBenefitsRow.tsx",
+        "src/components/shopifixer/AuditReadPreview.tsx",
+        "src/components/shopifixer/AuditNextStep.tsx",
+        "src/lib/auditPayload.ts",
+        "lib/shopifixerOutreach.ts",
+        "lib/buildAuditConfidence.ts",
+        "lib/buildAnnotatedScreenshotSignals.ts",
+        "lib/storefrontScreenshot.ts"
+      ],
+      "allowed_ctas": [
+        "/shopifixer",
+        "/shopifixer/result?store=...",
+        "/audit-result?store=...",
+        "/pricing?store=..."
+      ],
+      "forbidden_ctas": [
+        "/shopifixer/onboarding before payment",
+        "direct Abando install/app routing from ShopiFixer summary"
+      ]
+    },
+    "abando": {
+      "role": "Recovery proof, recovery measurement, recovered revenue attribution, AI optimization",
+      "correct_flow": [
+        "Recovery Demo / proof path",
+        "message sent",
+        "shopper returns",
+        "return tracked",
+        "recovered revenue attributed",
+        "later Shopify install/admin when live and verified"
+      ],
+      "primary_staffordmedia_routes": ["/recovery-demo"],
+      "external_or_cross_repo_owners": [
+        "/Users/rossstafford/projects/cart-agent/abando-frontend/app/marketing/page.tsx",
+        "/Users/rossstafford/projects/cart-agent/abando-frontend/app/embedded/page.tsx",
+        "/Users/rossstafford/projects/cart-agent/abando-frontend/app/embedded/dashboard/page.tsx",
+        "/Users/rossstafford/projects/cart-agent/abando-frontend/app/install/shopify/page.tsx",
+        "/Users/rossstafford/projects/cart-agent/abando-frontend/app/merchant/page.tsx",
+        "/Users/rossstafford/projects/cart-agent/web/src/lib/recoveryAttribution.js",
+        "/Users/rossstafford/projects/cart-agent/web/src/lib/recoveryMessageEngine.js",
+        "/Users/rossstafford/projects/cart-agent/web/src/lib/emailSender.js",
+        "/Users/rossstafford/projects/cart-agent/web/src/lib/smsSender.js",
+        "/Users/rossstafford/projects/cart-agent/web/src/routes/installShopify.esm.js"
+      ],
+      "allowed_ctas": [
+        "/recovery-demo",
+        "verified Abando marketing route only after live-host audit"
+      ],
+      "forbidden_ctas": [
+        "app.abando.ai until live route truth is verified",
+        "Shopify admin/embedded route from StaffordMedia public CTA"
+      ]
+    }
+  },
+  "known_blockers": [
+    {
+      "id": "stripe_placeholder",
+      "owner": "src/app/pricing/page.tsx",
+      "issue": "Stripe URL is still placeholder.",
+      "impact": "Payment path is not fully live."
+    },
+    {
+      "id": "abando_live_host_uncertain",
+      "owner": "cart-agent / abando-frontend / DNS",
+      "issue": "Abando marketing/app/admin route truth needs verified live-host audit before linking from StaffordMedia.",
+      "impact": "Do not link public StaffordMedia CTAs to unverified app/admin routes."
+    },
+    {
+      "id": "asset_owner_registry_missing",
+      "owner": "staffordos/system_inventory",
+      "issue": "This file is the first explicit asset/code owner map, but it still needs validation against source.",
+      "impact": "No CTA/UI patch should proceed until this map is verified."
+    }
+  ],
+  "slice_policy": {
+    "next_allowed_slice": "slice_3A_validate_asset_code_owner_map_audit",
+    "blocked_slices": [
+      "slice_3_cta_correction",
+      "slice_4_recovery_demo_enhancement"
+    ],
+    "rule": "No route or CTA patching until this owner map is validated against active source files."
+  }
+}

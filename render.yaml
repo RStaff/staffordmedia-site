@@ -2,7 +2,7 @@ services:
   - type: web
     name: staffordmedia-site
     env: node
-    rootDir: _smc_clean
+    rootDir: .
     envVars:
       - key: NODE_VERSION
         value: 20.19.5

@@ -1,0 +1,8 @@
+{
+  "packet_id": "SAMPLE-DAWN-NOKINGS-PRODUCT-CTA-CLARITY-V1",
+  "validated_at": "2026-05-19T20:26:49.557Z",
+  "status": "PASS",
+  "blocking_reasons": [],
+  "warnings": ["approval status is recorded but does not authorize execution"],
+  "next_allowed_state": "BLOCKED_PENDING_APPROVAL"
+}

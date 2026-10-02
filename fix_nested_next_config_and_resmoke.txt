@@ -1,0 +1,36 @@
+=== FIX NESTED next.config.ts ===
+PWD: /Users/rossstafford/projects/StaffordMediaConsulting/apps/website
+
+=== 1) SHOW CURRENT BROKEN OWNER ===
+-rw-r--r--  1 rossstafford  staff   702B Apr 14 21:50 apps/website/next.config.ts
+import type { NextConfig } from "next";
+
+const nextConfig: NextConfig = {
+  /* config options here */
+};
+
+export default nextConfig;
+
+=== 2) WRITE CLEAN next.config.ts ===
+
+=== 3) VERIFY CLEAN FILE ===
+import type { NextConfig } from "next";
+
+const nextConfig: NextConfig = {
+  reactStrictMode: true,
+};
+
+export default nextConfig;
+
+NO CONFLICT MARKERS
+
+=== 4) BUILD DEPLOYED APP ROOT ===
+PWD NOW: /Users/rossstafford/projects/StaffordMediaConsulting/apps/website/apps/website
+
+> website@0.1.0 build
+> next build
+
+   ▲ Next.js 15.5.4
+   - Environments: .env.local
+
+   Creating an optimized production build ...

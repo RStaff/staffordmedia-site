@@ -35,12 +35,33 @@ playwright-report/
 test-results/
 *.zip
 staffordmediaconsulting.onrender.com
+<<<<<<< HEAD
+<<<<<<< HEAD
 node_modules/
 .next/
 apps/**/package-lock.json
+<<<<<<< HEAD
+<<<<<<< HEAD
 # dev helpers
 scripts/*.sh
 *.bak*
 apps/website/.eslintcache
 .eslintcache
 !_smc_clean/
+=======
+>>>>>>> 8d7c081 (chore(repo): ignore test artifacts)
+=======
+node_modules/
+>>>>>>> d51f9d3 (fix(pricing): valid JSX + top-level Next flags; untrack node_modules)
+=======
+>>>>>>> 309155c (build: single root lockfile; ignore nested locks; pin outputFileTracingRoot)
+=======
+
+# dev helpers
+scripts/*.sh
+*.bak*
+>>>>>>> c10e578 (chore: tidy helpers, ignore .bak files)
+.eslintcache
+.next
+node_modules
+staffordos/preflight/preflight_report_v1.json

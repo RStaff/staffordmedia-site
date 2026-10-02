@@ -1,0 +1,178 @@
+{
+  "version": "mutation_packet_schema_v1",
+  "status": "SCHEMA_ONLY_NOT_EXECUTABLE",
+  "description": "Standard controlled instruction object for converting a ShopiFixer audit finding into a bounded, rollback-safe theme mutation packet. A packet is not permission to execute.",
+  "required_fields": [
+    "packet_id",
+    "merchant_id",
+    "store_domain",
+    "theme_archetype",
+    "mutation_depth",
+    "issue_summary",
+    "business_hypothesis",
+    "target_surface",
+    "allowed_files",
+    "prohibited_files",
+    "allowed_operations",
+    "prohibited_operations",
+    "required_snapshots",
+    "acceptance_criteria",
+    "visual_qa_requirements",
+    "rollback_plan",
+    "approval_gates",
+    "resource_budget",
+    "execution_status"
+  ],
+  "field_definitions": {
+    "packet_id": {
+      "type": "string",
+      "required": true,
+      "description": "Stable identifier for this mutation packet."
+    },
+    "merchant_id": {
+      "type": "string",
+      "required": true,
+      "description": "Merchant identifier used for traceability."
+    },
+    "store_domain": {
+      "type": "string",
+      "required": true,
+      "description": "Shopify store domain. This does not authorize API access."
+    },
+    "theme_archetype": {
+      "type": "string",
+      "required": true,
+      "allowed_values": [
+        "Dawn",
+        "Refresh",
+        "Impulse",
+        "Prestige",
+        "Warehouse",
+        "Unknown/custom"
+      ]
+    },
+    "mutation_depth": {
+      "type": "string",
+      "required": true,
+      "allowed_values": [
+        "LEVEL_0_AUDIT_ONLY",
+        "LEVEL_1_QUICK_FIX",
+        "LEVEL_2_GUIDED_TRANSFORMATION",
+        "LEVEL_3_HIGH_RISK_REDESIGN"
+      ]
+    },
+    "issue_summary": {
+      "type": "string",
+      "required": true,
+      "description": "Concise ShopiFixer audit issue being addressed."
+    },
+    "business_hypothesis": {
+      "type": "string",
+      "required": true,
+      "description": "Why the mutation is expected to improve conversion or clarity."
+    },
+    "target_surface": {
+      "type": "object",
+      "required": true,
+      "fields": {
+        "surface_type": "string",
+        "route_or_template": "string",
+        "theme_role": "string",
+        "duplicate_theme_required": "boolean",
+        "live_theme_mutation_allowed": "boolean"
+      }
+    },
+    "allowed_files": {
+      "type": "array",
+      "required": true,
+      "description": "Exact files Codex may touch if execution is separately approved."
+    },
+    "prohibited_files": {
+      "type": "array",
+      "required": true,
+      "description": "Files, globs, or zones Codex must not touch."
+    },
+    "allowed_operations": {
+      "type": "array",
+      "required": true,
+      "description": "Explicit mutation operations allowed within allowed_files."
+    },
+    "prohibited_operations": {
+      "type": "array",
+      "required": true,
+      "description": "Operations that force a stop."
+    },
+    "required_snapshots": {
+      "type": "object",
+      "required": true,
+      "fields": {
+        "before": "array",
+        "after": "array",
+        "manifest_required": "boolean"
+      }
+    },
+    "acceptance_criteria": {
+      "type": "array",
+      "required": true,
+      "description": "Conditions that must pass before the packet can be considered complete."
+    },
+    "visual_qa_requirements": {
+      "type": "array",
+      "required": true,
+      "description": "Required visual checks and screenshot comparisons."
+    },
+    "rollback_plan": {
+      "type": "object",
+      "required": true,
+      "fields": {
+        "rollback_required": "boolean",
+        "rollback_reference": "string",
+        "proof_required": "boolean",
+        "restore_method": "string"
+      }
+    },
+    "approval_gates": {
+      "type": "object",
+      "required": true,
+      "fields": {
+        "ross_required_before_execution": "boolean",
+        "ross_required_before_merchant_proof": "boolean",
+        "merchant_required_before_launch": "boolean",
+        "approval_status": "object"
+      }
+    },
+    "resource_budget": {
+      "type": "object",
+      "required": true,
+      "fields": {
+        "max_files": "number",
+        "max_mutation_depth": "string",
+        "estimated_compute": "string",
+        "time_box_minutes": "number"
+      }
+    },
+    "execution_status": {
+      "type": "string",
+      "required": true,
+      "allowed_values": [
+        "DRAFT",
+        "READY_FOR_VALIDATION",
+        "BLOCKED_PENDING_APPROVAL",
+        "APPROVED_FOR_SANDBOX",
+        "IN_SANDBOX",
+        "QA_REQUIRED",
+        "ROLLBACK_REQUIRED",
+        "REJECTED",
+        "DONE"
+      ]
+    }
+  },
+  "hard_rules": [
+    "A mutation packet is not permission to execute.",
+    "live_theme_mutation_allowed must be false unless a separate explicit launch approval exists.",
+    "LEVEL_1_QUICK_FIX and above require before and after screenshots.",
+    "allowed_files must be exact paths, not broad directories.",
+    "rollback_plan.rollback_required must be true for any mutation depth above LEVEL_0_AUDIT_ONLY.",
+    "Codex must stop if requested work exceeds allowed_files or allowed_operations."
+  ]
+}
