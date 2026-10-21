@@ -56,10 +56,14 @@ function clearGoogleAnalyticsCookies() {
   }
 }
 
-function enableGoogleAnalytics(consentCommand: "default" | "update") {
+function enableGoogleAnalytics(consentCommand: "default" | "update", initialize: boolean) {
   window[`ga-disable-${staffordMediaGaMeasurementId}`] = false;
   window.dataLayer = window.dataLayer || [];
-  window.gtag = window.gtag || ((...args: unknown[]) => window.dataLayer?.push(args));
+  window.gtag = window.gtag || function gtag(..._args: unknown[]) {
+    // Google's supported bootstrap stores the arguments object, not a rest-array.
+    window.dataLayer?.push(arguments as unknown as unknown[]);
+  };
+  if (initialize) window.gtag("js", new Date());
   window.gtag("consent", consentCommand, {
     analytics_storage: "granted",
     ad_storage: "denied",
@@ -104,6 +108,7 @@ export function AnalyticsProvider({ children }: { children: ReactNode }) {
   const [preferencesOpen, setPreferencesOpen] = useState(false);
   const [preferenceError, setPreferenceError] = useState(false);
   const analyticsPreviouslyEnabled = useRef(false);
+  const googleAnalyticsInitialized = useRef(false);
   const withdrawalChannel = useRef<BroadcastChannel | null>(null);
 
   useEffect(() => {
@@ -171,10 +176,15 @@ export function AnalyticsProvider({ children }: { children: ReactNode }) {
       return;
     }
 
-    setAnalyticsCollectionEnabled(true);
+    setAnalyticsCollectionEnabled(false);
     try {
-      enableGoogleAnalytics(analyticsPreviouslyEnabled.current ? "update" : "default");
+      enableGoogleAnalytics(
+        analyticsPreviouslyEnabled.current ? "update" : "default",
+        !googleAnalyticsInitialized.current,
+      );
+      googleAnalyticsInitialized.current = true;
       analyticsPreviouslyEnabled.current = true;
+      setAnalyticsCollectionEnabled(true);
       setReady(true);
     } catch {
       setAnalyticsCollectionEnabled(false);
