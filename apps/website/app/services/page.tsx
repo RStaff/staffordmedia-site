@@ -1,3 +1,8 @@
+export const metadata = {
+  title: "Services – Stafford Media Consulting",
+  description: "Pragmatic AI for marketing: conversion agent, journey playbooks, lifecycle messaging, analytics, and integrations.",
+};
+
 export default function Services() {
   return (
     <div className="mx-auto max-w-6xl px-4 py-16">

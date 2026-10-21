@@ -1,0 +1,294 @@
+{
+  "version": "theme_intelligence_registry_v1",
+  "purpose": "Theme-aware reference data for inspectable, reversible ShopiFixer mutation planning. This registry does not authorize live-store mutation.",
+  "status": "FOUNDATION_ONLY_NOT_IMPLEMENTED",
+  "rules": [
+    "No live Shopify store mutation.",
+    "No black-box redesign.",
+    "No merchant theme change without snapshot, duplicate theme, preview, visual diff, approval, and rollback path.",
+    "Unknown or custom themes default to audit-only until structure is inspected."
+  ],
+  "theme_archetypes": [
+    {
+      "theme": "Dawn",
+      "known_structure": "Shopify Online Store 2.0 reference theme with JSON templates, section groups, reusable sections, and app blocks.",
+      "common_files": [
+        "templates/index.json",
+        "templates/product.json",
+        "sections/main-product.liquid",
+        "sections/header.liquid",
+        "sections/featured-collection.liquid",
+        "snippets/buy-buttons.liquid",
+        "snippets/progress-bar.liquid",
+        "assets/base.css",
+        "assets/section-main-product.css",
+        "assets/global.js"
+      ],
+      "recovered_memory": {
+        "source": "staffordos/shopifixer_auto/dawn_mutation_memory_v1.md",
+        "playbook": "staffordos/shopifixer_auto/dawn_mutation_playbook_v1.json",
+        "merchant_context": "No Kings Athletics dev-store evidence recovered from local files and shell history.",
+        "source_path": "/Users/rossstafford/Documents/New project",
+        "evidence_status": "RECOVERED_EVIDENCE_ONLY"
+      },
+      "known_file_targets": [
+        {
+          "path": "config/settings_data.json",
+          "zone": "theme identity and settings",
+          "safe_mutation_zone": "read-only classification unless editing a confirmed duplicate theme"
+        },
+        {
+          "path": "templates/product.json",
+          "zone": "product page block order and settings",
+          "safe_mutation_zone": "reorder existing product blocks or adjust existing block settings in a duplicate theme"
+        },
+        {
+          "path": "sections/main-product.liquid",
+          "zone": "product page renderer",
+          "safe_mutation_zone": "additive rendering of approved snippets or product-page trust copy; preserve product form behavior"
+        },
+        {
+          "path": "snippets/buy-buttons.liquid",
+          "zone": "add-to-cart and dynamic checkout",
+          "safe_mutation_zone": "copy/class-level CTA clarity only after screenshots; no form logic rewrite"
+        },
+        {
+          "path": "snippets/progress-bar.liquid",
+          "zone": "recovered inert progress UI artifact",
+          "safe_mutation_zone": "preserve as evidence or render only after explicit approval and before/after screenshots"
+        },
+        {
+          "path": "assets/section-main-product.css",
+          "zone": "product page CSS",
+          "safe_mutation_zone": "scoped spacing, hierarchy, and CTA visibility changes only"
+        }
+      ],
+      "safe_mutation_zones": [
+        "duplicate-theme product page block ordering",
+        "existing Dawn product page settings",
+        "inert snippet preservation",
+        "scoped product page CSS",
+        "CTA visibility and wording without product form logic changes"
+      ],
+      "common_conversion_issues": [
+        "weak above-the-fold product value clarity",
+        "buried social proof",
+        "low-contrast CTA states",
+        "insufficient cart recovery cues",
+        "generic product page section order"
+      ],
+      "safe_mutation_types": [
+        "copy adjustment inside existing sections",
+        "CTA label clarification",
+        "section order adjustment in duplicate theme only",
+        "non-destructive CSS spacing or contrast adjustment",
+        "add existing theme block where supported"
+      ],
+      "risky_mutation_types": [
+        "checkout behavior change",
+        "cart logic rewrite",
+        "global JavaScript injection",
+        "template schema rewrite",
+        "third-party app block removal"
+      ],
+      "screenshot_targets": [
+        "home above fold",
+        "product above fold",
+        "cart drawer or cart page",
+        "mobile product above fold"
+      ],
+      "rollback_notes": "Restore original theme duplicate or revert patch diff against captured pre-change files."
+    },
+    {
+      "theme": "Refresh",
+      "known_structure": "Shopify Online Store 2.0 theme derived from Dawn patterns with product and brand storytelling sections.",
+      "common_files": [
+        "templates/product.json",
+        "templates/collection.json",
+        "sections/main-product.liquid",
+        "sections/image-banner.liquid",
+        "sections/collapsible-content.liquid",
+        "assets/base.css"
+      ],
+      "common_conversion_issues": [
+        "story content pushes purchase action too low",
+        "trust details hidden in collapsible blocks",
+        "weak collection filtering clarity",
+        "mobile product media dominates CTA"
+      ],
+      "safe_mutation_types": [
+        "reorder existing product information blocks",
+        "clarify trust and delivery copy",
+        "tighten spacing in duplicate theme",
+        "surface existing reviews or proof blocks"
+      ],
+      "risky_mutation_types": [
+        "custom product form rewrite",
+        "dynamic checkout button removal",
+        "unscoped CSS overrides",
+        "new app dependency insertion"
+      ],
+      "screenshot_targets": [
+        "product page initial viewport",
+        "product details section",
+        "collection page initial viewport",
+        "mobile cart path"
+      ],
+      "rollback_notes": "Preserve original template JSON and section files before patch; rollback must restore product form behavior."
+    },
+    {
+      "theme": "Impulse",
+      "known_structure": "Commercial theme with richer merchandising sections, theme settings, promotional blocks, and custom snippets.",
+      "common_files": [
+        "templates/index.json",
+        "templates/product.json",
+        "sections/product-template.liquid",
+        "sections/header.liquid",
+        "snippets/product-form.liquid",
+        "snippets/cart-drawer.liquid",
+        "assets/theme.css",
+        "assets/theme.js"
+      ],
+      "common_conversion_issues": [
+        "promotion density dilutes primary CTA",
+        "announcement/header stack takes too much mobile height",
+        "cart drawer upsells distract from checkout",
+        "variant selector friction"
+      ],
+      "safe_mutation_types": [
+        "adjust existing promotion copy",
+        "reduce non-critical section prominence in duplicate theme",
+        "clarify button text",
+        "change theme settings when exported and reversible"
+      ],
+      "risky_mutation_types": [
+        "theme JavaScript rewrite",
+        "cart drawer logic change",
+        "variant picker replacement",
+        "promotion engine removal"
+      ],
+      "screenshot_targets": [
+        "home header and hero",
+        "product purchase panel",
+        "cart drawer",
+        "mobile navigation"
+      ],
+      "rollback_notes": "Rollback must restore theme settings and custom snippets together; JS changes require extra proof."
+    },
+    {
+      "theme": "Prestige",
+      "known_structure": "Premium editorial theme with luxury merchandising patterns, large media sections, and advanced product presentation.",
+      "common_files": [
+        "templates/product.json",
+        "templates/page.json",
+        "sections/main-product.liquid",
+        "sections/slideshow.liquid",
+        "sections/header.liquid",
+        "snippets/product-form.liquid",
+        "assets/theme.css",
+        "assets/theme.js"
+      ],
+      "common_conversion_issues": [
+        "brand imagery outranks purchase clarity",
+        "CTA appears too low on mobile",
+        "product proof is visually separated from buy box",
+        "slow media-heavy above fold"
+      ],
+      "safe_mutation_types": [
+        "copy tightening",
+        "existing section ordering changes",
+        "CTA visibility improvements within current layout",
+        "image weight recommendations without asset mutation"
+      ],
+      "risky_mutation_types": [
+        "media system rewrite",
+        "global typography redesign",
+        "product form changes",
+        "luxury brand art direction replacement"
+      ],
+      "screenshot_targets": [
+        "home first viewport",
+        "product first viewport",
+        "product proof area",
+        "mobile product first viewport"
+      ],
+      "rollback_notes": "Preserve media references and section settings; rollback must avoid losing brand art direction."
+    },
+    {
+      "theme": "Warehouse",
+      "known_structure": "Catalog-heavy commercial theme optimized for large inventories, filtering, collections, and merchandising modules.",
+      "common_files": [
+        "templates/collection.json",
+        "templates/product.json",
+        "sections/collection-template.liquid",
+        "sections/main-product.liquid",
+        "snippets/facets.liquid",
+        "snippets/product-item.liquid",
+        "assets/theme.css",
+        "assets/theme.js"
+      ],
+      "common_conversion_issues": [
+        "collection complexity hides best path",
+        "filters overwhelm mobile users",
+        "product cards lack urgency or proof",
+        "high-density layouts reduce CTA clarity"
+      ],
+      "safe_mutation_types": [
+        "collection copy clarification",
+        "card label and badge tuning",
+        "section order adjustment",
+        "mobile spacing adjustment in duplicate theme"
+      ],
+      "risky_mutation_types": [
+        "filter logic rewrite",
+        "collection pagination change",
+        "search behavior mutation",
+        "inventory or price display logic changes"
+      ],
+      "screenshot_targets": [
+        "collection first viewport",
+        "collection filter state",
+        "product card grid",
+        "product page first viewport"
+      ],
+      "rollback_notes": "Rollback must preserve filtering/search behavior and product grid settings."
+    },
+    {
+      "theme": "Unknown/custom",
+      "known_structure": "Unknown until theme files, templates, sections, snippets, assets, and app blocks are inspected.",
+      "common_files": [
+        "templates/*.json or templates/*.liquid",
+        "sections/*.liquid",
+        "snippets/*.liquid",
+        "assets/*.css",
+        "assets/*.js"
+      ],
+      "common_conversion_issues": [
+        "unknown product form architecture",
+        "unknown app dependencies",
+        "unknown cart behavior",
+        "unknown visual approval baseline"
+      ],
+      "safe_mutation_types": [
+        "audit-only analysis",
+        "screenshot capture",
+        "file inventory",
+        "hypothesis packet creation"
+      ],
+      "risky_mutation_types": [
+        "any live mutation",
+        "global script injection",
+        "cart or checkout changes",
+        "theme-wide CSS replacement",
+        "section deletion"
+      ],
+      "screenshot_targets": [
+        "home first viewport",
+        "product first viewport",
+        "cart state",
+        "mobile first viewport"
+      ],
+      "rollback_notes": "No mutation until theme is duplicated and baseline files/screenshots are captured."
+    }
+  ]
+}
