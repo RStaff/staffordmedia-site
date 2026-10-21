@@ -40,6 +40,10 @@ function AutomateViewProbe() {
   return null;
 }
 
+function dataLayerCommands() {
+  return (window.dataLayer ?? []).map((entry) => Array.from(entry as ArrayLike<unknown>));
+}
+
 describe("analytics consent provider", () => {
   beforeEach(() => {
     window.localStorage.clear();
@@ -94,7 +98,8 @@ describe("analytics consent provider", () => {
       `https://www.googletagmanager.com/gtag/js?id=${staffordMediaGaMeasurementId}`,
     );
     expect(window.localStorage.getItem(analyticsConsentStorageKey)).toBe("accepted");
-    expect(window.dataLayer).toContainEqual([
+    expect(dataLayerCommands()).toContainEqual(["js", expect.any(Date)]);
+    expect(dataLayerCommands()).toContainEqual([
       "config",
       staffordMediaGaMeasurementId,
       {
@@ -103,7 +108,7 @@ describe("analytics consent provider", () => {
         allow_ad_personalization_signals: false,
       },
     ]);
-    expect(window.dataLayer).toContainEqual([
+    expect(dataLayerCommands()).toContainEqual([
       "event",
       "page_view",
       {
@@ -111,19 +116,36 @@ describe("analytics consent provider", () => {
         page_path: "/automate",
       },
     ]);
+    expect(window.dataLayer?.[0]).not.toBeInstanceOf(Array);
+  });
+
+  it("emits one page view per navigation and initializes gtag once", async () => {
+    window.localStorage.setItem(analyticsConsentStorageKey, "accepted");
+    const view = render(<AnalyticsProvider><span>Site</span></AnalyticsProvider>);
+    await waitFor(() => expect(window.gtag).toBeTypeOf("function"));
+
+    const pageViews = () => dataLayerCommands().filter((entry) => entry[0] === "event" && entry[1] === "page_view");
+    expect(dataLayerCommands().filter((entry) => entry[0] === "js")).toHaveLength(1);
+    expect(pageViews()).toHaveLength(1);
+
+    window.history.pushState({}, "", "/contact");
+    view.rerender(<AnalyticsProvider><span>Site</span></AnalyticsProvider>);
+    await waitFor(() => expect(pageViews()).toHaveLength(2));
+    view.rerender(<AnalyticsProvider><span>Site</span></AnalyticsProvider>);
+    expect(pageViews()).toHaveLength(2);
   });
 
   it("emits the automate view exactly once after stored consent restores and transport becomes ready", async () => {
     window.localStorage.setItem(analyticsConsentStorageKey, "accepted");
     render(<AnalyticsProvider><AutomateViewProbe /></AnalyticsProvider>);
 
-    await waitFor(() => expect(window.dataLayer).toContainEqual([
+    await waitFor(() => expect(dataLayerCommands()).toContainEqual([
       "event",
       "automate_view",
       { route: "/automate" },
     ]));
-    expect(window.dataLayer?.filter(
-      (entry) => Array.isArray(entry) && entry[0] === "event" && entry[1] === "automate_view",
+    expect(dataLayerCommands().filter(
+      (entry) => entry[0] === "event" && entry[1] === "automate_view",
     )).toHaveLength(1);
   });
 
@@ -133,13 +155,13 @@ describe("analytics consent provider", () => {
     await waitFor(() => expect(window.gtag).toBeTypeOf("function"));
 
     fireEvent.click(screen.getByRole("button", { name: "Probe event" }));
-    expect(window.dataLayer).toContainEqual([
+    expect(dataLayerCommands()).toContainEqual([
       "event",
       "contact_click",
       { route: "/automate", source: "automation_result" },
     ]);
-    const eventCountBeforeWithdrawal = window.dataLayer?.filter(
-      (entry) => Array.isArray(entry) && entry[0] === "event" && entry[1] === "contact_click",
+    const eventCountBeforeWithdrawal = dataLayerCommands().filter(
+      (entry) => entry[0] === "event" && entry[1] === "contact_click",
     ).length;
 
     fireEvent.click(screen.getByRole("button", { name: "Analytics preferences" }));
@@ -147,8 +169,8 @@ describe("analytics consent provider", () => {
     fireEvent.click(screen.getByRole("button", { name: "Probe event" }));
 
     expect(window[`ga-disable-${staffordMediaGaMeasurementId}`]).toBe(true);
-    expect(window.dataLayer?.filter(
-      (entry) => Array.isArray(entry) && entry[0] === "event" && entry[1] === "contact_click",
+    expect(dataLayerCommands().filter(
+      (entry) => entry[0] === "event" && entry[1] === "contact_click",
     )).toHaveLength(eventCountBeforeWithdrawal || 0);
   });
 
@@ -162,7 +184,7 @@ describe("analytics consent provider", () => {
     fireEvent.click(screen.getByRole("button", { name: "Analytics preferences" }));
     fireEvent.click(screen.getByRole("button", { name: "Accept analytics" }));
 
-    await waitFor(() => expect(window.dataLayer).toContainEqual([
+    await waitFor(() => expect(dataLayerCommands()).toContainEqual([
       "consent",
       "update",
       {
@@ -271,12 +293,12 @@ describe("analytics consent provider", () => {
       newValue: "declined",
       storageArea: window.localStorage,
     }));
-    const count = window.dataLayer?.filter(
-      (entry) => Array.isArray(entry) && entry[0] === "event" && entry[1] === "contact_click",
+    const count = dataLayerCommands().filter(
+      (entry) => entry[0] === "event" && entry[1] === "contact_click",
     ).length;
     fireEvent.click(screen.getByRole("button", { name: "Probe event" }));
-    expect(window.dataLayer?.filter(
-      (entry) => Array.isArray(entry) && entry[0] === "event" && entry[1] === "contact_click",
+    expect(dataLayerCommands().filter(
+      (entry) => entry[0] === "event" && entry[1] === "contact_click",
     )).toHaveLength(count || 0);
     expect(window[`ga-disable-${staffordMediaGaMeasurementId}`]).toBe(true);
   });
