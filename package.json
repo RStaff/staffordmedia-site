@@ -61,7 +61,7 @@
     "vitest": "^3.2.4"
   },
   "engines": {
-    "node": ">=20 <=22"
+    "node": ">=20.9.0 <=22"
   },
   "type": "module",
   "workspaces": [
