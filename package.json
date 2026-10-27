@@ -28,10 +28,11 @@
   },
   "dependencies": {
     "@heroicons/react": "^2.2.0",
-    "next": "^15.5.3",
+    "next": "15.5.28",
     "playwright": "^1.59.1",
     "react": "18.3.1",
-    "react-dom": "18.3.1"
+    "react-dom": "18.3.1",
+    "sharp": "0.35.5"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
@@ -60,7 +61,7 @@
     "vitest": "^3.2.4"
   },
   "engines": {
-    "node": ">=20 <=22"
+    "node": ">=20.9.0 <=22"
   },
   "type": "module",
   "workspaces": [
