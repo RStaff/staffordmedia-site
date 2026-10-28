@@ -61,14 +61,14 @@
     "vitest": "^3.2.4"
   },
   "engines": {
-    "node": ">=20.9.0 <=22"
+    "node": "24.22.1"
   },
   "type": "module",
   "workspaces": [
     "apps/website"
   ],
   "volta": {
-    "node": "22.20.0"
+    "node": "24.22.1"
   },
   "lint-staged": {
     "**/*.{ts,tsx,js,jsx,json,md,css}": [
