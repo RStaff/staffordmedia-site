@@ -1,0 +1,216 @@
+=== REAL OWNER AUDIT: StaffordMediaConsulting/apps/website ===
+PWD: /Users/rossstafford/projects/StaffordMediaConsulting/apps/website
+
+=== GIT INFO ===
+origin	https://github.com/RStaff/staffordmedia-site.git (fetch)
+origin	https://github.com/RStaff/staffordmedia-site.git (push)
+launch/website
+
+=== VERCEL LINK ===
+./.vercel/project.json
+--- ./.vercel/project.json ---
+{"projectId":"prj_GpHwx7nDZnXVFtqYgMhHJpqFgcwJ","orgId":"team_C4P7to3FrowkbQLAyOW6qXpQ","projectName":"website"}
+./apps/website/.vercel/project.json
+--- ./apps/website/.vercel/project.json ---
+{"projectId":"prj_GpHwx7nDZnXVFtqYgMhHJpqFgcwJ","orgId":"team_C4P7to3FrowkbQLAyOW6qXpQ","projectName":"website"}
+
+=== APP ROUTER DIRS ===
+./apps/website/.next/server/app
+./apps/website/.next/static/chunks/app
+./apps/website/.next/types/app
+./apps/website/app
+./apps/website/src/app
+./src/app
+
+=== ROUTE FILES ===
+./apps/website/.next/server/app/robots.txt/route.js
+./apps/website/.next/server/app/sitemap.xml/route.js
+./apps/website/app/abando/page.tsx
+./apps/website/app/about/page.tsx
+./apps/website/app/contact/page.tsx
+./apps/website/app/how-it-works/page.tsx
+./apps/website/app/install/bigcommerce/page.tsx
+./apps/website/app/install/custom/page.tsx
+./apps/website/app/install/magento/page.tsx
+./apps/website/app/install/shopify/page.tsx
+./apps/website/app/install/woocommerce/page.tsx
+./apps/website/app/pricing/page.tsx
+./apps/website/app/services/page.tsx
+./apps/website/app/signup/page.tsx
+./apps/website/app/thanks/page.tsx
+./apps/website/src/app/case-studies/abando-lift/page.tsx
+./apps/website/src/app/case-studies/page.tsx
+./src/app/about/page.tsx
+./src/app/contact/page.tsx
+./src/app/pricing/page.tsx
+./src/app/services/page.tsx
+
+=== SEARCH: shopifixer / audit-result ===
+./shopifixer_route_owner_audit_real_candidate.txt:48:=== SEARCH: shopifixer / audit-result ===
+
+=== LIKELY ROUTE OWNERS ===
+--- src/app/layout.tsx ---
+import Header from '../components/Header';
+import './globals.css';
+import React from 'react';
+
+export const metadata = {
+  title: 'Stafford Media Consulting™',
+  description: 'Unlock 4× ROI in 4 days — Abando.ai'
+};
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="en">
+      <body>
+      <HeroBadgeKiller />
+        <Header />
+        <main className="min-h-screen">{children}</main>
+      </body>
+    </html>
+  );
+}
+import HeroBadgeKiller from '@/components/HeroBadgeKiller';
+
+--- src/app/page.tsx ---
+"use client";
+import Link from "next/link";
+import AbandoTitle from "@/components/AbandoTitle";
+
+export default function Page() {
+  return (
+    <main className="min-h-hero py-12 lg:py-16">
+      <div className="container-max grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
+        {/* Left column */}
+        <div data-testid="intro" className="order-1 lg:col-start-1">
+          <AbandoTitle />
+          <h1 className="text-white font-extrabold leading-tight tracking-tight text-4xl sm:text-5xl lg:text-6xl mt-4">
+            Unlock 4× ROI in 4 days—<br />no redesigns, no downtime.
+          </h1>
+          <p className="text-white/80 mt-6">
+            Try Abando.ai free: cancel anytime.
+          </p>
+
+          <div className="flex flex-wrap gap-4 mt-6">
+            <Link
+              href="/start"
+              className="inline-flex items-center px-6 py-3 rounded-lg font-semibold"
+              style={{ background: "#FFE169", color: "#0A0F2A" }}
+            >
+              Start Free Trial
+            </Link>
+            <Link
+              href="/demo"
+              className="inline-flex items-center px-6 py-3 rounded-lg font-semibold border border-white/90 text-white hover:bg-white/5"
+            >
+              See Abando.ai In Action
+            </Link>
+          </div>
+        </div>
+
+        {/* Right column (cards) */}
+        <div data-testid="cards" className="order-2 lg:col-start-2 flex flex-col gap-6">
+          <div className="bg-white/5 rounded-2xl p-6 text-white/90">
+            <h3 className="font-semibold text-white mb-3">Who it’s for</h3>
+            <ul className="list-disc pl-5 space-y-2">
+              <li>Ecommerce teams on Shopify, WooCommerce, BigCommerce, or custom carts.</li>
+              <li>Marketers who want higher conversion without redesigns or long projects.</li>
+              <li>Founders who need measurable ROI fast (days, not months).</li>
+            </ul>
+          </div>
+
+          <div className="bg-white/5 rounded-2xl p-6 text-white/90">
+            <h3 className="font-semibold text-white mb-3">What it does</h3>
+            <ul className="list-disc pl-5 space-y-2">
+              <li>AI copilot that speaks in your brand’s voice — not a template.</li>
+              <li>Engages via email, SMS, WhatsApp, push — wherever customers are.</li>
+              <li>Handles objections in real time (price, shipping, trust).</li>
+              <li>Installs with no redesigns, no downtime.</li>
+              <li>Delivers measurable ROI in <strong>4 days — not weeks</strong>.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </main>
+  );
+}
+
+=== PACKAGE / NEXT CONFIG ===
+--- package.json ---
+{
+  "name": "website",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start -p $PORT",
+    "lint": "eslint",
+    "start3000": "PORT=3000 next start",
+    "start3001": "PORT=3001 next start",
+    "start3002": "PORT=3002 next start",
+    "dev3001": "PORT=3001 next dev",
+    "start-free": "node -e \"require('portfinder').getPortPromise({port:3000}).then(p=>{console.log('Starting on port',p);process.env.PORT=p;require('child_process').spawn('next',['start'],{stdio:'inherit',env:process.env});})\"",
+    "dev-free": "node -e \"require('portfinder').getPortPromise({port:3000}).then(p=>{console.log('Dev on port',p);process.env.PORT=p;require('child_process').spawn('next',['dev'],{stdio:'inherit',env:process.env});})\"",
+    "build:prod": "npm run build",
+    "test:e2e": "playwright test --reporter=html --trace=on --output=test-results",
+    "prepare": "husky || true"
+  },
+  "dependencies": {
+    "@heroicons/react": "^2.2.0",
+    "next": "^15.5.3",
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3",
+    "@next/eslint-plugin-next": "^15.0.0",
+    "@playwright/test": "^1.55.1",
+    "@tailwindcss/postcss": "^4.1.13",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.0",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "autoprefixer": "^10.4.21",
+    "eslint": "^9",
+    "eslint-config-next": "15.5.3",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-next": "^0.0.0",
+    "husky": "^9.1.7",
+    "jsdom": "^27.0.0",
+    "lint-staged": "^15.5.2",
+    "portfinder": "^1.0.38",
+    "postcss": "^8.5.6",
+    "prettier": "^3.6.2",
+    "tailwindcss": "^4.1.13",
+    "typescript": "^5",
+    "vitest": "^3.2.4"
+  },
+  "engines": {
+    "node": ">=20 <=22"
+  },
+  "type": "module",
+  "workspaces": [
+    "apps/website"
+  ],
+  "volta": {
+    "node": "22.20.0"
+  },
+  "lint-staged": {
+    "**/*.{ts,tsx,js,jsx,json,md,css}": [
+      "prettier --write"
+    ],
+    "apps/website/**/*.{ts,tsx}": [
+      "eslint --fix"
+    ],
+    "apps/website/**/*.{ts,tsx,js,jsx}": [
+      "eslint --config apps/website/eslint.config.js --cache --cache-location apps/website/.eslintcache --fix"
+    ],
+    "**/*.{css,md,json}": [
+      "prettier --write"
+    ]
+  }
+}
+
+=== DONE ===

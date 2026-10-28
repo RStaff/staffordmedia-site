@@ -1,0 +1,13 @@
+{
+  "artifact": "flow_map_v1",
+  "purpose": "Validate core StaffordMedia revenue and recovery-proof flows.",
+  "flows": {
+    "shopifixer_revenue_path": [
+      "/shopifixer",
+      "/shopifixer/result",
+      "/audit-result",
+      "/pricing"
+    ],
+    "abando_recovery_proof_path": ["/abando", "/recovery-demo", "/shopifixer"]
+  }
+}

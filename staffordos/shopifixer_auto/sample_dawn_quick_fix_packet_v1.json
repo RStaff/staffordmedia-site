@@ -1,0 +1,116 @@
+{
+  "packet_id": "SAMPLE-DAWN-NOKINGS-PRODUCT-CTA-CLARITY-V1",
+  "merchant_id": "no-kings-athletics-dev",
+  "store_domain": "no-kings-athletics-dev.myshopify.com",
+  "theme_archetype": "Dawn",
+  "mutation_depth": "LEVEL_1_QUICK_FIX",
+  "issue_summary": "Product page purchase clarity may be weak above the fold.",
+  "business_hypothesis": "A constrained product-page adjustment in a duplicate Dawn theme can make the buy area clearer without changing checkout, cart, or product form behavior.",
+  "target_surface": {
+    "surface_type": "shopify_theme_template",
+    "route_or_template": "templates/product.json",
+    "theme_role": "duplicate_preview_only",
+    "duplicate_theme_required": true,
+    "live_theme_mutation_allowed": false
+  },
+  "allowed_files": [
+    "templates/product.json",
+    "sections/main-product.liquid",
+    "snippets/progress-bar.liquid",
+    "assets/section-main-product.css"
+  ],
+  "prohibited_files": [
+    "layout/theme.liquid",
+    "snippets/buy-buttons.liquid",
+    "snippets/cart-drawer.liquid",
+    "sections/cart-drawer.liquid",
+    "templates/cart.json",
+    "assets/global.js",
+    "assets/cart.js",
+    "config/settings_schema.json"
+  ],
+  "allowed_operations": [
+    "inspect Dawn product-page structure",
+    "adjust product page block order in templates/product.json",
+    "add inert product-page trust or progress markup only if already approved",
+    "apply scoped CSS to product-page hierarchy or CTA visibility",
+    "preserve add-to-cart and dynamic checkout behavior"
+  ],
+  "prohibited_operations": [
+    "run Shopify CLI",
+    "connect to Shopify APIs",
+    "mutate live production theme",
+    "deploy",
+    "rewrite product form logic",
+    "change checkout behavior",
+    "change cart behavior",
+    "inject global JavaScript",
+    "remove app blocks",
+    "expand file scope without approval"
+  ],
+  "required_snapshots": {
+    "before": [
+      {
+        "surface": "product_page",
+        "viewport": "desktop",
+        "required": true
+      },
+      {
+        "surface": "product_page",
+        "viewport": "mobile",
+        "required": true
+      }
+    ],
+    "after": [
+      {
+        "surface": "product_page",
+        "viewport": "desktop",
+        "required": true
+      },
+      {
+        "surface": "product_page",
+        "viewport": "mobile",
+        "required": true
+      }
+    ],
+    "manifest_required": true
+  },
+  "acceptance_criteria": [
+    "Before screenshots exist before mutation.",
+    "After screenshots use the same product page and viewport targets.",
+    "Only allowed_files are changed.",
+    "No product form logic is changed.",
+    "Add-to-cart button still renders.",
+    "Dynamic checkout remains present when enabled by Dawn settings.",
+    "Rollback reference is complete.",
+    "Ross approval is recorded before merchant-facing proof."
+  ],
+  "visual_qa_requirements": [
+    "Compare product desktop before/after screenshots.",
+    "Compare product mobile before/after screenshots.",
+    "Flag CTA regression, mobile overflow, product form drift, brand drift, and unexplained layout movement.",
+    "Screenshots do not imply approval without explicit Ross approval."
+  ],
+  "rollback_plan": {
+    "rollback_required": true,
+    "rollback_reference": "theme_snapshot_manifest_template_v1.json rollback_reference",
+    "proof_required": true,
+    "restore_method": "Restore original duplicate-theme files or revert the patch diff before any launch consideration."
+  },
+  "approval_gates": {
+    "ross_required_before_execution": true,
+    "ross_required_before_merchant_proof": true,
+    "merchant_required_before_launch": true,
+    "approval_status": {
+      "ross": "UNKNOWN",
+      "merchant": "UNKNOWN"
+    }
+  },
+  "resource_budget": {
+    "max_files": 4,
+    "max_mutation_depth": "LEVEL_1_QUICK_FIX",
+    "estimated_compute": "low_to_medium",
+    "time_box_minutes": 60
+  },
+  "execution_status": "READY_FOR_VALIDATION"
+}

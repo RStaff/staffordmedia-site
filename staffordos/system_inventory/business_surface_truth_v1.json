@@ -1,0 +1,55 @@
+{
+  "version": "business_surface_truth_v1",
+  "purpose": "Canonical truth map for Stafford Media, ShopiFixer, and Abando surfaces before UI patches.",
+  "products": {
+    "staffordmedia": {
+      "role": "Parent company, credibility layer, and service wrapper.",
+      "primary_goal": "Route merchants into the correct revenue path without confusing ShopiFixer and Abando."
+    },
+    "shopifixer": {
+      "role": "Service-led diagnostic and implementation offer.",
+      "correct_flow": [
+        "/shopifixer brief audit form",
+        "submitAudit()",
+        "triggerShopifixerOutreach()",
+        "email sends full audit link",
+        "/audit-result?store=... full review",
+        "/pricing?store=... payment",
+        "post-payment onboarding"
+      ],
+      "summary_surface": "/shopifixer/result",
+      "summary_surface_rule": "Preview/summary only. Do not treat as the full conversion page.",
+      "onboarding_rule": "Onboarding belongs after payment or explicit fix-intent, not as the default brief-audit result CTA."
+    },
+    "abando": {
+      "role": "Shopify recovery product.",
+      "correct_flow": [
+        "install",
+        "detect abandonment",
+        "send recovery",
+        "track customer return",
+        "attribute recovered revenue"
+      ],
+      "surface_rule": "Do not blend Abando recovery into ShopiFixer fix onboarding. Verify live host and route before linking."
+    }
+  },
+  "known_blockers": [
+    {
+      "id": "stripe_placeholder",
+      "surface": "/pricing",
+      "issue": "Stripe checkout URL is still placeholder.",
+      "impact": "Post-payment onboarding cannot be truthfully completed until payment path is live."
+    },
+    {
+      "id": "abando_host_uncertainty",
+      "surface": "app.abando.ai",
+      "issue": "App host/live route truth must be verified before StaffordMedia links to it."
+    }
+  ],
+  "patch_rules": [
+    "Do not patch UI from assumptions.",
+    "Map existing route, CTA, and engine owner first.",
+    "ShopiFixer diagnose/fix flow and Abando recovery flow must remain distinct.",
+    "Generated reports are runtime output unless explicitly promoted."
+  ]
+}

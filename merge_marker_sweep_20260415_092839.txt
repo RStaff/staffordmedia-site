@@ -1,0 +1,210 @@
+=== 1) FIND FILES WITH MERGE MARKERS IN ACTIVE BUILD SCOPE ===
+apps/website/app/about/page.tsx
+apps/website/app/analytics/Analytics.tsx
+apps/website/app/components/Hero.tsx
+apps/website/app/components/Navbar.tsx
+apps/website/app/contact/page.tsx
+apps/website/app/globals.css
+apps/website/app/layout.tsx
+apps/website/app/page.tsx
+apps/website/app/pricing/page.tsx
+apps/website/app/robots.ts
+apps/website/app/services/page.tsx
+apps/website/app/sitemap.ts
+apps/website/src/app/globals.css
+apps/website/src/components/Section.tsx
+
+=== 2) BACKUP + STRIP MERGE MARKERS ONLY ===
+--- CLEANING: apps/website/app/about/page.tsx
+--- CLEANING: apps/website/app/analytics/Analytics.tsx
+--- CLEANING: apps/website/app/components/Hero.tsx
+--- CLEANING: apps/website/app/components/Navbar.tsx
+--- CLEANING: apps/website/app/contact/page.tsx
+--- CLEANING: apps/website/app/globals.css
+--- CLEANING: apps/website/app/layout.tsx
+--- CLEANING: apps/website/app/page.tsx
+--- CLEANING: apps/website/app/pricing/page.tsx
+--- CLEANING: apps/website/app/robots.ts
+--- CLEANING: apps/website/app/services/page.tsx
+--- CLEANING: apps/website/app/sitemap.ts
+--- CLEANING: apps/website/src/app/globals.css
+--- CLEANING: apps/website/src/components/Section.tsx
+
+=== 3) VERIFY NO MERGE MARKERS REMAIN IN ACTIVE BUILD SCOPE ===
+src/app/globals.css.bak.20260415_091839:1:<<<<<<< HEAD
+src/app/globals.css.bak.20260415_091839:4:=======
+src/app/globals.css.bak.20260415_091839:38:>>>>>>> 2ea91aa (PROD: activate ShopiFixer + audit-result routes for live site)
+src/app/pricing/page.tsx.bak.20260415_091553:24:<<<<<<< HEAD
+src/app/pricing/page.tsx.bak.20260415_091553:25:<<<<<<< HEAD
+src/app/pricing/page.tsx.bak.20260415_091553:26:=======
+src/app/pricing/page.tsx.bak.20260415_091553:28:>>>>>>> e42bc11 (site(src): add /pricing + robots/sitemap in Render-built app)
+src/app/pricing/page.tsx.bak.20260415_091553:29:=======
+src/app/pricing/page.tsx.bak.20260415_091553:30:>>>>>>> ced3031 (site(src): add /pricing + robots/sitemap in Render-built app)
+src/app/pricing/page.tsx.bak.20260415_091553:40:<<<<<<< HEAD
+src/app/pricing/page.tsx.bak.20260415_091553:41:<<<<<<< HEAD
+src/app/pricing/page.tsx.bak.20260415_091553:42:=======
+src/app/pricing/page.tsx.bak.20260415_091553:44:>>>>>>> e42bc11 (site(src): add /pricing + robots/sitemap in Render-built app)
+src/app/pricing/page.tsx.bak.20260415_091553:45:=======
+src/app/pricing/page.tsx.bak.20260415_091553:46:>>>>>>> ced3031 (site(src): add /pricing + robots/sitemap in Render-built app)
+apps/website/app/contact/page.tsx.bak.20260415_092839:1:<<<<<<< HEAD
+apps/website/app/contact/page.tsx.bak.20260415_092839:2:<<<<<<< HEAD
+apps/website/app/contact/page.tsx.bak.20260415_092839:31:=======
+apps/website/app/contact/page.tsx.bak.20260415_092839:41:>>>>>>> 007a482 (feat(website): add Home and Contact pages)
+apps/website/app/contact/page.tsx.bak.20260415_092839:42:=======
+apps/website/app/contact/page.tsx.bak.20260415_092839:71:>>>>>>> 7a98f0c (chore(ci): finalize guardrails + husky modernization)
+apps/website/app/globals.css.bak.20260415_092839:1:<<<<<<< HEAD
+apps/website/app/globals.css.bak.20260415_092839:2:<<<<<<< HEAD
+apps/website/app/globals.css.bak.20260415_092839:4:=======
+apps/website/app/globals.css.bak.20260415_092839:5:>>>>>>> b4fc3c2 (fix(website): restore Next app conventions (app/globals.css), resolvable '@/components/Nav', and top-level route exports)
+apps/website/app/globals.css.bak.20260415_092839:6:=======
+apps/website/app/globals.css.bak.20260415_092839:8:>>>>>>> 61e9267 (build: Tailwind v4 PostCSS migration (use @tailwindcss/postcss; canonical .cjs configs))
+apps/website/app/globals.css.bak.20260415_092839:15:<<<<<<< HEAD
+apps/website/app/globals.css.bak.20260415_092839:16:<<<<<<< HEAD
+apps/website/app/globals.css.bak.20260415_092839:17:=======
+apps/website/app/globals.css.bak.20260415_092839:18:>>>>>>> 7a98f0c (chore(ci): finalize guardrails + husky modernization)
+apps/website/app/globals.css.bak.20260415_092839:111:<<<<<<< HEAD
+apps/website/app/globals.css.bak.20260415_092839:112:<<<<<<< HEAD
+apps/website/app/globals.css.bak.20260415_092839:113:=======
+apps/website/app/globals.css.bak.20260415_092839:114:>>>>>>> b48eb19 (chore: ESLint stable + test/build green; prepare launch)
+apps/website/app/globals.css.bak.20260415_092839:139:<<<<<<< HEAD
+apps/website/app/globals.css.bak.20260415_092839:140:=======
+apps/website/app/globals.css.bak.20260415_092839:141:>>>>>>> b4fc3c2 (fix(website): restore Next app conventions (app/globals.css), resolvable '@/components/Nav', and top-level route exports)
+apps/website/app/globals.css.bak.20260415_092839:142:=======
+apps/website/app/globals.css.bak.20260415_092839:143:>>>>>>> 7a98f0c (chore(ci): finalize guardrails + husky modernization)
+apps/website/app/globals.css.bak.20260415_092839:144:=======
+apps/website/app/globals.css.bak.20260415_092839:145:>>>>>>> b48eb19 (chore: ESLint stable + test/build green; prepare launch)
+apps/website/app/robots.ts.bak.20260415_092839:1:<<<<<<< HEAD
+apps/website/app/robots.ts.bak.20260415_092839:2:<<<<<<< HEAD
+apps/website/app/robots.ts.bak.20260415_092839:8:=======
+apps/website/app/robots.ts.bak.20260415_092839:10:=======
+apps/website/app/robots.ts.bak.20260415_092839:12:<<<<<<< HEAD
+apps/website/app/robots.ts.bak.20260415_092839:14:>>>>>>> dd26c5a (feat(site): refined About/Services, inline Pricing (fix 404), app robots/sitemap, SITE_URL)
+apps/website/app/robots.ts.bak.20260415_092839:23:>>>>>>> 9f62116 (seo: App Router robots + sitemap for staffordmedia.ai)
+apps/website/app/robots.ts.bak.20260415_092839:24:=======
+apps/website/app/robots.ts.bak.20260415_092839:29:>>>>>>> e32da3b (site: add app-level robots/sitemap, cleanup overrides, confirm pricing freshness)
+apps/website/app/sitemap.ts.bak.20260415_092839:1:<<<<<<< HEAD
+apps/website/app/sitemap.ts.bak.20260415_092839:2:<<<<<<< HEAD
+apps/website/app/sitemap.ts.bak.20260415_092839:13:=======
+apps/website/app/sitemap.ts.bak.20260415_092839:23:>>>>>>> 9f62116 (seo: App Router robots + sitemap for staffordmedia.ai)
+apps/website/app/sitemap.ts.bak.20260415_092839:24:=======
+apps/website/app/sitemap.ts.bak.20260415_092839:35:>>>>>>> dd26c5a (feat(site): refined About/Services, inline Pricing (fix 404), app robots/sitemap, SITE_URL)
+apps/website/app/about/page.tsx.bak.20260415_092839:1:<<<<<<< HEAD
+apps/website/app/about/page.tsx.bak.20260415_092839:2:<<<<<<< HEAD
+apps/website/app/about/page.tsx.bak.20260415_092839:28:=======
+apps/website/app/about/page.tsx.bak.20260415_092839:33:=======
+apps/website/app/about/page.tsx.bak.20260415_092839:34:>>>>>>> dd26c5a (feat(site): refined About/Services, inline Pricing (fix 404), app robots/sitemap, SITE_URL)
+apps/website/app/about/page.tsx.bak.20260415_092839:58:<<<<<<< HEAD
+apps/website/app/about/page.tsx.bak.20260415_092839:61:>>>>>>> f751bc5 (feat(site): About + Services + Pricing pages (drop-in))
+apps/website/app/about/page.tsx.bak.20260415_092839:62:=======
+apps/website/app/about/page.tsx.bak.20260415_092839:65:>>>>>>> dd26c5a (feat(site): refined About/Services, inline Pricing (fix 404), app robots/sitemap, SITE_URL)
+apps/website/app/components/Navbar.tsx.bak.20260415_092839:4:<<<<<<< HEAD
+apps/website/app/components/Navbar.tsx.bak.20260415_092839:5:<<<<<<< HEAD
+apps/website/app/components/Navbar.tsx.bak.20260415_092839:7:=======
+apps/website/app/components/Navbar.tsx.bak.20260415_092839:8:>>>>>>> 7a98f0c (chore(ci): finalize guardrails + husky modernization)
+apps/website/app/components/Navbar.tsx.bak.20260415_092839:9:=======
+apps/website/app/components/Navbar.tsx.bak.20260415_092839:11:>>>>>>> b2ea271 (chore(ci): finalize doctor verification and guardrail health)
+apps/website/app/components/Navbar.tsx.bak.20260415_092839:46:<<<<<<< HEAD
+apps/website/app/components/Navbar.tsx.bak.20260415_092839:47:<<<<<<< HEAD
+apps/website/app/components/Navbar.tsx.bak.20260415_092839:50:=======
+apps/website/app/components/Navbar.tsx.bak.20260415_092839:52:>>>>>>> 7a98f0c (chore(ci): finalize guardrails + husky modernization)
+apps/website/app/components/Navbar.tsx.bak.20260415_092839:53:=======
+apps/website/app/components/Navbar.tsx.bak.20260415_092839:56:>>>>>>> b48eb19 (chore: ESLint stable + test/build green; prepare launch)
+apps/website/app/components/Hero.tsx.bak.20260415_092839:2:<<<<<<< HEAD
+apps/website/app/components/Hero.tsx.bak.20260415_092839:3:<<<<<<< HEAD
+apps/website/app/components/Hero.tsx.bak.20260415_092839:5:=======
+apps/website/app/components/Hero.tsx.bak.20260415_092839:6:>>>>>>> 7a98f0c (chore(ci): finalize guardrails + husky modernization)
+apps/website/app/components/Hero.tsx.bak.20260415_092839:7:=======
+apps/website/app/components/Hero.tsx.bak.20260415_092839:9:>>>>>>> b2ea271 (chore(ci): finalize doctor verification and guardrail health)
+apps/website/app/page.tsx.bak.20260415_092839:1:<<<<<<< HEAD
+apps/website/app/page.tsx.bak.20260415_092839:2:<<<<<<< HEAD
+apps/website/app/page.tsx.bak.20260415_092839:8:=======
+apps/website/app/page.tsx.bak.20260415_092839:46:>>>>>>> 007a482 (feat(website): add Home and Contact pages)
+apps/website/app/page.tsx.bak.20260415_092839:47:=======
+apps/website/app/page.tsx.bak.20260415_092839:53:>>>>>>> 7a98f0c (chore(ci): finalize guardrails + husky modernization)
+apps/website/app/abando/page.tsx.bak.20260415_092523:2:<<<<<<< HEAD
+apps/website/app/abando/page.tsx.bak.20260415_092523:3:<<<<<<< HEAD
+apps/website/app/abando/page.tsx.bak.20260415_092523:5:=======
+apps/website/app/abando/page.tsx.bak.20260415_092523:6:>>>>>>> 7a98f0c (chore(ci): finalize guardrails + husky modernization)
+apps/website/app/abando/page.tsx.bak.20260415_092523:7:=======
+apps/website/app/abando/page.tsx.bak.20260415_092523:9:>>>>>>> b2ea271 (chore(ci): finalize doctor verification and guardrail health)
+apps/website/app/layout.tsx.bak.20260415_092839:3:<<<<<<< HEAD
+apps/website/app/layout.tsx.bak.20260415_092839:4:<<<<<<< HEAD
+apps/website/app/layout.tsx.bak.20260415_092839:6:<<<<<<< HEAD
+apps/website/app/layout.tsx.bak.20260415_092839:7:<<<<<<< HEAD
+apps/website/app/layout.tsx.bak.20260415_092839:9:=======
+apps/website/app/layout.tsx.bak.20260415_092839:10:>>>>>>> b2ea271 (chore(ci): finalize doctor verification and guardrail health)
+apps/website/app/layout.tsx.bak.20260415_092839:11:=======
+apps/website/app/layout.tsx.bak.20260415_092839:13:>>>>>>> 69d174d (feat: launch-ready website)
+apps/website/app/layout.tsx.bak.20260415_092839:49:=======
+apps/website/app/layout.tsx.bak.20260415_092839:51:=======
+apps/website/app/layout.tsx.bak.20260415_092839:55:>>>>>>> 7a98f0c (chore(ci): finalize guardrails + husky modernization)
+apps/website/app/layout.tsx.bak.20260415_092839:69:<<<<<<< HEAD
+apps/website/app/layout.tsx.bak.20260415_092839:74:>>>>>>> dd26c5a (feat(site): refined About/Services, inline Pricing (fix 404), app robots/sitemap, SITE_URL)
+apps/website/app/layout.tsx.bak.20260415_092839:75:=======
+apps/website/app/layout.tsx.bak.20260415_092839:94:>>>>>>> 7a98f0c (chore(ci): finalize guardrails + husky modernization)
+apps/website/app/pricing/page.tsx.bak.20260415_092839:1:<<<<<<< HEAD
+apps/website/app/pricing/page.tsx.bak.20260415_092839:2:<<<<<<< HEAD
+apps/website/app/pricing/page.tsx.bak.20260415_092839:3:<<<<<<< HEAD
+apps/website/app/pricing/page.tsx.bak.20260415_092839:4:<<<<<<< HEAD
+apps/website/app/pricing/page.tsx.bak.20260415_092839:5:=======
+apps/website/app/pricing/page.tsx.bak.20260415_092839:6:>>>>>>> d51f9d3 (fix(pricing): valid JSX + top-level Next flags; untrack node_modules)
+apps/website/app/pricing/page.tsx.bak.20260415_092839:11:<<<<<<< HEAD
+apps/website/app/pricing/page.tsx.bak.20260415_092839:23:=======
+apps/website/app/pricing/page.tsx.bak.20260415_092839:24:=======
+apps/website/app/pricing/page.tsx.bak.20260415_092839:25:=======
+apps/website/app/pricing/page.tsx.bak.20260415_092839:28:>>>>>>> a74e90e (chore(ci+ts): parent-as-root workspace; app-owned Next+@ alias; top-level page flags; deterministic CI)
+apps/website/app/pricing/page.tsx.bak.20260415_092839:31:>>>>>>> dd26c5a (feat(site): refined About/Services, inline Pricing (fix 404), app robots/sitemap, SITE_URL)
+apps/website/app/pricing/page.tsx.bak.20260415_092839:59:<<<<<<< HEAD
+apps/website/app/pricing/page.tsx.bak.20260415_092839:61:>>>>>>> f751bc5 (feat(site): About + Services + Pricing pages (drop-in))
+apps/website/app/pricing/page.tsx.bak.20260415_092839:62:=======
+apps/website/app/pricing/page.tsx.bak.20260415_092839:74:>>>>>>> dd26c5a (feat(site): refined About/Services, inline Pricing (fix 404), app robots/sitemap, SITE_URL)
+apps/website/app/pricing/page.tsx.bak.20260415_092839:75:=======
+apps/website/app/pricing/page.tsx.bak.20260415_092839:87:>>>>>>> d51f9d3 (fix(pricing): valid JSX + top-level Next flags; untrack node_modules)
+apps/website/app/services/page.tsx.bak.20260415_092839:1:<<<<<<< HEAD
+apps/website/app/services/page.tsx.bak.20260415_092839:2:<<<<<<< HEAD
+apps/website/app/services/page.tsx.bak.20260415_092839:3:<<<<<<< HEAD
+apps/website/app/services/page.tsx.bak.20260415_092839:44:=======
+apps/website/app/services/page.tsx.bak.20260415_092839:49:=======
+apps/website/app/services/page.tsx.bak.20260415_092839:50:>>>>>>> dd26c5a (feat(site): refined About/Services, inline Pricing (fix 404), app robots/sitemap, SITE_URL)
+apps/website/app/services/page.tsx.bak.20260415_092839:54:=======
+apps/website/app/services/page.tsx.bak.20260415_092839:56:>>>>>>> 7a98f0c (chore(ci): finalize guardrails + husky modernization)
+apps/website/app/services/page.tsx.bak.20260415_092839:96:<<<<<<< HEAD
+apps/website/app/services/page.tsx.bak.20260415_092839:128:>>>>>>> f751bc5 (feat(site): About + Services + Pricing pages (drop-in))
+apps/website/app/services/page.tsx.bak.20260415_092839:129:=======
+apps/website/app/services/page.tsx.bak.20260415_092839:130:>>>>>>> 7a98f0c (chore(ci): finalize guardrails + husky modernization)
+apps/website/app/analytics/Analytics.tsx.bak.20260415_092839:50:<<<<<<< HEAD
+apps/website/app/analytics/Analytics.tsx.bak.20260415_092839:52:=======
+apps/website/app/analytics/Analytics.tsx.bak.20260415_092839:54:>>>>>>> 69d174d (feat: launch-ready website)
+apps/website/src/app/globals.css.bak.20260415_092839:1:<<<<<<< HEAD
+apps/website/src/app/globals.css.bak.20260415_092839:4:=======
+apps/website/src/app/globals.css.bak.20260415_092839:38:>>>>>>> 2ea91aa (PROD: activate ShopiFixer + audit-result routes for live site)
+apps/website/src/components/Section.tsx.bak.20260415_092839:3:<<<<<<< HEAD
+apps/website/src/components/Section.tsx.bak.20260415_092839:4:<<<<<<< HEAD
+apps/website/src/components/Section.tsx.bak.20260415_092839:5:=======
+apps/website/src/components/Section.tsx.bak.20260415_092839:6:>>>>>>> f13d4d9 (fix(website): patch pricing flags for TS, align tsconfig + Section)
+apps/website/src/components/Section.tsx.bak.20260415_092839:12:<<<<<<< HEAD
+apps/website/src/components/Section.tsx.bak.20260415_092839:30:=======
+apps/website/src/components/Section.tsx.bak.20260415_092839:35:>>>>>>> 7454199 (chore(website): add minimal Section component to satisfy @ alias)
+apps/website/src/components/Section.tsx.bak.20260415_092839:36:=======
+apps/website/src/components/Section.tsx.bak.20260415_092839:54:>>>>>>> f13d4d9 (fix(website): patch pricing flags for TS, align tsconfig + Section)
+NO CONFLICT MARKERS REMAIN
+
+=== 4) RUN DUPLICATE GUARD ===
+✅ No duplicate ShopiFixer route trees detected
+
+=== 5) BUILD AGAIN ===
+
+> website@0.1.0 prebuild
+> node scripts/assert-no-duplicate-routes.cjs
+
+✅ No duplicate ShopiFixer route trees detected
+
+> website@0.1.0 build
+> next build
+
+   ▲ Next.js 15.5.4
+   - Environments: .env.local
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully in 1158ms
+   Linting and checking validity of types ...
