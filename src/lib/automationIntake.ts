@@ -89,7 +89,9 @@ export type AutomationOpportunity = {
 export type AutomationOpportunityPreview = {
   primaryDiagnosis: string;
   primaryConsequence: string;
+  recommendationBasis: string[];
   opportunities: AutomationOpportunity[];
+  currentWorkflowProvided: boolean;
   currentWorkflowContext: string;
   desiredWorkflowContext: string;
   currentWorkflowSteps: string[];
@@ -102,23 +104,28 @@ export type AutomationOpportunityPreview = {
 const businessLanguage = {
   "Home Services": {
     work: "inquiries, callbacks, estimates, and field schedules",
-    owner: "office or field staff",
+    owner: "Office or field staff",
+    authorityVerb: "retain",
   },
   "Professional Services": {
     work: "client requests, reviews, and professional-service handoffs",
-    owner: "the responsible professional",
+    owner: "The responsible professional",
+    authorityVerb: "retains",
   },
   "Automotive / Field Services": {
     work: "service requests, dispatch decisions, and appointment exceptions",
-    owner: "service or dispatch staff",
+    owner: "Service or dispatch staff",
+    authorityVerb: "retain",
   },
   "E-commerce": {
     work: "customer questions, order exceptions, and storefront operations",
-    owner: "store or customer-service staff",
+    owner: "Store or customer-service staff",
+    authorityVerb: "retain",
   },
   Other: {
     work: "requests, handoffs, and follow-up work",
-    owner: "the responsible team member",
+    owner: "The responsible team member",
+    authorityVerb: "retains",
   },
 } as const;
 
@@ -371,11 +378,23 @@ export function buildAutomationOpportunityPreview(
     ? ` across ${brief.systems.slice(0, 3).join(", ")}`
     : "";
   const business = brief.businessType || "your business";
+  const recommendationBasis = [
+    brief.improvements.length
+      ? `Workflow priorities: ${brief.improvements.join(", ")}`
+      : null,
+    brief.businessType ? `Business context: ${brief.businessType}` : null,
+    brief.systems.length ? `Systems selected: ${brief.systems.join(", ")}` : null,
+    brief.currentWorkflow || brief.desiredWorkflow
+      ? "Workflow descriptions provided in this intake"
+      : null,
+  ].filter((item): item is string => Boolean(item));
 
   return {
     primaryDiagnosis: `${first.diagnosis} For ${business.toLowerCase()}, your answers prioritize ${selectedWork}${systems}.`,
     primaryConsequence: `${first.consequence} This is a bounded diagnosis to confirm during the workflow interview, not an assumption about your internal operations.`,
+    recommendationBasis,
     opportunities,
+    currentWorkflowProvided: Boolean(brief.currentWorkflow),
     currentWorkflowContext:
       brief.currentWorkflow || `Based on your selections: ${first.currentSteps.join(" → ")}.`,
     desiredWorkflowContext:
@@ -384,7 +403,7 @@ export function buildAutomationOpportunityPreview(
     improvedWorkflowSteps: first.improvedSteps,
     humanControls: [
       first.humanControl,
-      `${language.owner} retain authority over exceptions and any customer-facing action.`,
+      `${language.owner} ${language.authorityVerb} authority over exceptions and any customer-facing action.`,
       "No system change or external message occurs without the agreed review and authorization boundary.",
     ],
     valueMechanisms: first.valueMechanisms.slice(0, 4),
