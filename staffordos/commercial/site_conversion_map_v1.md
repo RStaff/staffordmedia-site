@@ -23,3 +23,100 @@ Future ShopiFixer Auto work must support this path:
 `/shopifixer` diagnosis entry -> `/audit-result` full diagnosis -> `/pricing` paid fix decision -> mutation packet -> sandbox proof -> merchant approval.
 
 Abando remains the revenue recovery lane after diagnosis, not a replacement for ShopiFixer audit or paid fix flow.
+
+## Blueprint pre-purchase clarity acceptance — 2026-11-14
+
+This evidence is additive and does not change the ShopiFixer or Abando route
+contracts above. The Stafford Media `/automate` route is the pre-purchase entry
+for the separate $750 Automation Opportunity Blueprint.
+
+Status: **IMPLEMENTED AND VERIFIED LOCALLY; OWNER VISUAL REVIEW COMPLETE; RELEASE AUTHORIZATION PENDING**
+
+- Baseline: Stafford Media launch revision
+  `0a7d7c51228f7075f4bc404f0a3ab6c3c4c06e28` in isolated worktree
+  `/Users/rossstafford/projects/staffordmedia-blueprint-prepurchase-20261114`.
+- Scope: plain-language intake copy, compact spacing, fictional examples for
+  current and optional desired workflow descriptions, one primary intake
+  action, practical value for each of the existing six deliverables, and an
+  explicit bridge from the illustrative free result to the paid assessment and
+  plan.
+- Final wording correction: the result is headed `A suggested starting point`.
+  A workflow synthesized from category selections is labeled
+  `Example current workflow based on your selections.`; only prospect-supplied
+  current-workflow text receives `Current, as described`. Business-specific
+  authority sentences use grammatical singular/plural agreement, including
+  `The responsible professional retains authority`.
+- Preserved contract: fixed $750 one-time offer, six deliverables, delivery
+  within five business days after the interview and receipt of required
+  information, full fee credit toward an approved Stafford Media
+  implementation, stated exclusions, separately scoped optional
+  implementation, fixed checkout authority, analytics consent, and existing
+  recommendation behavior.
+- Focused automated evidence on the isolated source worktree: 78
+  intake/result/offer/analytics/checkout tests passed; TypeScript passed; and
+  `git diff --check` passed.
+- Release-target reconciliation: the isolated worktree remains detached at its
+  accepted baseline `0a7d7c51228f7075f4bc404f0a3ab6c3c4c06e28`. Read-only
+  remote evidence on 2026-11-14 identifies `launch/website` at
+  `81fa400e2ce27f44974e5ff816e74b9fec7b9982`, seven commits newer. Those commits
+  update GA4 bootstrap and the supported runtime/dependencies; they do not
+  modify the Blueprint intake/result/offer files changed by this slice. The
+  complete uncommitted slice applies cleanly to `81fa400`.
+- Current-target verification: in a disposable worktree at `81fa400`, using its
+  declared Node 24.22.1, locked Next.js 15.5.28 dependencies, and Production
+  payment environment, all 78 focused tests passed, TypeScript passed, the
+  production build passed, and `git diff --check` passed. The build retained the
+  approved live Payment Link and excluded the Preview link from the prerendered
+  `/automate` page. The two pre-existing build warnings remain the undetected
+  Next ESLint plugin and the type-only `ReactNode` import in
+  `ErrorBoundary.tsx`; this slice does not touch either file.
+- Payment authority evidence: source validation continues to permit only the
+  fixed owner-approved live Stripe Payment Link in Production and the fixed test
+  link in Preview. A read-only request to the approved live link returned HTTP
+  200. Read-only public `/automate` HTML contained the approved live authority
+  and not the Preview authority. No checkout was activated and no payment or
+  provider configuration was changed.
+- Release/deployment evidence: repository authority names `launch/website` as
+  the production branch and `staffordmedia-site-website` as the promotion
+  target. GitHub CI for `81fa400` passed and its Vercel status reports a completed
+  deployment. PR `RStaff/staffordmedia-site#154` contains reviewed implementation
+  commit `45974d871412c317aaa8715d02f49dda868de645` against exact base
+  `81fa400e2ce27f44974e5ff816e74b9fec7b9982`; its CI build, Website Build
+  context guard, automatic label, and Vercel preview checks passed. GitHub's
+  branch-protection endpoint reports `launch/website` is not protected, so the
+  documented review and CI procedure must be followed operationally; a direct
+  push is not an acceptable substitute.
+- Render production evidence, verified read-only on 2026-11-14: service
+  `staffordmedia-site` (`srv-d38q6h1r0fns7386qtd0`) is an active web service
+  connected to `https://github.com/RStaff/staffordmedia-site`, root `.`, branch
+  `launch/website`. Its Render domain is
+  `https://staffordmedia-site.onrender.com`; `https://www.staffordmedia.ai`
+  serves the same Render response and the apex redirects to `www`. The current
+  live deploy is `dep-dbglnhavcj2c73dis8r0`, sourced from
+  `81fa400e2ce27f44974e5ff816e74b9fec7b9982`, completed successfully at
+  `2026-10-28T02:21:36.799071Z` with trigger `new_commit`.
+- Actual Render trigger: `autoDeploy` is `yes` and `autoDeployTrigger` is
+  `commit` for linked branch `launch/website`. Merging PR #154 therefore writes
+  a new commit to the linked production branch and automatically starts a
+  production Render build/deploy; merge authorization is deployment-trigger
+  authorization for this service.
+- Render evidence: a fictional lead-response intake completed at 1440×1000 and
+  390×844 through the loopback application. Both widths had equal document and
+  viewport widths (no horizontal overflow), showed all six deliverables and
+  practical-value statements, and exposed both the approved Preview checkout
+  action and contact action. Neither action was activated and no payment was
+  attempted.
+- Owner review: Ross reviewed the local result and offer screenshots. The final
+  changes above are copy/label logic only; a new visual inspection was not
+  claimed.
+- Release procedure: review and explicitly authorize merging PR #154, knowing
+  that the merge automatically triggers Render production deployment from
+  `launch/website`. Watch that deploy to `live`, then perform the separately
+  authorized non-payment `/automate` smoke check. Prospective rollback target is
+  deploy `dep-dbglnhavcj2c73dis8r0` at source revision `81fa400`. Render's
+  supported rollback is Dashboard → service `staffordmedia-site` → Deploys →
+  select that successful deploy → `Rollback` → `Rollback to this deploy`; this
+  reuses the recorded build artifact and disables automatic deploys as a
+  safeguard. Re-enable automatic deploys only after the release issue is
+  resolved. This slice has no migration or payment-setting rollback. No
+  conversion uplift is claimed.

@@ -78,7 +78,7 @@ describe("automate funnel analytics", () => {
     });
     fireEvent.click(screen.getByRole("button", { name: "Show My Opportunity" }));
 
-    await screen.findByRole("heading", { name: "Your biggest automation opportunity" });
+    await screen.findByRole("heading", { name: "A suggested starting point" });
     expect(mocks.track.mock.calls.filter(([event]) => event === "form_start")).toHaveLength(1);
     expect(mocks.track).toHaveBeenCalledWith("automation_result_view");
     expect(JSON.stringify(mocks.track.mock.calls)).not.toContain("PRIVATE WORKFLOW SENTINEL");
@@ -105,7 +105,7 @@ describe("automate funnel analytics", () => {
   it("tracks successful private contact and checkout activations", async () => {
     const navigateToCheckout = renderAutomate();
     completeAssessment();
-    await screen.findByRole("heading", { name: "Your biggest automation opportunity" });
+    await screen.findByRole("heading", { name: "A suggested starting point" });
 
     fireEvent.click(screen.getAllByRole("button", { name: "Talk With Ross First" })[0]);
     expect(mocks.track).toHaveBeenCalledWith("contact_click");
@@ -119,7 +119,7 @@ describe("automate funnel analytics", () => {
   it("keeps contact and checkout functional when the GA transport itself fails", async () => {
     const navigateToCheckout = renderAutomate();
     completeAssessment();
-    await screen.findByRole("heading", { name: "Your biggest automation opportunity" });
+    await screen.findByRole("heading", { name: "A suggested starting point" });
     mocks.track.mockReturnValue(false);
 
     fireEvent.click(screen.getAllByRole("button", { name: "Talk With Ross First" })[0]);
@@ -132,7 +132,7 @@ describe("automate funnel analytics", () => {
   it("waits for the checkout event callback before leaving for Stripe", async () => {
     const navigateToCheckout = renderAutomate();
     completeAssessment();
-    await screen.findByRole("heading", { name: "Your biggest automation opportunity" });
+    await screen.findByRole("heading", { name: "A suggested starting point" });
     window.gtag = vi.fn();
     setAnalyticsCollectionEnabled(true);
 
