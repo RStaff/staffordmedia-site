@@ -1,0 +1,113 @@
+{
+  "version": "dawn_mutation_playbook_v1",
+  "status": "EVIDENCE_BASED_FOUNDATION_ONLY",
+  "theme_archetype": "Dawn",
+  "merchant_context": {
+    "name": "No Kings Athletics",
+    "shop_domain_evidence": ["no-kings-athletics-dev.myshopify.com"],
+    "source_path": "/Users/rossstafford/Documents/New project",
+    "evidence_limit": "Recovered from local files and shell history only; no live Shopify validation was performed for this playbook."
+  },
+  "recovered_commands": [
+    {
+      "command": "shopify app dev",
+      "classification": "APP_DEV_CONTEXT",
+      "evidence": "Recovered from shell history near No Kings dev-store work.",
+      "playbook_use": "Do not use for theme mutation. App dev is separate from theme patching."
+    },
+    {
+      "command": "shopify theme push",
+      "classification": "THEME_UPLOAD",
+      "evidence": "Recovered from shell history immediately after cd into /Users/rossstafford/Documents/New project.",
+      "playbook_use": "Allowed only for future duplicate-theme or sandbox workflow after explicit approval. Not authorized by this playbook."
+    }
+  ],
+  "recovered_file_targets": [
+    {
+      "path": "config/settings_data.json",
+      "role": "Dawn theme identity and settings",
+      "safe_zone": "read-only classification unless working from a duplicate theme"
+    },
+    {
+      "path": "templates/product.json",
+      "role": "product page block order and main-product settings",
+      "safe_zone": "block order and existing block settings in duplicate theme only"
+    },
+    {
+      "path": "sections/main-product.liquid",
+      "role": "product page liquid renderer",
+      "safe_zone": "additive rendering of existing snippets or text blocks only; preserve product form"
+    },
+    {
+      "path": "snippets/buy-buttons.liquid",
+      "role": "add-to-cart and dynamic checkout form",
+      "safe_zone": "copy or class-level changes only after proof; do not alter form behavior"
+    },
+    {
+      "path": "snippets/progress-bar.liquid",
+      "role": "recovered progress UI artifact",
+      "safe_zone": "safe as inert snippet evidence; activation requires separate approval and screenshots"
+    },
+    {
+      "path": "assets/section-main-product.css",
+      "role": "product page styling",
+      "safe_zone": "scoped spacing, hierarchy, and CTA visibility changes only"
+    }
+  ],
+  "recovered_visual_change": {
+    "summary": "A hidden progress bar snippet was present in the Dawn theme root.",
+    "files": ["snippets/progress-bar.liquid"],
+    "confidence": "medium",
+    "limitations": [
+      "No recovered evidence that the snippet was rendered from main-product.liquid.",
+      "No recovered before/after screenshots.",
+      "No recovered rollback proof."
+    ]
+  },
+  "safe_playbook": {
+    "mutation_level": "LEVEL_1_QUICK_FIX",
+    "allowed_scope": [
+      "duplicate theme only",
+      "product page only",
+      "existing Dawn block order changes",
+      "additive snippet rendering only when snippet is inert by default",
+      "scoped CSS for product-page hierarchy or CTA visibility"
+    ],
+    "prohibited_scope": [
+      "live production theme mutation",
+      "checkout behavior changes",
+      "cart logic changes",
+      "global JavaScript injection",
+      "product form rewrite",
+      "theme-wide CSS replacement",
+      "third-party app block removal"
+    ],
+    "required_before_execution": [
+      "merchant or Ross approval for sandbox work",
+      "theme duplicate confirmed",
+      "before screenshots captured",
+      "target files listed",
+      "rollback path documented"
+    ],
+    "required_validation": [
+      "JSON parse for templates/product.json and config/settings_data.json if edited",
+      "Shopify theme check if available",
+      "before/after screenshots for product desktop and mobile",
+      "manual confirmation that add-to-cart and dynamic checkout still render",
+      "rollback proof"
+    ]
+  },
+  "known_friction": [
+    "No git commit history in recovered theme root.",
+    "No recovered theme pull command.",
+    "No recovered theme ID or duplicate-theme proof.",
+    "No recovered visual diff.",
+    "The prior push path is too risky to repeat without explicit duplicate-theme targeting."
+  ],
+  "not_authorized": [
+    "No live Shopify edits.",
+    "No deployment.",
+    "No agent execution.",
+    "No generalized automation beyond this evidence."
+  ]
+}

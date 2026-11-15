@@ -1,0 +1,10 @@
+{
+  "current_slice": "slice_2_route_alignment",
+  "slices": {
+    "slice_1_system_alignment": "complete",
+    "slice_2_route_alignment": "complete",
+    "slice_3_cta_correction": "not_started",
+    "slice_4_recovery_demo": "not_started",
+    "slice_5_system_connection": "not_started"
+  }
+}

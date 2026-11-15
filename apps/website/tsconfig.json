@@ -2,22 +2,57 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "baseUrl": ".",
-    "paths": {
-      "@/*": ["./*", "./src/*"]
-    },
-    "types": ["vitest/globals", "node", "@testing-library/jest-dom"],
-    "lib": ["dom", "dom.iterable", "esnext"],
-    "allowJs": true,
+    "moduleResolution": "Bundler",
+    "jsx": "preserve",
     "noEmit": true,
     "incremental": true,
-    "isolatedModules": true,
-    "jsx": "preserve",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "types": [
+      "node",
+      "vitest/globals",
+      "@testing-library/jest-dom"
+    ],
+    "paths": {
+      "@/*": [
+        "src/*",
+        "app/*",
+        "components/*",
+        "lib/*"
+      ]
+    },
     "plugins": [
       {
         "name": "next"
       }
-    ]
+    ],
+    "allowJs": true,
+    "isolatedModules": true
   },
-  "include": ["**/*.ts", "**/*.tsx", "next-env.d.ts", ".next/types/**/*.ts"],
-  "exclude": ["node_modules"]
+  "include": [
+    "next-env.d.ts",
+    ".next/types/**/*.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "app",
+    "components",
+    "src",
+    "tests"
+  ],
+  "exclude": [
+    "node_modules",
+    ".next",
+    "dist",
+    "_smc_clean",
+    "_archive*",
+    ".archive*",
+    "archive_*",
+    "apps/website/_smc_clean",
+    "apps/website/_archive*",
+    "apps/website/.archive*",
+    "apps/website/archive_*"
+  ]
 }

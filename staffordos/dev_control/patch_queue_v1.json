@@ -1,0 +1,1064 @@
+{
+  "version": "patch_queue_v1",
+  "purpose": "Single-source patch coordination for controlled StaffordOS iteration.",
+  "allowed_statuses": [
+    "PLANNED",
+    "ACTIVE",
+    "BLOCKED",
+    "APPROVED",
+    "QUARANTINED",
+    "DONE"
+  ],
+  "active_transition_gate": {
+    "rule": "No patch may move to ACTIVE unless every required visual approval dependency is APPROVED or APPROVED_WITH_MODIFICATIONS in surface_registry_v1.json and ross_visual_approval_session_v1.md.",
+    "allowed_visual_approval_statuses_for_active": [
+      "APPROVED",
+      "APPROVED_WITH_MODIFICATIONS"
+    ],
+    "unknown_approval_behavior": "UNKNOWN, NEEDS_REVIEW, and REJECTED approvals block ACTIVE transition."
+  },
+  "patches": [
+    {
+      "patch_id": "PATCH-ABANDO-CTA-ALIGNMENT",
+      "title": "Abando CTA alignment",
+      "target_surface": "abando_recovery_demo",
+      "repo": "/Users/rossstafford/projects/StaffordMediaConsulting/apps/website",
+      "machine": "Mac",
+      "status": "BLOCKED",
+      "risk_level": "medium",
+      "owner": "StaffordOS",
+      "created_at": "2026-05-19",
+      "blocked_by": [
+        "runtime_surface_binding_v1 created but Abando destination still requires Ross visual confirmation",
+        "do not patch CTA until exact approved destination is confirmed"
+      ],
+      "depends_on": ["RECOVERY-DEMO-VISUAL-APPROVAL"],
+      "active_transition_allowed_when": [
+        "RECOVERY-DEMO-VISUAL-APPROVAL is APPROVED or APPROVED_WITH_MODIFICATIONS"
+      ],
+      "validation_required": [
+        "inspect route owner",
+        "verify CTA targets",
+        "run build or integrity gate"
+      ],
+      "visual_review_required": true
+    },
+    {
+      "patch_id": "PATCH-BEFORE-AFTER-EMBODIMENT",
+      "title": "Before/After embodiment flow",
+      "target_surface": "staffordmedia_homepage",
+      "repo": "/Users/rossstafford/projects/StaffordMediaConsulting/apps/website",
+      "machine": "Mac",
+      "status": "PLANNED",
+      "risk_level": "high",
+      "owner": "StaffordOS",
+      "created_at": "2026-05-19",
+      "blocked_by": [
+        "approved homepage visual truth must be mapped before edits"
+      ],
+      "depends_on": ["SHOPIFIXER-SURFACE-APPROVAL", "HOMEPAGE-HIERARCHY-LOCK"],
+      "active_transition_allowed_when": [
+        "SHOPIFIXER-SURFACE-APPROVAL is APPROVED or APPROVED_WITH_MODIFICATIONS",
+        "HOMEPAGE-HIERARCHY-LOCK is APPROVED or APPROVED_WITH_MODIFICATIONS"
+      ],
+      "validation_required": [
+        "inspect current homepage",
+        "compare against approved screenshots",
+        "run visual review"
+      ],
+      "visual_review_required": true
+    },
+    {
+      "patch_id": "PATCH-RECOVERY-DEMO-POLISH",
+      "title": "Recovery demo polish",
+      "target_surface": "abando_recovery_demo",
+      "repo": "/Users/rossstafford/projects/StaffordMediaConsulting/apps/website",
+      "machine": "Mac",
+      "status": "PLANNED",
+      "risk_level": "medium",
+      "owner": "StaffordOS",
+      "created_at": "2026-05-19",
+      "blocked_by": [],
+      "depends_on": ["RECOVERY-DEMO-VISUAL-APPROVAL"],
+      "active_transition_allowed_when": [
+        "RECOVERY-DEMO-VISUAL-APPROVAL is APPROVED or APPROVED_WITH_MODIFICATIONS"
+      ],
+      "validation_required": [
+        "inspect recovery demo route",
+        "verify Abando/ShopiFixer boundary",
+        "run visual review"
+      ],
+      "visual_review_required": true
+    },
+    {
+      "patch_id": "PATCH-AUDIT-RESULT-REFINEMENT",
+      "title": "Audit-result refinement",
+      "target_surface": "shopifixer_audit_result",
+      "repo": "/Users/rossstafford/projects/StaffordMediaConsulting/apps/website",
+      "machine": "Mac",
+      "status": "PLANNED",
+      "risk_level": "medium",
+      "owner": "StaffordOS",
+      "created_at": "2026-05-19",
+      "blocked_by": [],
+      "depends_on": ["AUDIT-RESULT-SURFACE-APPROVAL"],
+      "active_transition_allowed_when": [
+        "AUDIT-RESULT-SURFACE-APPROVAL is APPROVED or APPROVED_WITH_MODIFICATIONS"
+      ],
+      "validation_required": [
+        "inspect canonical audit payload",
+        "verify pricing path",
+        "run integrity check"
+      ],
+      "visual_review_required": true
+    },
+    {
+      "patch_id": "PATCH-HOMEPAGE-UNCOMMITTED-CHANGES-REVIEW",
+      "title": "Homepage uncommitted changes review",
+      "target_surface": "staffordmedia_homepage",
+      "repo": "/Users/rossstafford/projects/StaffordMediaConsulting/apps/website",
+      "machine": "Mac",
+      "status": "PLANNED",
+      "review_status": "NEEDS_REVIEW",
+      "risk_level": "high",
+      "owner": "StaffordOS",
+      "created_at": "2026-05-19",
+      "blocked_by": [
+        "homepage files are modified in worktree and must be visually classified before promotion"
+      ],
+      "depends_on": ["HOMEPAGE-HIERARCHY-LOCK"],
+      "active_transition_allowed_when": [
+        "HOMEPAGE-HIERARCHY-LOCK is APPROVED or APPROVED_WITH_MODIFICATIONS"
+      ],
+      "validation_required": [
+        "compare against approved homepage visual truth",
+        "confirm Ross approval before patching",
+        "run visual review"
+      ],
+      "visual_review_required": true
+    },
+    {
+      "patch_id": "THEME-INTELLIGENCE-REGISTRY",
+      "title": "Theme intelligence registry foundation",
+      "target_surface": "shopifixer_auto_foundation",
+      "repo": "/Users/rossstafford/projects/StaffordMediaConsulting/apps/website",
+      "machine": "Mac",
+      "status": "PLANNED",
+      "risk_level": "low",
+      "owner": "StaffordOS",
+      "created_at": "2026-05-19",
+      "blocked_by": [
+        "foundation-only documentation exists; implementation requires separate approved patch",
+        "no live Shopify mutation authorized"
+      ],
+      "depends_on": ["SHOPIFIXER-SURFACE-APPROVAL"],
+      "active_transition_allowed_when": [
+        "SHOPIFIXER-SURFACE-APPROVAL is APPROVED or APPROVED_WITH_MODIFICATIONS",
+        "scope remains documentation or sandbox-only"
+      ],
+      "validation_required": [
+        "verify registry JSON parses",
+        "confirm no live merchant connection",
+        "confirm no production surface mutation"
+      ],
+      "visual_review_required": false
+    },
+    {
+      "patch_id": "SNAPSHOT-SANDBOX-PIPELINE",
+      "title": "Snapshot and sandbox pipeline foundation",
+      "target_surface": "shopifixer_auto_foundation",
+      "repo": "/Users/rossstafford/projects/StaffordMediaConsulting/apps/website",
+      "machine": "Mac",
+      "status": "PLANNED",
+      "risk_level": "medium",
+      "owner": "StaffordOS",
+      "created_at": "2026-05-19",
+      "blocked_by": [
+        "snapshot/sandbox model is documented only",
+        "no Shopify account connection or theme duplicate implementation authorized"
+      ],
+      "depends_on": ["THEME-INTELLIGENCE-REGISTRY"],
+      "active_transition_allowed_when": [
+        "THEME-INTELLIGENCE-REGISTRY is complete",
+        "implementation scope explicitly excludes live-store mutation"
+      ],
+      "validation_required": [
+        "confirm before snapshot requirement",
+        "confirm duplicate theme requirement",
+        "confirm rollback path requirement"
+      ],
+      "visual_review_required": false
+    },
+    {
+      "patch_id": "MUTATION-PACKET-STANDARD",
+      "title": "Mutation packet standard foundation",
+      "target_surface": "shopifixer_auto_foundation",
+      "repo": "/Users/rossstafford/projects/StaffordMediaConsulting/apps/website",
+      "machine": "Mac",
+      "status": "DONE",
+      "completion_notes": [
+        "mutation packet schema created as docs/json only",
+        "sample Dawn quick-fix packet created as blocked, non-executable example",
+        "validation rules and Codex execution boundaries documented",
+        "no packet execution, Shopify access, automation, UI, route, or live mutation exists yet"
+      ],
+      "completed_at": "2026-05-19",
+      "risk_level": "low",
+      "owner": "StaffordOS",
+      "created_at": "2026-05-19",
+      "blocked_by": [
+        "packet standard is documentation only",
+        "execution workers are NOT_IMPLEMENTED"
+      ],
+      "depends_on": ["THEME-INTELLIGENCE-REGISTRY"],
+      "active_transition_allowed_when": [
+        "THEME-INTELLIGENCE-REGISTRY is complete",
+        "packet remains inspectable and bounded"
+      ],
+      "validation_required": [
+        "confirm packet fields include target files",
+        "confirm prohibited changes are explicit",
+        "confirm rollback instructions are required"
+      ],
+      "visual_review_required": false
+    },
+    {
+      "patch_id": "ROLLBACK-ARCHITECTURE",
+      "title": "Rollback architecture foundation",
+      "target_surface": "shopifixer_auto_foundation",
+      "repo": "/Users/rossstafford/projects/StaffordMediaConsulting/apps/website",
+      "machine": "Mac",
+      "status": "PLANNED",
+      "risk_level": "medium",
+      "owner": "StaffordOS",
+      "created_at": "2026-05-19",
+      "blocked_by": [
+        "rollback architecture is documentation only",
+        "no rollback execution system authorized"
+      ],
+      "depends_on": ["MUTATION-PACKET-STANDARD"],
+      "active_transition_allowed_when": [
+        "MUTATION-PACKET-STANDARD is complete",
+        "rollback remains evidence-based and merchant-safe"
+      ],
+      "validation_required": [
+        "confirm theme backup requirement",
+        "confirm patch diff requirement",
+        "confirm rollback proof requirement"
+      ],
+      "visual_review_required": false
+    },
+    {
+      "patch_id": "VISUAL-QA-BEFORE-AFTER",
+      "title": "Before/after visual QA foundation",
+      "target_surface": "shopifixer_auto_foundation",
+      "repo": "/Users/rossstafford/projects/StaffordMediaConsulting/apps/website",
+      "machine": "Mac",
+      "status": "DONE",
+      "completion_notes": [
+        "documentation/proof architecture only — no visual automation implemented.",
+        "before/after proof model, artifact manifest, visual QA rules, merchant approval packet template, and visual diff risk model created",
+        "no screenshots, browser automation, Shopify access, UI, route, or live mutation exists yet"
+      ],
+      "completed_at": "2026-05-19",
+      "risk_level": "medium",
+      "owner": "StaffordOS",
+      "created_at": "2026-05-19",
+      "blocked_by": [
+        "visual diff worker is NOT_IMPLEMENTED",
+        "no screenshot automation or Shopify mutation authorized"
+      ],
+      "depends_on": ["SNAPSHOT-SANDBOX-PIPELINE", "ROLLBACK-ARCHITECTURE"],
+      "active_transition_allowed_when": [
+        "SNAPSHOT-SANDBOX-PIPELINE is complete",
+        "ROLLBACK-ARCHITECTURE is complete",
+        "before/after evidence remains review-only"
+      ],
+      "validation_required": [
+        "confirm screenshot targets are defined",
+        "confirm visual diff does not imply approval",
+        "confirm merchant approval remains required"
+      ],
+      "visual_review_required": true
+    },
+    {
+      "patch_id": "RESOURCE-GATING-WORKER-ARCHITECTURE",
+      "title": "Resource gating and worker queue architecture",
+      "target_surface": "shopifixer_auto_foundation",
+      "repo": "/Users/rossstafford/projects/StaffordMediaConsulting/apps/website",
+      "machine": "Mac",
+      "status": "DONE",
+      "completion_notes": [
+        "architecture/docs only — no orchestration runtime implemented.",
+        "resource gates, queue topology, worker responsibilities, orchestration boundaries, compute budgeting, and operator escalation rules documented",
+        "no workers, agents, Kubernetes jobs, CI/CD pipelines, Shopify actions, UI, deployment logic, or automation execution exists yet"
+      ],
+      "completed_at": "2026-05-19",
+      "risk_level": "medium",
+      "owner": "StaffordOS",
+      "created_at": "2026-05-19",
+      "blocked_by": [
+        "worker lanes are NOT_IMPLEMENTED",
+        "orchestration runtime is NOT_IMPLEMENTED",
+        "no Shopify access or live mutation authorized"
+      ],
+      "depends_on": [
+        "MUTATION-PACKET-STANDARD",
+        "VISUAL-QA-BEFORE-AFTER",
+        "ROLLBACK-ARCHITECTURE"
+      ],
+      "active_transition_allowed_when": [
+        "implementation slice is separately approved",
+        "worker runtime remains bounded by resource gates",
+        "no autonomous deploy or live mutation is introduced"
+      ],
+      "validation_required": [
+        "confirm no workers are launched",
+        "confirm no automation execution exists",
+        "confirm no Shopify action is performed",
+        "confirm orchestration boundaries require approvals and rollback proof"
+      ],
+      "visual_review_required": false
+    },
+    {
+      "patch_id": "MUTATION-PACKET-VALIDATOR-RUNNER",
+      "title": "Mutation packet validator runner",
+      "target_surface": "shopifixer_auto_foundation",
+      "repo": "/Users/rossstafford/projects/StaffordMediaConsulting/apps/website",
+      "machine": "Mac",
+      "status": "DONE",
+      "completion_notes": [
+        "validation runner implemented for mutation packet safety checks only",
+        "sample Dawn quick-fix packet validated and output artifact written",
+        "no mutation, Shopify execution, Codex execution, agents, queues, UI, routes, or deployment logic added"
+      ],
+      "completed_at": "2026-05-19",
+      "risk_level": "low",
+      "owner": "StaffordOS",
+      "created_at": "2026-05-19",
+      "blocked_by": [
+        "validator does not authorize execution",
+        "approval gates and rollback proof remain required before any sandbox mutation"
+      ],
+      "depends_on": [
+        "MUTATION-PACKET-STANDARD",
+        "RESOURCE-GATING-WORKER-ARCHITECTURE"
+      ],
+      "active_transition_allowed_when": [
+        "packet execution slice is separately approved",
+        "candidate packet passes validator",
+        "execution remains sandbox-only and approval-gated"
+      ],
+      "validation_required": [
+        "node --check runner passes",
+        "runner validates sample packet",
+        "output JSON parses",
+        "confirm no Shopify or Codex execution occurs"
+      ],
+      "visual_review_required": false
+    },
+    {
+      "patch_id": "STAFFORDMEDIA-SITEMAP-ALIGNMENT",
+      "title": "StaffordMedia sitemap and conversion flow alignment",
+      "target_surface": "commercial_alignment",
+      "repo": "/Users/rossstafford/projects/StaffordMediaConsulting/apps/website",
+      "machine": "Mac",
+      "status": "PLANNED",
+      "risk_level": "low",
+      "owner": "StaffordOS",
+      "created_at": "2026-05-19",
+      "blocked_by": [
+        "alignment docs exist; any route/UI changes require separate approved patch"
+      ],
+      "depends_on": [
+        "SHOPIFIXER-SURFACE-APPROVAL",
+        "AUDIT-RESULT-SURFACE-APPROVAL"
+      ],
+      "active_transition_allowed_when": [
+        "required surface approvals are APPROVED or APPROVED_WITH_MODIFICATIONS",
+        "scope remains documentation or approved route-safe edits"
+      ],
+      "validation_required": [
+        "confirm existing routes remain unchanged",
+        "confirm ShopiFixer and Abando product boundaries remain distinct"
+      ],
+      "visual_review_required": false
+    },
+    {
+      "patch_id": "SHOPIFIXER-OFFER-LADDER",
+      "title": "ShopiFixer offer ladder alignment",
+      "target_surface": "commercial_alignment",
+      "repo": "/Users/rossstafford/projects/StaffordMediaConsulting/apps/website",
+      "machine": "Mac",
+      "status": "PLANNED",
+      "risk_level": "medium",
+      "owner": "StaffordOS",
+      "created_at": "2026-05-19",
+      "blocked_by": [
+        "offer ladder is mapped only; pricing and page changes require separate approval"
+      ],
+      "depends_on": [
+        "STAFFORDMEDIA-SITEMAP-ALIGNMENT",
+        "RESOURCE-GATING-WORKER-ARCHITECTURE"
+      ],
+      "active_transition_allowed_when": [
+        "commercial offer language is approved",
+        "resource gates remain aligned to mutation depth"
+      ],
+      "validation_required": [
+        "confirm Free Audit does not imply mutation",
+        "confirm Quick Fix stays bounded and proof-backed",
+        "confirm Abando remains a separate recovery lane"
+      ],
+      "visual_review_required": false
+    },
+    {
+      "patch_id": "PRICING-PAGE-SLICE",
+      "title": "Pricing page slice",
+      "target_surface": "shopifixer_pricing",
+      "repo": "/Users/rossstafford/projects/StaffordMediaConsulting/apps/website",
+      "machine": "Mac",
+      "status": "PLANNED",
+      "risk_level": "medium",
+      "owner": "StaffordOS",
+      "created_at": "2026-05-19",
+      "blocked_by": [
+        "pricing page edits are not authorized by this alignment slice"
+      ],
+      "depends_on": [
+        "SHOPIFIXER-OFFER-LADDER",
+        "AUDIT-RESULT-SURFACE-APPROVAL"
+      ],
+      "active_transition_allowed_when": [
+        "pricing copy and offer scope are approved",
+        "audit-result to pricing handoff remains canonical"
+      ],
+      "validation_required": [
+        "confirm no checkout destination drift",
+        "confirm store-specific audit context remains required"
+      ],
+      "visual_review_required": true
+    },
+    {
+      "patch_id": "BEFORE-AFTER-CONVERSION-SURFACE",
+      "title": "Before/after conversion surface",
+      "target_surface": "shopifixer_before_after_proof",
+      "repo": "/Users/rossstafford/projects/StaffordMediaConsulting/apps/website",
+      "machine": "Mac",
+      "status": "PLANNED",
+      "risk_level": "high",
+      "owner": "StaffordOS",
+      "created_at": "2026-05-19",
+      "blocked_by": [
+        "before/after proof is architecture only; no UI surface is authorized yet",
+        "homepage hierarchy lock and ShopiFixer approval remain required"
+      ],
+      "depends_on": [
+        "VISUAL-QA-BEFORE-AFTER",
+        "MUTATION-PACKET-VALIDATOR-RUNNER",
+        "SHOPIFIXER-SURFACE-APPROVAL",
+        "HOMEPAGE-HIERARCHY-LOCK"
+      ],
+      "active_transition_allowed_when": [
+        "required visual approvals are APPROVED or APPROVED_WITH_MODIFICATIONS",
+        "merchant-facing before/after proof language is approved",
+        "no live mutation or deployment is introduced"
+      ],
+      "validation_required": [
+        "confirm proof does not imply approval",
+        "confirm rollback safety is visible",
+        "confirm existing homepage and ShopiFixer visuals are preserved"
+      ],
+      "visual_review_required": true
+    },
+    {
+      "patch_id": "ABANDO-CTA-DESTINATION-DECISION",
+      "title": "Abando CTA destination decision",
+      "target_surface": "abando_recovery_path",
+      "repo": "/Users/rossstafford/projects/StaffordMediaConsulting/apps/website",
+      "machine": "Mac",
+      "status": "PLANNED",
+      "risk_level": "medium",
+      "owner": "StaffordOS",
+      "created_at": "2026-05-19",
+      "blocked_by": [
+        "Abando CTA destination requires Ross decision before route or CTA edits"
+      ],
+      "depends_on": [
+        "RECOVERY-DEMO-VISUAL-APPROVAL",
+        "PATCH-ABANDO-CTA-ALIGNMENT"
+      ],
+      "active_transition_allowed_when": [
+        "RECOVERY-DEMO-VISUAL-APPROVAL is APPROVED or APPROVED_WITH_MODIFICATIONS",
+        "Ross confirms whether CTA should point to /abando, /recovery-demo, or another approved destination"
+      ],
+      "validation_required": [
+        "confirm recovery demo runtime state",
+        "confirm Abando remains distinct from ShopiFixer audit",
+        "confirm no CTA target changes occur without explicit approval"
+      ],
+      "visual_review_required": true
+    },
+    {
+      "patch_id": "MERCHANT-LIFECYCLE-STATE-ENGINE",
+      "title": "Merchant lifecycle state engine",
+      "target_surface": "staffordos_lifecycle",
+      "repo": "/Users/rossstafford/projects/StaffordMediaConsulting/apps/website",
+      "machine": "Mac",
+      "status": "DONE",
+      "completion_notes": [
+        "canonical lifecycle state architecture created as docs/json only",
+        "merchant state manifest template, transition rules, artifact dependencies, and operator visibility model documented",
+        "no databases, APIs, UI, workers, Shopify execution, deployment automation, or runtime state engine implemented"
+      ],
+      "completed_at": "2026-05-19",
+      "risk_level": "medium",
+      "owner": "StaffordOS",
+      "created_at": "2026-05-19",
+      "blocked_by": [
+        "lifecycle persistence is NOT_IMPLEMENTED",
+        "operator UI is NOT_IMPLEMENTED",
+        "automation and Shopify execution remain unauthorized"
+      ],
+      "depends_on": [
+        "STAFFORDMEDIA-SITEMAP-ALIGNMENT",
+        "MUTATION-PACKET-VALIDATOR-RUNNER",
+        "VISUAL-QA-BEFORE-AFTER",
+        "RESOURCE-GATING-WORKER-ARCHITECTURE"
+      ],
+      "active_transition_allowed_when": [
+        "future implementation slice is separately approved",
+        "state transitions remain artifact-gated",
+        "deployment and Abando activation remain approval-gated"
+      ],
+      "validation_required": [
+        "confirm lifecycle manifest JSON parses",
+        "confirm no database or API is created",
+        "confirm no automation or Shopify execution occurs",
+        "confirm future automation routes through lifecycle transitions"
+      ],
+      "visual_review_required": false
+    },
+    {
+      "patch_id": "LOCAL-SNAPSHOT-SANDBOX-RUNNER",
+      "title": "First local snapshot sandbox runner",
+      "target_surface": "shopifixer_auto_foundation",
+      "repo": "/Users/rossstafford/projects/StaffordMediaConsulting/apps/website",
+      "machine": "Mac",
+      "status": "DONE",
+      "completion_notes": [
+        "local-only snapshot sandbox runner implemented",
+        "dummy Dawn fixture copied into a timestamped local sandbox and snapshot manifest written",
+        "validation output created for dummy fixture only",
+        "no Shopify CLI, Shopify API, live merchant mutation, Codex execution, public route edit, or deployment logic added"
+      ],
+      "completed_at": "2026-05-19",
+      "risk_level": "medium",
+      "owner": "StaffordOS",
+      "created_at": "2026-05-19",
+      "blocked_by": [
+        "runner does not execute mutation packets",
+        "runner does not create before/after visual proof by itself",
+        "merchant approval and Ross approval remain required before merchant-facing proof or launch"
+      ],
+      "depends_on": [
+        "SNAPSHOT-SANDBOX-PIPELINE",
+        "MERCHANT-LIFECYCLE-STATE-ENGINE",
+        "MUTATION-PACKET-VALIDATOR-RUNNER"
+      ],
+      "active_transition_allowed_when": [
+        "source is a local theme path",
+        "sandbox copy remains local-only",
+        "no live Shopify access or public conversion surface change is introduced"
+      ],
+      "validation_required": [
+        "node --check runner passes",
+        "runner creates local sandbox copy from dummy fixture only",
+        "manifest JSON parses",
+        "validation output JSON parses",
+        "confirm no Shopify, Codex, route, or deployment execution occurs"
+      ],
+      "visual_review_required": false
+    },
+    {
+      "patch_id": "SANDBOX-MUTATION-DRY-RUN",
+      "title": "Sandbox mutation dry run",
+      "target_surface": "shopifixer_auto_foundation",
+      "repo": "/Users/rossstafford/projects/StaffordMediaConsulting/apps/website",
+      "machine": "Mac",
+      "status": "DONE",
+      "completion_notes": [
+        "dummy Dawn sandbox mutation dry run completed locally",
+        "mutation packet validated before dry-run execution",
+        "only the dummy sandbox file snippets/progress-bar.liquid was changed",
+        "dry-run result JSON and report created",
+        "no Shopify CLI, Shopify API, live merchant mutation, public route edit, Codex worker, agent, or deployment execution occurred"
+      ],
+      "completed_at": "2026-05-19",
+      "risk_level": "medium",
+      "owner": "StaffordOS",
+      "created_at": "2026-05-19",
+      "blocked_by": [
+        "dry run is not permission to mutate a merchant store",
+        "before/after visual QA and merchant approval remain required before real use",
+        "StaffordOS Dev Control still governs execution permission"
+      ],
+      "depends_on": [
+        "LOCAL-SNAPSHOT-SANDBOX-RUNNER",
+        "MUTATION-PACKET-VALIDATOR-RUNNER",
+        "RESOURCE-GATING-WORKER-ARCHITECTURE"
+      ],
+      "active_transition_allowed_when": [
+        "future merchant mutation slice is separately approved",
+        "target is a duplicate or local sandbox only",
+        "Ross and merchant approval gates are satisfied"
+      ],
+      "validation_required": [
+        "node --check runner passes",
+        "packet validator passes",
+        "dry run changes only dummy sandbox file",
+        "output JSON parses",
+        "original dummy fixture unchanged",
+        "confirm no Shopify, public route, deployment, or agent execution occurs"
+      ],
+      "visual_review_required": false
+    },
+    {
+      "patch_id": "EXECUTION-LEDGER-AND-REPLAY",
+      "title": "Execution ledger and replay architecture",
+      "target_surface": "shopifixer_auto_foundation",
+      "repo": "/Users/rossstafford/projects/StaffordMediaConsulting/apps/website",
+      "machine": "Mac",
+      "status": "DONE",
+      "completion_notes": [
+        "execution ledger model, event schema, replayability rules, and local ledger writer created",
+        "dummy Dawn dry-run validation output logged as a replayable execution event",
+        "ledger event is replayable because rollback reference and changed-file record exist",
+        "no Shopify action, public surface edit, deployment, agent, API, database, UI, or runtime worker added"
+      ],
+      "completed_at": "2026-05-19",
+      "risk_level": "medium",
+      "owner": "StaffordOS",
+      "created_at": "2026-05-19",
+      "blocked_by": [
+        "replay execution is NOT_IMPLEMENTED",
+        "rollback execution is NOT_IMPLEMENTED",
+        "deployment events are future-only and require separate approval"
+      ],
+      "depends_on": [
+        "SANDBOX-MUTATION-DRY-RUN",
+        "LOCAL-SNAPSHOT-SANDBOX-RUNNER",
+        "MERCHANT-LIFECYCLE-STATE-ENGINE"
+      ],
+      "active_transition_allowed_when": [
+        "future replay runner is separately approved",
+        "rollback reference exists",
+        "changed-file record is explicit",
+        "no live Shopify or public route mutation is introduced"
+      ],
+      "validation_required": [
+        "node --check ledger runner passes",
+        "execution event JSON parses",
+        "ledger file is created",
+        "confirm replayable requires rollback reference",
+        "confirm no Shopify, public surface, deployment, agent, or worker execution occurs"
+      ],
+      "visual_review_required": false
+    },
+    {
+      "patch_id": "CANONICAL-RUNTIME-STATE-REGISTRY",
+      "title": "Canonical runtime state registry",
+      "target_surface": "staffordos_runtime",
+      "repo": "/Users/rossstafford/projects/StaffordMediaConsulting/apps/website",
+      "machine": "Mac",
+      "status": "DONE",
+      "completion_notes": [
+        "canonical runtime state model, schema, registry folder, runner, and transition rules created",
+        "dummy Dawn runtime state generated from lifecycle template, dry-run validation output, and execution ledger event",
+        "runtime state records lifecycle, packet, snapshot, execution, proof, rollback, replayability, approvals, owner, and artifact references",
+        "no APIs, databases, UI, workers, Shopify actions, deployment, agents, or automation loops added"
+      ],
+      "completed_at": "2026-05-19",
+      "risk_level": "medium",
+      "owner": "StaffordOS",
+      "created_at": "2026-05-19",
+      "blocked_by": [
+        "runtime registry is file-backed only",
+        "automation consumers are NOT_IMPLEMENTED",
+        "approval states remain UNKNOWN or NOT_REQUESTED"
+      ],
+      "depends_on": [
+        "MERCHANT-LIFECYCLE-STATE-ENGINE",
+        "EXECUTION-LEDGER-AND-REPLAY",
+        "SANDBOX-MUTATION-DRY-RUN"
+      ],
+      "active_transition_allowed_when": [
+        "future automation slice is separately approved",
+        "runtime state references resolve",
+        "approval and rollback gates remain explicit"
+      ],
+      "validation_required": [
+        "node --check runtime state runner passes",
+        "runtime state JSON parses",
+        "artifact references resolve",
+        "confirm no Shopify, UI, worker, deployment, agent, database, or API execution occurs"
+      ],
+      "visual_review_required": false
+    },
+    {
+      "patch_id": "RUNTIME-EVENT-BUS-FOUNDATION",
+      "title": "Runtime event bus and state transition events",
+      "target_surface": "staffordos_runtime",
+      "repo": "/Users/rossstafford/projects/StaffordMediaConsulting/apps/website",
+      "machine": "Mac",
+      "status": "DONE",
+      "completion_notes": [
+        "runtime event model, event schema, event ledger folder, legality rules, and local event logger created",
+        "dummy Dawn runtime transition event logged from SANDBOX_MUTATION_DRY_RUN to QA_PENDING",
+        "transition legality validated before event JSON was written",
+        "no workers, APIs, databases, UI, Shopify actions, deployment, agents, or automation loops added"
+      ],
+      "completed_at": "2026-05-19",
+      "risk_level": "medium",
+      "owner": "StaffordOS",
+      "created_at": "2026-05-19",
+      "blocked_by": [
+        "event bus is file-backed only",
+        "workers and orchestration reactions are NOT_IMPLEMENTED",
+        "deployment events remain future-only"
+      ],
+      "depends_on": [
+        "CANONICAL-RUNTIME-STATE-REGISTRY",
+        "EXECUTION-LEDGER-AND-REPLAY",
+        "SANDBOX-MUTATION-DRY-RUN"
+      ],
+      "active_transition_allowed_when": [
+        "future event consumers are separately approved",
+        "runtime event transition is legal",
+        "triggering artifact and rollback reference resolve"
+      ],
+      "validation_required": [
+        "node --check runtime event runner passes",
+        "runtime event JSON parses",
+        "transition legality is validated",
+        "event ledger file is created",
+        "confirm no Shopify, worker, API, UI, deployment, agent, or database execution occurs"
+      ],
+      "visual_review_required": false
+    },
+    {
+      "patch_id": "RUNTIME-OPERATIONS-BOARD",
+      "title": "Runtime Operations Board",
+      "target_surface": "staffordos_runtime_ops",
+      "repo": "/Users/rossstafford/projects/StaffordMediaConsulting/apps/website",
+      "machine": "Mac",
+      "status": "DONE",
+      "completion_notes": [
+        "read-only /operator/runtime-ops route created",
+        "board reads canonical runtime registry, runtime event ledger, patch queue, approval state, and control boundary artifacts from filesystem",
+        "runtime ops design notes created",
+        "route rendered successfully over local dev server",
+        "no APIs, databases, websockets, polling, workers, Shopify actions, runtime mutation, deployment logic, agents, or public surface edits added"
+      ],
+      "completed_at": "2026-05-19",
+      "risk_level": "medium",
+      "owner": "StaffordOS",
+      "created_at": "2026-05-19",
+      "blocked_by": [
+        "board is observability only",
+        "mutation controls are NOT_IMPLEMENTED",
+        "runtime state remains file-backed canonical truth"
+      ],
+      "depends_on": [
+        "CANONICAL-RUNTIME-STATE-REGISTRY",
+        "RUNTIME-EVENT-BUS-FOUNDATION",
+        "MERCHANT-LIFECYCLE-STATE-ENGINE"
+      ],
+      "active_transition_allowed_when": [
+        "future operational controls are separately approved",
+        "runtime truth remains canonical",
+        "no autonomous execution is introduced"
+      ],
+      "validation_required": [
+        "npx tsc --noEmit passes",
+        "route renders successfully",
+        "board reads existing canonical artifacts only",
+        "confirm no APIs, workers, polling, websockets, Shopify actions, runtime mutation, deployment, or agents are added"
+      ],
+      "visual_review_required": false
+    },
+    {
+      "patch_id": "STAFFORDOS-OPERATOR-SHELL",
+      "title": "StaffordOS operator shell and surface map",
+      "target_surface": "staffordos_operator",
+      "repo": "/Users/rossstafford/projects/StaffordMediaConsulting/apps/website",
+      "machine": "Mac",
+      "status": "DONE",
+      "completion_notes": [
+        "shared operator shell, sidebar, and topbar components created",
+        "/operator home route created for StaffordOS operator orientation",
+        "/operator/dev-control and /operator/runtime-ops wrapped in unified operator navigation",
+        "operator surface map documentation created",
+        "operator routes rendered successfully over local dev server",
+        "no APIs, databases, websockets, polling, workers, orchestration execution, Shopify actions, runtime mutation, deployment logic, agents, or public conversion-surface edits added"
+      ],
+      "completed_at": "2026-05-19",
+      "risk_level": "low",
+      "owner": "StaffordOS",
+      "created_at": "2026-05-19",
+      "blocked_by": [
+        "planned operator surfaces remain NOT_IMPLEMENTED",
+        "navigation does not create mutation authority",
+        "future state-writing surfaces require explicit Ross approval"
+      ],
+      "depends_on": [
+        "RUNTIME-OPERATIONS-BOARD",
+        "CANONICAL-RUNTIME-STATE-REGISTRY",
+        "RESOURCE-GATING-WORKER-ARCHITECTURE"
+      ],
+      "active_transition_allowed_when": [
+        "future operator controls are separately approved",
+        "mutation authority remains explicit",
+        "public/business surfaces remain separate from StaffordOS operator surfaces"
+      ],
+      "validation_required": [
+        "npx tsc --noEmit passes",
+        "existing operator pages still render",
+        "new operator root page renders",
+        "navigation works between available surfaces",
+        "confirm no APIs, workers, Shopify actions, runtime mutation, orchestration execution, or public conversion flow edits occur"
+      ],
+      "visual_review_required": false
+    },
+    {
+      "patch_id": "MERCHANT-FULFILLMENT-INITIALIZATION",
+      "title": "Canonical merchant intake initialization",
+      "target_surface": "staffordos_lifecycle_runtime",
+      "repo": "/Users/rossstafford/projects/StaffordMediaConsulting/apps/website",
+      "machine": "Mac",
+      "status": "DONE",
+      "completion_notes": [
+        "file-backed lifecycle/runtime initialization only — no automation or Shopify execution implemented",
+        "merchant intake model, schema, initialization rules, onboarding state machine, ownership boundary, and sample intake created",
+        "merchant runtime state runner created and executed against the sample intake",
+        "sample runtime artifact created with STAFFORDOS_RUNTIME ownership, LEAD_CAPTURED state, valid next transitions, replayable=true, and rollback_required=true",
+        "no APIs, databases, workers, agents, Shopify actions, browser automation, polling, websockets, deployment, UI, or public surface edits added"
+      ],
+      "completed_at": "2026-05-19",
+      "risk_level": "low",
+      "owner": "StaffordOS",
+      "created_at": "2026-05-19",
+      "blocked_by": [
+        "intake initialization does not authorize fulfillment execution",
+        "Shopify access remains NOT_IMPLEMENTED",
+        "merchant mutation, proof generation, worker orchestration, and deployment remain blocked until separate approved slices"
+      ],
+      "depends_on": [
+        "MERCHANT-LIFECYCLE-STATE-ENGINE",
+        "CANONICAL-RUNTIME-STATE-REGISTRY",
+        "STAFFORDOS-OPERATOR-SHELL"
+      ],
+      "active_transition_allowed_when": [
+        "future fulfillment execution slice is separately approved",
+        "merchant lifecycle transition remains legal",
+        "ownership boundary remains explicit",
+        "rollback and approval gates remain explicit"
+      ],
+      "validation_required": [
+        "node --check lifecycle intake runner passes",
+        "runner executes against sample merchant intake",
+        "intake schema JSON parses",
+        "generated runtime state JSON parses",
+        "generated state records valid allowed transitions",
+        "generated state records ownership boundary and rollback requirement",
+        "confirm no Shopify, automation, worker, agent, deployment, UI, or public surface mutation occurs"
+      ],
+      "visual_review_required": false
+    },
+    {
+      "patch_id": "EXECUTION-TASK-REGISTRY",
+      "title": "Execution task registry",
+      "target_surface": "staffordos_execution",
+      "repo": "/Users/rossstafford/projects/StaffordMediaConsulting/apps/website",
+      "machine": "Mac",
+      "status": "DONE",
+      "completion_notes": [
+        "file-backed execution governance only — no Codex/API execution implemented",
+        "execution task model, schema, state machine, approval rules, boundary rules, resource gates, registry design, and sample task created",
+        "execution task registrar created and executed against the sample task",
+        "sample registered task artifact created with STAFFORDOS_RUNTIME ownership, approval pending state, rollback_required=true, replayable=true, and allowed_executor=MANUAL_CODEX_OPERATOR",
+        "no Codex API calls, OpenAI API calls, agents, workers, automation, queues, deployment, Shopify actions, browser automation, runtime mutation, UI, or public surface edits added"
+      ],
+      "completed_at": "2026-05-19",
+      "risk_level": "low",
+      "owner": "StaffordOS",
+      "created_at": "2026-05-19",
+      "blocked_by": [
+        "registered tasks do not execute work",
+        "AUTO_CODEX, AUTO_AGENT, and AUTO_WORKER remain unsupported",
+        "future executor invocation requires a separate approved slice"
+      ],
+      "depends_on": [
+        "MERCHANT-FULFILLMENT-INITIALIZATION",
+        "CANONICAL-RUNTIME-STATE-REGISTRY",
+        "STAFFORDOS-OPERATOR-SHELL"
+      ],
+      "active_transition_allowed_when": [
+        "future executor slice is separately approved",
+        "allowed executor remains bounded",
+        "approval, resource, rollback, replayability, and runtime ownership gates remain explicit"
+      ],
+      "validation_required": [
+        "node --check execution task registrar passes",
+        "registrar executes against sample task",
+        "execution schema JSON parses",
+        "generated task artifact JSON parses",
+        "approval rules validate",
+        "runtime ownership validates",
+        "generated task records rollback_required=true",
+        "generated task records replayable=true",
+        "generated task records allowed_executor=MANUAL_CODEX_OPERATOR",
+        "confirm no Codex/API execution, workers, agents, automation, deployment, Shopify action, runtime mutation, UI, or public surface edit occurs"
+      ],
+      "visual_review_required": false
+    },
+    {
+      "patch_id": "MERCHANT-LIFECYCLE-KANBAN-BOARD",
+      "title": "Merchant Lifecycle Kanban Board",
+      "target_surface": "staffordos_operator",
+      "repo": "/Users/rossstafford/projects/StaffordMediaConsulting/apps/website",
+      "machine": "Mac",
+      "status": "DONE",
+      "completion_notes": [
+        "read-only /operator/lifecycle-board route created",
+        "lifecycle board components created for canonical workflow visibility",
+        "board reads runtime registry, runtime event ledger, execution task registry, lifecycle artifacts, and patch queue truth without mutating state",
+        "board renders lifecycle columns with calm empty states and runtime cards showing merchant, store, lifecycle, risk, rollback readiness, replayability, mutation depth, approval state, and runtime owner",
+        "route rendered successfully over local dev server",
+        "no APIs, databases, websockets, polling, workers, orchestration execution, Shopify actions, runtime mutation, lifecycle mutation, execution mutation, deployments, agents, browser automation, or public surface edits added"
+      ],
+      "completed_at": "2026-05-19",
+      "risk_level": "low",
+      "owner": "StaffordOS",
+      "created_at": "2026-05-19",
+      "blocked_by": [
+        "board is read-only operational visibility",
+        "drag/drop persistence is NOT_IMPLEMENTED",
+        "state transition controls require a separate approved slice"
+      ],
+      "depends_on": [
+        "STAFFORDOS-OPERATOR-SHELL",
+        "CANONICAL-RUNTIME-STATE-REGISTRY",
+        "EXECUTION-TASK-REGISTRY",
+        "MERCHANT-FULFILLMENT-INITIALIZATION"
+      ],
+      "active_transition_allowed_when": [
+        "future mutation controls are separately approved",
+        "lifecycle state remains canonical runtime truth",
+        "operator UI does not infer execution authority"
+      ],
+      "validation_required": [
+        "npx tsc --noEmit --pretty false passes",
+        "/operator/lifecycle-board route renders successfully",
+        "board reads canonical runtime truth only",
+        "board groups merchants by canonical lifecycle and readiness state",
+        "runtime cards render safely",
+        "confirm no runtime mutation, lifecycle mutation, execution mutation, automation, workers, agents, Shopify actions, deployments, APIs, websockets, polling, browser automation, UI public surface edits, or public route edits occur"
+      ],
+      "visual_review_required": false
+    },
+    {
+      "patch_id": "FULFILLMENT-FLOW-ATTACHMENT",
+      "title": "Execution flow attachment",
+      "target_surface": "staffordos_fulfillment",
+      "repo": "/Users/rossstafford/projects/StaffordMediaConsulting/apps/website",
+      "machine": "Mac",
+      "status": "DONE",
+      "completion_notes": [
+        "deterministic fulfillment linkage only — no execution automation implemented",
+        "fulfillment model, attachment schema, transition rules, packet attachment rules, QA/proof attachment rules, approval attachment rules, runtime/task linkage rules, visibility rules, and sample attachment request created",
+        "fulfillment attachment runner created and executed using existing sample runtime, execution task, mutation packet, and validation/proof artifacts only",
+        "registered attachment artifact created with runtime state, execution task, mutation packet, QA/proof, approval state, rollback requirement, replayability, mutation depth, risk, fulfillment state, transitions, runtime owner, and surface origin",
+        "no Codex execution, OpenAI API execution, automation, workers, agents, Shopify actions, deployments, orchestration loops, queues, browser automation, runtime mutation, lifecycle mutation, execution mutation, or UI/public surface edits added"
+      ],
+      "completed_at": "2026-05-19",
+      "risk_level": "low",
+      "owner": "StaffordOS",
+      "created_at": "2026-05-19",
+      "blocked_by": [
+        "attachment does not authorize execution",
+        "approval remains BLOCKED_PENDING_APPROVAL",
+        "future fulfillment execution requires a separate approved slice"
+      ],
+      "depends_on": [
+        "MERCHANT-FULFILLMENT-INITIALIZATION",
+        "EXECUTION-TASK-REGISTRY",
+        "MUTATION-PACKET-STANDARD",
+        "VISUAL-QA-BEFORE-AFTER"
+      ],
+      "active_transition_allowed_when": [
+        "future execution slice is separately approved",
+        "runtime ownership, lifecycle legality, rollback, replayability, packet compatibility, approval compatibility, and proof references remain valid",
+        "attachment remains linkage only and does not mutate source-of-truth artifacts"
+      ],
+      "validation_required": [
+        "node --check fulfillment attachment runner passes",
+        "runner executes using existing sample runtime/task/packet/proof artifacts only",
+        "fulfillment schema JSON parses",
+        "attachment artifact JSON parses",
+        "references resolve correctly",
+        "generated attachment records replayable=true",
+        "generated attachment records rollback_required=true",
+        "approval compatibility validates",
+        "lifecycle legality validates",
+        "confirm no Codex execution, OpenAI API execution, automation, workers, agents, Shopify actions, deployment, UI, public surface edit, or runtime mutation occurs"
+      ],
+      "visual_review_required": false
+    },
+    {
+      "patch_id": "FULFILLMENT-EXECUTION-REVIEW-SURFACE",
+      "title": "Fulfillment Execution Review Surface",
+      "target_surface": "staffordos_operator",
+      "repo": "/Users/rossstafford/projects/StaffordMediaConsulting/apps/website",
+      "machine": "Mac",
+      "status": "DONE",
+      "completion_notes": [
+        "read-only /operator/execution-review route created",
+        "execution review components created to resolve runtime state, execution task, mutation packet, QA/proof, approval, rollback, and replayability from canonical artifacts",
+        "review surface displays labels READ ONLY, NO EXECUTION ACTIVE, NO SHOPIFY MUTATION, and MANUAL EXECUTION REQUIRED",
+        "execution review surface design notes created",
+        "route rendered successfully over local dev server",
+        "no Codex execution, OpenAI API execution, automation, workers, agents, deployment, Shopify actions, browser automation, runtime mutation, lifecycle mutation, approval mutation, drag/drop persistence, APIs, databases, polling, websockets, or public surface edits added"
+      ],
+      "completed_at": "2026-05-19",
+      "risk_level": "low",
+      "owner": "StaffordOS",
+      "created_at": "2026-05-19",
+      "blocked_by": [
+        "surface is read-only pre-execution review",
+        "manual execution remains required",
+        "future mutation or execution controls require a separate approved slice"
+      ],
+      "depends_on": [
+        "FULFILLMENT-FLOW-ATTACHMENT",
+        "EXECUTION-TASK-REGISTRY",
+        "MERCHANT-LIFECYCLE-KANBAN-BOARD",
+        "CANONICAL-RUNTIME-STATE-REGISTRY"
+      ],
+      "active_transition_allowed_when": [
+        "future execution controls are separately approved",
+        "review surface remains read-only",
+        "approval, rollback, replayability, and runtime ownership remain explicit"
+      ],
+      "validation_required": [
+        "npx tsc --noEmit --pretty false passes",
+        "/operator/execution-review route renders successfully",
+        "board reads canonical artifacts only",
+        "board resolves fulfillment attachments",
+        "board resolves runtime/task/packet/proof linkage",
+        "confirm no state mutation, Codex execution, OpenAI API execution, automation, workers, agents, Shopify actions, deployment, APIs, databases, polling, websockets, browser automation, or public surface edits occur"
+      ],
+      "visual_review_required": false
+    }
+  ]
+}

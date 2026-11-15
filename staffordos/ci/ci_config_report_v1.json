@@ -1,0 +1,174 @@
+{
+  "ok": true,
+  "agent": "ci_config_agent_v1",
+  "mode": "inspect_only",
+  "generated_at": "2026-04-26T15:49:06.741Z",
+  "cwd": "/Users/rossstafford/projects/StaffordMediaConsulting/apps/website",
+  "repo_root": "/Users/rossstafford/projects/StaffordMediaConsulting/apps/website",
+  "branch": "surface/shopifixer/hero-copy-clean-final",
+  "package_name": "website",
+  "local_scripts": [
+    "dev",
+    "build",
+    "start",
+    "lint",
+    "start3000",
+    "start3001",
+    "start3002",
+    "dev3001",
+    "start-free",
+    "dev-free",
+    "build:prod",
+    "test:e2e",
+    "prepare",
+    "prebuild",
+    "postbuild"
+  ],
+  "workflows_found": 12,
+  "workflows": [
+    {
+      "file": ".github/workflows/auto-label.yml",
+      "name_match": "Auto-label PRs by branch",
+      "references_apps_website": false,
+      "references_smc_clean": false,
+      "uses_npm_check": false,
+      "local_has_check_script": false,
+      "uses_npm_build": false,
+      "has_working_directory": false,
+      "likely_stale_or_misaligned": false
+    },
+    {
+      "file": ".github/workflows/auto-protect-branches.yml",
+      "name_match": "Auto-Protect Main",
+      "references_apps_website": false,
+      "references_smc_clean": false,
+      "uses_npm_check": false,
+      "local_has_check_script": false,
+      "uses_npm_build": false,
+      "has_working_directory": false,
+      "likely_stale_or_misaligned": false
+    },
+    {
+      "file": ".github/workflows/auto-protect-releases.yml",
+      "name_match": "Auto-Protect Release Branches",
+      "references_apps_website": false,
+      "references_smc_clean": false,
+      "uses_npm_check": false,
+      "local_has_check_script": false,
+      "uses_npm_build": false,
+      "has_working_directory": false,
+      "likely_stale_or_misaligned": false
+    },
+    {
+      "file": ".github/workflows/ci.yml",
+      "name_match": "CI",
+      "references_apps_website": true,
+      "references_smc_clean": false,
+      "uses_npm_check": false,
+      "local_has_check_script": false,
+      "uses_npm_build": true,
+      "has_working_directory": false,
+      "likely_stale_or_misaligned": true
+    },
+    {
+      "file": ".github/workflows/ci_smc.yml",
+      "name_match": "CI (_smc_clean)",
+      "references_apps_website": false,
+      "references_smc_clean": true,
+      "uses_npm_check": false,
+      "local_has_check_script": false,
+      "uses_npm_build": true,
+      "has_working_directory": true,
+      "likely_stale_or_misaligned": true
+    },
+    {
+      "file": ".github/workflows/context-guard.yml",
+      "name_match": "Context Guard",
+      "references_apps_website": false,
+      "references_smc_clean": false,
+      "uses_npm_check": false,
+      "local_has_check_script": false,
+      "uses_npm_build": false,
+      "has_working_directory": false,
+      "likely_stale_or_misaligned": false
+    },
+    {
+      "file": ".github/workflows/deploy.yml",
+      "name_match": "Deploy",
+      "references_apps_website": true,
+      "references_smc_clean": true,
+      "uses_npm_check": false,
+      "local_has_check_script": false,
+      "uses_npm_build": true,
+      "has_working_directory": true,
+      "likely_stale_or_misaligned": true
+    },
+    {
+      "file": ".github/workflows/quality.yml",
+      "name_match": "Quality",
+      "references_apps_website": true,
+      "references_smc_clean": false,
+      "uses_npm_check": false,
+      "local_has_check_script": false,
+      "uses_npm_build": true,
+      "has_working_directory": false,
+      "likely_stale_or_misaligned": true
+    },
+    {
+      "file": ".github/workflows/smc-align-validate.yml",
+      "name_match": "smc-align-validate",
+      "references_apps_website": false,
+      "references_smc_clean": false,
+      "uses_npm_check": false,
+      "local_has_check_script": false,
+      "uses_npm_build": false,
+      "has_working_directory": false,
+      "likely_stale_or_misaligned": false
+    },
+    {
+      "file": ".github/workflows/smc-diagnostics.yml",
+      "name_match": "smc-diagnostics",
+      "references_apps_website": true,
+      "references_smc_clean": false,
+      "uses_npm_check": false,
+      "local_has_check_script": false,
+      "uses_npm_build": false,
+      "has_working_directory": false,
+      "likely_stale_or_misaligned": true
+    },
+    {
+      "file": ".github/workflows/smoke-cron.yml",
+      "name_match": "Hourly Smoke",
+      "references_apps_website": false,
+      "references_smc_clean": false,
+      "uses_npm_check": false,
+      "local_has_check_script": false,
+      "uses_npm_build": true,
+      "has_working_directory": false,
+      "likely_stale_or_misaligned": false
+    },
+    {
+      "file": ".github/workflows/validate-alignment.yml",
+      "name_match": "Validate alignment.json (Ajv 2020-12)",
+      "references_apps_website": false,
+      "references_smc_clean": false,
+      "uses_npm_check": false,
+      "local_has_check_script": false,
+      "uses_npm_build": false,
+      "has_working_directory": false,
+      "likely_stale_or_misaligned": false
+    }
+  ],
+  "vercel": {
+    "has_vercel_json": false,
+    "mentions_apps_website": false,
+    "mentions_build_command": false
+  },
+  "diagnosis": [
+    "PR is clean, but repository automation appears misaligned.",
+    "Failures likely come from stale workflows expecting old paths or missing scripts.",
+    "Do not change product code to satisfy stale CI.",
+    "Fix CI as its own branch/PR."
+  ],
+  "recommended_next_action": "Create a separate ci/fix-workflow-alignment-v1 branch and patch only workflow/config files."
+}
