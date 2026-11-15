@@ -79,12 +79,27 @@ Status: **IMPLEMENTED AND VERIFIED LOCALLY; OWNER VISUAL REVIEW COMPLETE; RELEAS
 - Release/deployment evidence: repository authority names `launch/website` as
   the production branch and `staffordmedia-site-website` as the promotion
   target. GitHub CI for `81fa400` passed and its Vercel status reports a completed
-  deployment. The public route returned HTTP 200 from Render on 2026-11-14, but
-  the exact Render deploy ID/source SHA was not available from the authorized
-  read-only evidence and remains unknown. GitHub's branch-protection endpoint
-  reports `launch/website` is not protected, so the documented feature-branch,
-  Website Build label, review, and CI procedure must be followed operationally;
-  a direct push is not an acceptable substitute.
+  deployment. PR `RStaff/staffordmedia-site#154` contains reviewed implementation
+  commit `45974d871412c317aaa8715d02f49dda868de645` against exact base
+  `81fa400e2ce27f44974e5ff816e74b9fec7b9982`; its CI build, Website Build
+  context guard, automatic label, and Vercel preview checks passed. GitHub's
+  branch-protection endpoint reports `launch/website` is not protected, so the
+  documented review and CI procedure must be followed operationally; a direct
+  push is not an acceptable substitute.
+- Render production evidence, verified read-only on 2026-11-14: service
+  `staffordmedia-site` (`srv-d38q6h1r0fns7386qtd0`) is an active web service
+  connected to `https://github.com/RStaff/staffordmedia-site`, root `.`, branch
+  `launch/website`. Its Render domain is
+  `https://staffordmedia-site.onrender.com`; `https://www.staffordmedia.ai`
+  serves the same Render response and the apex redirects to `www`. The current
+  live deploy is `dep-dbglnhavcj2c73dis8r0`, sourced from
+  `81fa400e2ce27f44974e5ff816e74b9fec7b9982`, completed successfully at
+  `2026-10-28T02:21:36.799071Z` with trigger `new_commit`.
+- Actual Render trigger: `autoDeploy` is `yes` and `autoDeployTrigger` is
+  `commit` for linked branch `launch/website`. Merging PR #154 therefore writes
+  a new commit to the linked production branch and automatically starts a
+  production Render build/deploy; merge authorization is deployment-trigger
+  authorization for this service.
 - Render evidence: a fictional lead-response intake completed at 1440×1000 and
   390×844 through the loopback application. Both widths had equal document and
   viewport widths (no horizontal overflow), showed all six deliverables and
@@ -94,11 +109,14 @@ Status: **IMPLEMENTED AND VERIFIED LOCALLY; OWNER VISUAL REVIEW COMPLETE; RELEAS
 - Owner review: Ross reviewed the local result and offer screenshots. The final
   changes above are copy/label logic only; a new visual inspection was not
   claimed.
-- Release procedure: create a scoped Website Build branch from exact target
-  `81fa400`, apply this isolated diff, preserve the target's Node 24/security and
-  GA4 commits, review the six-file diff, and run the normal pull-request CI gate.
-  Before an authorized promotion, record the actual current Render deploy ID and
-  source SHA as the rollback target. After promotion, perform a separately
-  authorized non-payment `/automate` smoke check. Rollback is redeployment of
-  that recorded pre-release Render deploy; this slice has no migration or
-  payment-setting rollback. No conversion uplift is claimed.
+- Release procedure: review and explicitly authorize merging PR #154, knowing
+  that the merge automatically triggers Render production deployment from
+  `launch/website`. Watch that deploy to `live`, then perform the separately
+  authorized non-payment `/automate` smoke check. Prospective rollback target is
+  deploy `dep-dbglnhavcj2c73dis8r0` at source revision `81fa400`. Render's
+  supported rollback is Dashboard → service `staffordmedia-site` → Deploys →
+  select that successful deploy → `Rollback` → `Rollback to this deploy`; this
+  reuses the recorded build artifact and disables automatic deploys as a
+  safeguard. Re-enable automatic deploys only after the release issue is
+  resolved. This slice has no migration or payment-setting rollback. No
+  conversion uplift is claimed.
