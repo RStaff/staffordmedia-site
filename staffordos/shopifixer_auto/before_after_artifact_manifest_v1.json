@@ -1,0 +1,60 @@
+{
+  "version": "before_after_artifact_manifest_v1",
+  "status": "TEMPLATE_ONLY_NOT_IMPLEMENTED",
+  "merchant_id": "",
+  "store_domain": "",
+  "theme_id": "",
+  "mutation_packet_id": "",
+  "before_screenshots": [
+    {
+      "id": "",
+      "surface": "",
+      "url": "",
+      "viewport": "",
+      "path": "",
+      "captured_at": "",
+      "theme_id": "",
+      "theme_role": ""
+    }
+  ],
+  "after_screenshots": [
+    {
+      "id": "",
+      "surface": "",
+      "url": "",
+      "viewport": "",
+      "path": "",
+      "captured_at": "",
+      "theme_id": "",
+      "theme_role": ""
+    }
+  ],
+  "diff_images": [
+    {
+      "id": "",
+      "surface": "",
+      "viewport": "",
+      "path": "",
+      "created_at": "",
+      "risk_level": ""
+    }
+  ],
+  "changed_files": [
+    {
+      "path": "",
+      "change_summary": "",
+      "allowed_by_packet": false
+    }
+  ],
+  "mutation_summary": "",
+  "expected_business_impact": "",
+  "rollback_reference": {
+    "rollback_plan_path": "",
+    "original_snapshot_path": "",
+    "patch_diff_path": "",
+    "rollback_verified": false
+  },
+  "QA_status": "NOT_RUN",
+  "Ross_approval_status": "UNKNOWN",
+  "merchant_approval_status": "UNKNOWN"
+}

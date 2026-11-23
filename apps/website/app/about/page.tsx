@@ -5,7 +5,7 @@ export const metadata = {
   description: "From hands-on, face-to-face campaigns to AI products that convert.",
 };
 
-export default function Page(){
+export default function Page() {
   return (
     <main className="bg-[#0B1220] min-h-screen text-white">
       <Section eyebrow="Our story" title="From face-to-face marketing to pragmatic AI that drives revenue">
